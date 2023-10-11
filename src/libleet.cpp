@@ -42,21 +42,19 @@ void leet::clearUserCredentials() {
 }
 
 /* api: /_matrix/client/v3/login */
-std::string leet::getAPI(std::string api) {
+std::string leet::getAPI(const std::string api) {
     std::ostringstream url;
     url << leet::MatrixOption.Homeserver << api;
 
     return url.str();
 }
 
-std::string leet::invoke(std::string URL, std::string Data) {
+std::string leet::invoke(const std::string URL, const std::string Data) {
     return cpr::Post(cpr::Url{URL}, cpr::Body{Data}).text;
 }
 
-/* Returns an object containing the response. */
 leet::User::CredentialsResponse leet::connectHomeserver() {
     leet::User::CredentialsResponse resp;
-
     using json = nlohmann::json;
 
     std::string actualType{};
@@ -77,7 +75,6 @@ leet::User::CredentialsResponse leet::connectHomeserver() {
         { "password", leet::MatrixOption.Credentials.Password },
         { "refresh_token", leet::MatrixOption.Credentials.RefreshToken },
         { "type", actualType },
-        //{ "token", ... },
     };
 
     /* Make a network request attempting a login */
@@ -105,14 +102,52 @@ leet::User::CredentialsResponse leet::connectHomeserver() {
 }
 
 /* Returns an array of all channels */
-std::vector<std::string> leet::returnRooms(leet::User::CredentialsResponse *resp) {
+std::vector<std::string> leet::returnRooms() {
     using json = nlohmann::json;
     std::vector<std::string> vector;
 
-    const std::string Output = cpr::Get(cpr::Url{ leet::getAPI("/_matrix/client/v3/joined_rooms") }, cpr::Header{{ "Authorization", "Bearer " + resp->AccessToken }}).text;
+    const std::string Output = cpr::Get(cpr::Url{ leet::getAPI("/_matrix/client/v3/joined_rooms") }, cpr::Header{{ "Authorization", "Bearer " + leet::MatrixOption.CredentialsResponse.AccessToken }}).text;
     auto returnOutput = json::parse(Output);
 
     returnOutput["joined_rooms"].get_to(vector);
 
     return vector;
+}
+
+/* Simply returns a new transaction ID */
+int leet::generateTransID() {
+    return ++leet::TransID;
+}
+
+void leet::setRoom(const std::string Room) {
+    leet::MatrixOption.activeRoom.RoomID = Room;
+}
+
+void leet::sendSimpleMessage(leet::User::CredentialsResponse *resp, const std::string Message) {
+    using json = nlohmann::json;
+    const int TransID { leet::generateTransID() };
+    const std::string RoomID { leet::MatrixOption.activeRoom.RoomID };
+    const std::string eventType { "m.room.message" };
+    const std::string APIUrl { "/_matrix/client/v3/rooms/" + RoomID + "/send/" + eventType + "/" + std::to_string(TransID) };
+
+    json list = {
+        { "body", Message },
+        { "msgtype", "m.text" },
+    };
+
+    std::string Output { cpr::Put(cpr::Url{ leet::getAPI(APIUrl) }, cpr::Body{ list.dump() }, cpr::Header{{ "Authorization", "Bearer " + resp->AccessToken }}).text };
+
+    /* Make a network request attempting a login */
+    json reqOutput = {
+        json::parse(Output)
+    };
+
+    for (auto &output : reqOutput) {
+        leet::errorCode = 0;
+
+        if (output["errcode"].is_string()) {
+            leet::errorCode = 1;
+            resp->Error = output["errcode"].get<std::string>();
+        }
+    }
 }

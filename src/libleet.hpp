@@ -57,6 +57,7 @@ namespace leet {
         class Room {
             private:
             public:
+                std::string RoomID;
         };
     }
 
@@ -67,24 +68,38 @@ namespace leet {
             int Type;
             User::Credentials Credentials;
             User::CredentialsResponse CredentialsResponse;
+            Room::Room activeRoom;
     };
 
     MatrixOptions MatrixOption;
 
-    int errorCode;
+    int errorCode = 0;
+    int TransID = 0;
 
-    /* Credentials and settings */
     void setSettings(MatrixOptions *);
     void saveCredentials(User::Credentials *);
     void clearUserCredentials();
 
-    /* Login */
-    User::CredentialsResponse connectHomeserver();
-    std::string getAPI(std::string api);
-    std::string invoke(std::string URL, std::string Data);
+    /* This function generates a new transaction ID this session by simply
+     * incrementing by 1.
+     *
+     * If your program finishes execution, you must preserve the value of
+     * leet::TransID until the next session and restore it (i.e. leet::TransID = <old value>;)
+     * before calling any functions that use a transaction ID. (such as sendSimpleMessage)
+     *
+     * If you use an ID that has been used before, the action will be considered a duplicate by
+     * the server, and most likely ignored.
+     */
+    int generateTransID();
 
-    /* Rooms */
-    std::vector<std::string> returnRooms(User::CredentialsResponse *resp);
+    User::CredentialsResponse connectHomeserver();
+    std::string getAPI(const std::string api);
+    std::string invoke(const std::string URL, const std::string Data);
+
+    std::vector<std::string> returnRooms();
+    void setRoom(const std::string Room);
+
+    void sendSimpleMessage(User::CredentialsResponse *, const std::string Message);
 }
 
 #endif
