@@ -40,7 +40,7 @@ namespace leet {
                 int Type;
         }; /* https://playground.matrix.org/#post-/_matrix/client/v3/login */
 
-        class CredentialsResponse {
+        class ServerResponse {
             private:
             public:
                 std::string AccessToken;
@@ -66,16 +66,17 @@ namespace leet {
         public:
             std::string Homeserver;
             int Type;
-            User::Credentials Credentials;
-            User::CredentialsResponse CredentialsResponse;
-            Room::Room activeRoom;
     };
 
+    User::Credentials Credentials;
     MatrixOptions MatrixOption;
+    User::ServerResponse ServerResponse;
+    Room::Room activeRoom;
 
     int errorCode = 0;
     int TransID = 0;
 
+    std::string reportError();
     void setSettings(MatrixOptions *);
     void saveCredentials(User::Credentials *);
     void clearUserCredentials();
@@ -92,14 +93,15 @@ namespace leet {
      */
     int generateTransID();
 
-    User::CredentialsResponse connectHomeserver();
+    void connectHomeserver();
     std::string getAPI(const std::string api);
     std::string invoke(const std::string URL, const std::string Data);
 
     std::vector<std::string> returnRooms();
+    std::string findRoomID(const std::string roomAlias);
     void setRoom(const std::string Room);
 
-    void sendSimpleMessage(User::CredentialsResponse *, const std::string Message);
+    void sendSimpleMessage(const std::string Message);
 }
 
 #endif
