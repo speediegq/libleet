@@ -17,7 +17,7 @@ project_source_files = [
 
 project_dependencies = [
   dependency('nlohmann_json'),
-  dependency('curlpp'),
+  dependency('cpr'),
 ]
 
 build_args = [

@@ -39,12 +39,15 @@ namespace leet {
         }; /* https://playground.matrix.org/#post-/_matrix/client/v3/login */
 
         class CredentialsResponse {
-            std::string AccessToken;
-            std::string RefreshToken;
-            std::string DeviceID; // @<user>:<homeserver>
-            std::string Homeserver; // Should correspond to leet::MatrixOptions::Homeserver
-            std::string UserID; // Should correspond to leet::User::Credentials.User
-            int Expiration;
+            private:
+            public:
+                std::string AccessToken;
+                std::string RefreshToken;
+                std::string DeviceID; // @<user>:<homeserver>
+                std::string Homeserver; // Should correspond to leet::MatrixOptions::Homeserver
+                std::string UserID; // Should correspond to leet::User::Credentials.User
+                int Expiration;
+                std::string Error;
         }; /* https://playground.matrix.org/#post-/_matrix/client/v3/login */
     }
 
@@ -59,12 +62,14 @@ namespace leet {
 
     MatrixOptions MatrixOption;
 
-    std::string jsonCache;
+    int errorCode;
 
     void setSettings(MatrixOptions *);
     void saveCredentials(User::Credentials *);
-    void connectHomeserver();
+    void clearUserCredentials();
+    User::CredentialsResponse connectHomeserver();
     std::string getAPI(std::string api);
+    std::string invoke(std::string URL, std::string Data);
 }
 
 #endif
