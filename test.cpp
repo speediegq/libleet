@@ -15,7 +15,10 @@ int main() {
     cred.Type = TPassword;
 
     /* Then, we specify a username here. */
-    cred.Username = "speedie"; // Username
+    cred.Username = "speedie";
+
+    /* Now, let's specify a device ID */
+    cred.DeviceID = "libleet test client";
 
     /* Now let's read the password from the user's shell. */
     std::getline(std::cin, cred.Password);
@@ -23,9 +26,6 @@ int main() {
     /* Save the settings, and the credentials using libleet functions */
     leet::setSettings(&options);
     leet::saveCredentials(&cred);
-
-    /* Test print of the home server we're connecting to */
-    std::cout << "Home server: " << leet::MatrixOption.Homeserver << "\n";
 
     /* Connect to the home server using the credentials we saved */
     resp = leet::connectHomeserver();
@@ -43,4 +43,15 @@ int main() {
     }
 
     /* From here on, we can use resp.AccessToken to authenticate actions */
+
+    std::cout << resp.AccessToken;
+    std::cout << "Channels: " << std::endl;
+
+    std::vector<std::string> rooms = leet::returnRooms(&resp);
+
+    int i = 0;
+    for (const auto& room : rooms) {
+        std::cout << i << ". " << room << std::endl;
+        i++;
+    }
 }

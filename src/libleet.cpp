@@ -9,6 +9,7 @@
 #include <iostream>
 #include <sstream>
 #include <future>
+#include <vector>
 #include <nlohmann/json.hpp>
 #include <cpr/cpr.h>
 
@@ -101,4 +102,17 @@ leet::User::CredentialsResponse leet::connectHomeserver() {
     }
 
     return resp;
+}
+
+/* Returns an array of all channels */
+std::vector<std::string> leet::returnRooms(leet::User::CredentialsResponse *resp) {
+    using json = nlohmann::json;
+    std::vector<std::string> vector;
+
+    const std::string Output = cpr::Get(cpr::Url{ leet::getAPI("/_matrix/client/v3/joined_rooms") }, cpr::Header{{ "Authorization", "Bearer " + resp->AccessToken }}).text;
+    auto returnOutput = json::parse(Output);
+
+    returnOutput["joined_rooms"].get_to(vector);
+
+    return vector;
 }

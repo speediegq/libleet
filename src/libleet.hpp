@@ -6,6 +6,8 @@
  * https://git.speedie.site/speedie/libleet
  */
 
+#include <vector>
+
 #ifndef LIBLEET_HPP
 #define LIBLEET_HPP
 
@@ -51,25 +53,38 @@ namespace leet {
         }; /* https://playground.matrix.org/#post-/_matrix/client/v3/login */
     }
 
+    namespace Room {
+        class Room {
+            private:
+            public:
+        };
+    }
+
     class MatrixOptions {
         private:
         public:
             std::string Homeserver;
             int Type;
-            User::Credentials Credentials; // Passed to server
-            User::CredentialsResponse CredentialsResponse; // Response from server
+            User::Credentials Credentials;
+            User::CredentialsResponse CredentialsResponse;
     };
 
     MatrixOptions MatrixOption;
 
     int errorCode;
 
+    /* Credentials and settings */
     void setSettings(MatrixOptions *);
     void saveCredentials(User::Credentials *);
     void clearUserCredentials();
+
+    /* Login */
     User::CredentialsResponse connectHomeserver();
     std::string getAPI(std::string api);
     std::string invoke(std::string URL, std::string Data);
+
+    /* Rooms */
+    std::vector<std::string> returnRooms(User::CredentialsResponse *resp);
 }
 
 #endif
