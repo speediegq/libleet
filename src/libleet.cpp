@@ -15,6 +15,11 @@
 #include <cpr/cpr.h>
 
 #include "libleet.hpp"
+#include "Login.cpp"
+#include "Request.cpp"
+#include "User.cpp"
+#include "Room.cpp"
+#include "Message.cpp"
 
 void leet::setSettings(leet::MatrixOptions *options) {
     leet::MatrixOption.Homeserver = options->Homeserver;
@@ -50,176 +55,11 @@ std::string leet::getAPI(const std::string api) {
     return leet::MatrixOption.Homeserver + api;
 }
 
-std::string leet::invoke(const std::string URL, const std::string Data) {
-    return cpr::Post(cpr::Url{URL}, cpr::Body{Data}).text;
-}
-
-leet::User::CredentialsResponse leet::connectHomeserver() {
-    leet::User::CredentialsResponse resp;
-    using json = nlohmann::json;
-
-    std::string actualType{};
-
-    if (leet::MatrixOption.Credentials.Type == TPassword) {
-        actualType = "m.login.password";
-    } else if (leet::MatrixOption.Credentials.Type == TToken) {
-        actualType = "m.login.token";
-    }
-
-    json list = {
-        { "device_id", leet::MatrixOption.Credentials.DeviceID },
-        { "identifier", {
-            { "type", "m.id.user" },
-            { "user", leet::MatrixOption.Credentials.Username },
-        } },
-        { "initial_device_display_name", leet::MatrixOption.Credentials.DisplayName },
-        { "password", leet::MatrixOption.Credentials.Password },
-        { "refresh_token", leet::MatrixOption.Credentials.RefreshToken },
-        { "type", actualType },
-    };
-
-    /* Make a network request attempting a login */
-    json loginOutput = {
-        json::parse(leet::invoke(leet::getAPI("/_matrix/client/v3/login"), list.dump()))
-    };
-
-    for (auto &output : loginOutput) {
-        leet::errorCode = 0;
-
-        resp.Homeserver = leet::MatrixOption.Homeserver;
-
-        if (output["access_token"].is_string()) resp.AccessToken = output["access_token"].get<std::string>();
-        if (output["device_id"].is_string()) resp.DeviceID = output["device_id"].get<std::string>();
-        if (output["refresh_token"].is_string()) resp.RefreshToken = output["refresh_token"].get<std::string>();
-        if (output["user_id"].is_string()) resp.UserID = output["user_id"].get<std::string>();
-
-        if (output["errcode"].is_string()) {
-            leet::errorCode = 1;
-            leet::Error = output["errcode"].get<std::string>();
-            if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
-        }
-    }
-
-    return resp;
-}
-
-/* Returns an array of all channels */
-std::vector<std::string> leet::returnRooms() {
-    using json = nlohmann::json;
-    std::vector<std::string> vector;
-
-    const std::string Output = cpr::Get(cpr::Url{ leet::getAPI("/_matrix/client/v3/joined_rooms") }, cpr::Header{{ "Authorization", "Bearer " + leet::MatrixOption.CredentialsResponse.AccessToken }}).text;
-    auto returnOutput = json::parse(Output);
-
-    returnOutput["joined_rooms"].get_to(vector);
-
-    return vector;
-}
-
-/* Converts an alias to a proper room ID */
-std::string leet::findRoomID(std::string Alias) {
-    using json = nlohmann::json;
-
-    leet::errorCode = 0;
-
-    // Replace the '#' character with '%23' so that Matrix is happy
-    Alias.replace(0, 1, "%23");
-
-    const std::string Output = cpr::Get(cpr::Url{ leet::getAPI("/_matrix/client/v3/directory/room/") + Alias }).text;
-    json reqOutput = { json::parse(Output) };
-
-    for (auto &output : reqOutput) {
-        if (output["room_id"].is_string()) {
-            leet::errorCode = 0;
-            return output["room_id"].get<std::string>();
-        } else if (!output["errcode"].is_null()) {
-            leet::errorCode = 1;
-            leet::Error = output["errcode"].get<std::string>();
-            if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
-
-            return "";
-        }
-    }
-
-    return "";
-}
-
 /* Simply returns a new transaction ID */
 int leet::generateTransID() {
     return ++leet::TransID;
 }
 
-/* Converts a username to a proper user ID if necessary (i.e. speedie -> @speedie:matrix.org) */
-std::string leet::findUserID(const std::string Alias) {
-    if (Alias[0] != '@')
-        return "@" + Alias + ":" + leet::defaultHomeserver;
-    return Alias;
-}
-
-/* Returns a leet::User::Profile class containing things such as display name and avatar URL */
-leet::User::Profile leet::getUserData(const std::string UserID) {
-    using json = nlohmann::json;
-    leet::errorCode = 0;
-
-    leet::User::Profile profile;
-
-    profile.UserID = leet::findUserID(UserID);
-
-    if (profile.UserID.empty()) {
-        leet::errorCode = 1;
-        leet::friendlyError = "Failed to get User ID";
-        return profile;
-    }
-
-    const std::string API { leet::getAPI("/_matrix/client/v3/profile/" + profile.UserID) };
-    const std::string Output = cpr::Get(cpr::Url{ API }).text;
-
-    json reqOutput = { json::parse(Output) };
-
-    for (auto &output : reqOutput) {
-        if (output["avatar_url"].is_string()) profile.AvatarURL = output["avatar_url"].get<std::string>();
-        if (output["displayname"].is_string()) profile.DisplayName = output["displayname"].get<std::string>();
-
-        if (output["errcode"].is_string()) {
-            leet::errorCode = 1;
-            leet::Error = output["errcode"].get<std::string>();
-            if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
-        }
-    }
-
-    return profile;
-}
-
 void leet::setRoom(const std::string Room) {
     leet::MatrixOption.activeRoom.RoomID = Room;
-}
-
-void leet::sendSimpleMessage(leet::User::CredentialsResponse *resp, const std::string Message) {
-    using json = nlohmann::json;
-    const int TransID { leet::generateTransID() };
-    const std::string RoomID { leet::MatrixOption.activeRoom.RoomID };
-    const std::string eventType { "m.room.message" };
-    const std::string APIUrl { "/_matrix/client/v3/rooms/" + RoomID + "/send/" + eventType + "/" + std::to_string(TransID) };
-
-    json list = {
-        { "body", Message },
-        { "msgtype", "m.text" },
-    };
-
-    std::string Output { cpr::Put(cpr::Url{ leet::getAPI(APIUrl) }, cpr::Body{ list.dump() }, cpr::Header{{ "Authorization", "Bearer " + resp->AccessToken }}).text };
-
-    /* Make a network request attempting a login */
-    json reqOutput = {
-        json::parse(Output)
-    };
-
-    for (auto &output : reqOutput) {
-        leet::errorCode = 0;
-
-        if (output["errcode"].is_string()) {
-            leet::errorCode = 1;
-            leet::Error = output["errcode"].get<std::string>();
-            if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
-        }
-    }
 }

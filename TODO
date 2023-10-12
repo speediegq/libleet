@@ -1,1 +1,19 @@
-- Tokens
+- TODO
+  - Functions for displaying messages
+  - Functions for room administration
+  - Functions for joining/leaving rooms
+  - Functions for displaying encryption status for users and rooms
+  - File embed/upload
+  - Wrapper function(s) returning a vector of 'User' objects
+  - mxc:// URLs
+  - Spaces
+  - Discovery
+  - Registering
+  - End to end encryption (using libolm)
+
+- Might not implement
+  - Stickers
+  - Captcha
+  - Third party login
+  - Threads
+  - Voice over IP

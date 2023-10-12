@@ -110,9 +110,15 @@ namespace leet {
     User::CredentialsResponse connectHomeserver();
     User::Profile getUserData(const std::string UserID);
     std::string getAPI(const std::string api);
-    std::string invoke(const std::string URL, const std::string Data);
 
-    std::vector<std::string> returnRooms();
+    std::string invokeRequest_Get(const std::string URL, const std::string Authentication);
+    std::string invokeRequest_Put(const std::string URL, const std::string Data, const std::string Authentication);
+    std::string invokeRequest_Post(const std::string URL, const std::string Data, const std::string Authentication);
+    std::string invokeRequest_Get(const std::string URL);
+    std::string invokeRequest_Put(const std::string URL, const std::string Data);
+    std::string invokeRequest_Post(const std::string URL, const std::string Data);
+
+    std::vector<std::string> returnRooms(User::CredentialsResponse *resp);
     std::string findRoomID(std::string Alias);
     void setRoom(const std::string Room);
 
