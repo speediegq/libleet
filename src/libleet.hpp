@@ -40,7 +40,7 @@ namespace leet {
                 int Type;
         }; /* https://playground.matrix.org/#post-/_matrix/client/v3/login */
 
-        class ServerResponse {
+        class CredentialsResponse {
             private:
             public:
                 std::string AccessToken;
@@ -48,8 +48,7 @@ namespace leet {
                 std::string DeviceID; // @<user>:<homeserver>
                 std::string Homeserver; // Should correspond to leet::MatrixOptions::Homeserver
                 std::string UserID; // Should correspond to leet::User::Credentials.User
-                int Expiration;
-                std::string Error;
+                int Expiration; // Probably unused, at least for now
         }; /* https://playground.matrix.org/#post-/_matrix/client/v3/login */
     }
 
@@ -66,17 +65,18 @@ namespace leet {
         public:
             std::string Homeserver;
             int Type;
+            User::Credentials Credentials;
+            User::CredentialsResponse CredentialsResponse;
+            Room::Room activeRoom;
     };
 
-    User::Credentials Credentials;
     MatrixOptions MatrixOption;
-    User::ServerResponse ServerResponse;
-    Room::Room activeRoom;
 
+    std::string Error;
+    std::string friendlyError;
     int errorCode = 0;
     int TransID = 0;
 
-    std::string reportError();
     void setSettings(MatrixOptions *);
     void saveCredentials(User::Credentials *);
     void clearUserCredentials();
@@ -93,15 +93,15 @@ namespace leet {
      */
     int generateTransID();
 
-    void connectHomeserver();
+    User::CredentialsResponse connectHomeserver();
     std::string getAPI(const std::string api);
     std::string invoke(const std::string URL, const std::string Data);
 
     std::vector<std::string> returnRooms();
-    std::string findRoomID(const std::string roomAlias);
+    std::string findRoomID(std::string Alias);
     void setRoom(const std::string Room);
 
-    void sendSimpleMessage(const std::string Message);
+    void sendSimpleMessage(User::CredentialsResponse *, const std::string Message);
 }
 
 #endif

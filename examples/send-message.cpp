@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string>
 #include <libleet/libleet.hpp>
 
 int main(int argc, char** argv) {
@@ -8,6 +7,7 @@ int main(int argc, char** argv) {
 
     leet::MatrixOptions options;
     leet::User::Credentials cred;
+    leet::User::CredentialsResponse resp;
 
     options.Homeserver = "https://matrix.org";
     cred.Type = TPassword;
@@ -18,22 +18,22 @@ int main(int argc, char** argv) {
     leet::setSettings(&options);
     leet::saveCredentials(&cred);
 
-    leet::connectHomeserver();
+    resp = leet::connectHomeserver();
 
     if (leet::errorCode == 0) {
         leet::clearUserCredentials();
     } else {
-        std::cerr << "Failed to authenticate. Invalid username/password (" << leet::ServerResponse.Error << ")\n";
+        std::cerr << "Failed to authenticate. Invalid username/password (" << leet::Error << ")\n";
         return 1;
     }
 
     leet::TransID = std::atoi(argv[2]);
 
     leet::setRoom(myRoom);
-    leet::sendSimpleMessage(myMessage);
+    leet::sendSimpleMessage(&resp, myMessage);
 
     if (leet::errorCode == 1) {
-        std::cerr << resp.Error;
+        std::cerr << leet::Error;
     } else {
         std::cout << "Successfully sent message '" << myMessage << "' to '" << myRoom << "'";
     }

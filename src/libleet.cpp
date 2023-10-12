@@ -10,17 +10,12 @@
 #include <sstream>
 #include <future>
 #include <vector>
+#include <regex>
 #include <nlohmann/json.hpp>
 #include <cpr/cpr.h>
 
 #include "libleet.hpp"
 
-/* Handy function, because typing it out gets rather tiring. */
-std::string leet::reportError() {
-    return leet::ServerResponse.Error;
-}
-
-/* Apply settings */
 void leet::setSettings(leet::MatrixOptions *options) {
     leet::MatrixOption.Homeserver = options->Homeserver;
     leet::MatrixOption.Type = options->Type;
@@ -33,52 +28,50 @@ void leet::setSettings(leet::MatrixOptions *options) {
  * leet::User::Credentials passed to function.
  */
 void leet::saveCredentials(leet::User::Credentials *cred) {
-    leet::Credentials.Username = cred->Username;
-    leet::Credentials.Password = cred->Password;
-    leet::Credentials.DisplayName = cred->DisplayName;
-    leet::Credentials.DeviceID = cred->DeviceID;
+    leet::MatrixOption.Credentials.Username = cred->Username;
+    leet::MatrixOption.Credentials.Password = cred->Password;
+    leet::MatrixOption.Credentials.DisplayName = cred->DisplayName;
+    leet::MatrixOption.Credentials.DeviceID = cred->DeviceID;
 }
 
 /* This function reverts the changes made by the above function */
 void leet::clearUserCredentials() {
-    leet::Credentials.Username = "";
-    leet::Credentials.Password = "";
-    leet::Credentials.DisplayName = "";
-    leet::Credentials.DeviceID = "";
+    leet::MatrixOption.Credentials.Username = "";
+    leet::MatrixOption.Credentials.Password = "";
+    leet::MatrixOption.Credentials.DisplayName = "";
+    leet::MatrixOption.Credentials.DeviceID = "";
 }
 
-/* Login API: /_matrix/client/v3/login */
+/* api: /_matrix/client/v3/login */
 std::string leet::getAPI(const std::string api) {
-    std::ostringstream url;
-    url << leet::MatrixOption.Homeserver << api;
-
-    return url.str();
+    return leet::MatrixOption.Homeserver + api;
 }
 
 std::string leet::invoke(const std::string URL, const std::string Data) {
     return cpr::Post(cpr::Url{URL}, cpr::Body{Data}).text;
 }
 
-void leet::connectHomeserver() {
+leet::User::CredentialsResponse leet::connectHomeserver() {
+    leet::User::CredentialsResponse resp;
     using json = nlohmann::json;
 
     std::string actualType{};
 
-    if (leet::Credentials.Type == TPassword) {
+    if (leet::MatrixOption.Credentials.Type == TPassword) {
         actualType = "m.login.password";
-    } else if (leet::Credentials.Type == TToken) {
+    } else if (leet::MatrixOption.Credentials.Type == TToken) {
         actualType = "m.login.token";
     }
 
     json list = {
-        { "device_id", leet::Credentials.DeviceID },
+        { "device_id", leet::MatrixOption.Credentials.DeviceID },
         { "identifier", {
             { "type", "m.id.user" },
-            { "user", leet::Credentials.Username },
+            { "user", leet::MatrixOption.Credentials.Username },
         } },
-        { "initial_device_display_name", leet::Credentials.DisplayName },
-        { "password", leet::Credentials.Password },
-        { "refresh_token", leet::Credentials.RefreshToken },
+        { "initial_device_display_name", leet::MatrixOption.Credentials.DisplayName },
+        { "password", leet::MatrixOption.Credentials.Password },
+        { "refresh_token", leet::MatrixOption.Credentials.RefreshToken },
         { "type", actualType },
     };
 
@@ -90,18 +83,21 @@ void leet::connectHomeserver() {
     for (auto &output : loginOutput) {
         leet::errorCode = 0;
 
-        leet::ServerResponse.Homeserver = leet::MatrixOption.Homeserver;
+        resp.Homeserver = leet::MatrixOption.Homeserver;
 
-        if (output["access_token"].is_string()) leet::ServerResponse.AccessToken = output["access_token"].get<std::string>();
-        if (output["device_id"].is_string()) leet::ServerResponse.DeviceID = output["device_id"].get<std::string>();
-        if (output["refresh_token"].is_string()) leet::ServerResponse.RefreshToken = output["refresh_token"].get<std::string>();
-        if (output["user_id"].is_string()) leet::ServerResponse.UserID = output["user_id"].get<std::string>();
+        if (output["access_token"].is_string()) resp.AccessToken = output["access_token"].get<std::string>();
+        if (output["device_id"].is_string()) resp.DeviceID = output["device_id"].get<std::string>();
+        if (output["refresh_token"].is_string()) resp.RefreshToken = output["refresh_token"].get<std::string>();
+        if (output["user_id"].is_string()) resp.UserID = output["user_id"].get<std::string>();
 
         if (output["errcode"].is_string()) {
             leet::errorCode = 1;
-            leet::ServerResponse.Error = output["errcode"].get<std::string>();
+            leet::Error = output["errcode"].get<std::string>();
+            if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
         }
     }
+
+    return resp;
 }
 
 /* Returns an array of all channels */
@@ -109,7 +105,7 @@ std::vector<std::string> leet::returnRooms() {
     using json = nlohmann::json;
     std::vector<std::string> vector;
 
-    const std::string Output = cpr::Get(cpr::Url{ leet::getAPI("/_matrix/client/v3/joined_rooms") }, cpr::Header{{ "Authorization", "Bearer " + leet::ServerResponse.AccessToken }}).text;
+    const std::string Output = cpr::Get(cpr::Url{ leet::getAPI("/_matrix/client/v3/joined_rooms") }, cpr::Header{{ "Authorization", "Bearer " + leet::MatrixOption.CredentialsResponse.AccessToken }}).text;
     auto returnOutput = json::parse(Output);
 
     returnOutput["joined_rooms"].get_to(vector);
@@ -117,10 +113,32 @@ std::vector<std::string> leet::returnRooms() {
     return vector;
 }
 
-/* Returns a room ID from room Alias (i.e. #speedie:matrix.org -> !OGNyGIKFSskVdwouMg:matrix.org) */
-std::string leet::findRoomID(const std::string roomAlias) {
-    // TODO
-    // https://playground.matrix.org/#get-/_matrix/client/v3/directory/room/-roomAlias-
+/* Converts an alias to a proper room ID */
+std::string leet::findRoomID(std::string Alias) {
+    using json = nlohmann::json;
+
+    leet::errorCode = 0;
+
+    // Replace the '#' character with '%23' so that Matrix is happy
+    Alias.replace(0, 1, "%23");
+
+    const std::string Output = cpr::Get(cpr::Url{ leet::getAPI("/_matrix/client/v3/directory/room/") + Alias }).text;
+    json reqOutput = { json::parse(Output) };
+
+    for (auto &output : reqOutput) {
+        if (output["room_id"].is_string()) {
+            leet::errorCode = 0;
+            return output["room_id"].get<std::string>();
+        } else if (!output["errcode"].is_null()) {
+            leet::errorCode = 1;
+            leet::Error = output["errcode"].get<std::string>();
+            if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
+
+            return "";
+        }
+    }
+
+    return "";
 }
 
 /* Simply returns a new transaction ID */
@@ -129,13 +147,13 @@ int leet::generateTransID() {
 }
 
 void leet::setRoom(const std::string Room) {
-    leet::activeRoom.RoomID = Room;
+    leet::MatrixOption.activeRoom.RoomID = Room;
 }
 
-void leet::sendSimpleMessage(const std::string Message) {
+void leet::sendSimpleMessage(leet::User::CredentialsResponse *resp, const std::string Message) {
     using json = nlohmann::json;
     const int TransID { leet::generateTransID() };
-    const std::string RoomID { leet::activeRoom.RoomID };
+    const std::string RoomID { leet::MatrixOption.activeRoom.RoomID };
     const std::string eventType { "m.room.message" };
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + RoomID + "/send/" + eventType + "/" + std::to_string(TransID) };
 
@@ -144,7 +162,7 @@ void leet::sendSimpleMessage(const std::string Message) {
         { "msgtype", "m.text" },
     };
 
-    std::string Output { cpr::Put(cpr::Url{ leet::getAPI(APIUrl) }, cpr::Body{ list.dump() }, cpr::Header{{ "Authorization", "Bearer " + leet::ServerResponse.AccessToken }}).text };
+    std::string Output { cpr::Put(cpr::Url{ leet::getAPI(APIUrl) }, cpr::Body{ list.dump() }, cpr::Header{{ "Authorization", "Bearer " + resp->AccessToken }}).text };
 
     /* Make a network request attempting a login */
     json reqOutput = {
@@ -156,7 +174,8 @@ void leet::sendSimpleMessage(const std::string Message) {
 
         if (output["errcode"].is_string()) {
             leet::errorCode = 1;
-            leet::ServerResponse.Error = output["errcode"].get<std::string>();
+            leet::Error = output["errcode"].get<std::string>();
+            if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
         }
     }
 }
