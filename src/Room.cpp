@@ -7,15 +7,21 @@
  */
 
 /* Returns an array of all rooms */
-std::vector<std::string> leet::returnRooms(leet::User::CredentialsResponse *resp) {
+std::vector<leet::Room::Room> leet::returnRooms(leet::User::CredentialsResponse *resp) {
     using json = nlohmann::json;
 
-    std::vector<std::string> vector;
+    std::vector<leet::Room::Room> vector;
 
     const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/joined_rooms"), resp->AccessToken);
-    auto returnOutput = json::parse(Output);
+    json returnOutput = json::parse(Output);
 
-    returnOutput["joined_rooms"].get_to(vector);
+    auto &rooms = returnOutput["joined_rooms"];
+
+    for (auto currKey = rooms.begin(); currKey != rooms.end(); ++currKey) {
+        leet::Room::Room room;
+        room.RoomID = currKey.value();
+        vector.push_back(room);
+    }
 
     return vector;
 }

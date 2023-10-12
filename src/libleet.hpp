@@ -127,7 +127,7 @@ namespace leet {
     std::string invokeRequest_Put(const std::string URL, const std::string Data);
     std::string invokeRequest_Post(const std::string URL, const std::string Data);
 
-    std::vector<std::string> returnRooms(leet::User::CredentialsResponse *resp);
+    std::vector<Room::Room> returnRooms(leet::User::CredentialsResponse *resp);
     std::string findRoomID(std::string Alias);
     void setRoom(const std::string Room);
 
