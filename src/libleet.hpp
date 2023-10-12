@@ -127,11 +127,14 @@ namespace leet {
     std::string invokeRequest_Put(const std::string URL, const std::string Data);
     std::string invokeRequest_Post(const std::string URL, const std::string Data);
 
-    std::vector<std::string> returnRooms(User::CredentialsResponse *resp);
+    std::vector<std::string> returnRooms(leet::User::CredentialsResponse *resp);
     std::string findRoomID(std::string Alias);
     void setRoom(const std::string Room);
 
     std::string findUserID(const std::string Alias);
+    std::vector<User::Profile> returnUsersInRoom(leet::User::CredentialsResponse *resp, const std::string RoomID);
+    std::vector<User::Profile> returnUsersInRoom(leet::User::CredentialsResponse *resp);
+
     bool checkIfUsernameIsAvailable(const std::string Username);
 
     void sendSimpleMessage(User::CredentialsResponse *, const std::string Message);
