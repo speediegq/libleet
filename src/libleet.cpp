@@ -23,15 +23,18 @@ void leet::setSettings(leet::MatrixOptions *options) {
 
 /* std::string leet::User::Credentials.Username = <username>
  * std::string leet::User::Credentials.Password = <password>
- * std::string leet::User::Credentialss.DisplayName = <display name>
+ * std::string leet::User::Credentials.DisplayName = <display name>
  *
  * leet::User::Credentials passed to function.
  */
 void leet::saveCredentials(leet::User::Credentials *cred) {
-    leet::MatrixOption.Credentials.Username = cred->Username;
+    leet::MatrixOption.Credentials.Username = leet::findUserID(cred->Username);
     leet::MatrixOption.Credentials.Password = cred->Password;
     leet::MatrixOption.Credentials.DisplayName = cred->DisplayName;
     leet::MatrixOption.Credentials.DeviceID = cred->DeviceID;
+
+    leet::MatrixOption.Profile.UserID = leet::findUserID(cred->Username);
+    leet::MatrixOption.Profile.DisplayName = cred->DisplayName;
 }
 
 /* This function reverts the changes made by the above function */
@@ -144,6 +147,47 @@ std::string leet::findRoomID(std::string Alias) {
 /* Simply returns a new transaction ID */
 int leet::generateTransID() {
     return ++leet::TransID;
+}
+
+/* Converts a username to a proper user ID if necessary (i.e. speedie -> @speedie:matrix.org) */
+std::string leet::findUserID(const std::string Alias) {
+    if (Alias[0] != '@')
+        return "@" + Alias + ":" + leet::defaultHomeserver;
+    return Alias;
+}
+
+/* Returns a leet::User::Profile class containing things such as display name and avatar URL */
+leet::User::Profile leet::getUserData(const std::string UserID) {
+    using json = nlohmann::json;
+    leet::errorCode = 0;
+
+    leet::User::Profile profile;
+
+    profile.UserID = leet::findUserID(UserID);
+
+    if (profile.UserID.empty()) {
+        leet::errorCode = 1;
+        leet::friendlyError = "Failed to get User ID";
+        return profile;
+    }
+
+    const std::string API { leet::getAPI("/_matrix/client/v3/profile/" + profile.UserID) };
+    const std::string Output = cpr::Get(cpr::Url{ API }).text;
+
+    json reqOutput = { json::parse(Output) };
+
+    for (auto &output : reqOutput) {
+        if (output["avatar_url"].is_string()) profile.AvatarURL = output["avatar_url"].get<std::string>();
+        if (output["displayname"].is_string()) profile.DisplayName = output["displayname"].get<std::string>();
+
+        if (output["errcode"].is_string()) {
+            leet::errorCode = 1;
+            leet::Error = output["errcode"].get<std::string>();
+            if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
+        }
+    }
+
+    return profile;
 }
 
 void leet::setRoom(const std::string Room) {

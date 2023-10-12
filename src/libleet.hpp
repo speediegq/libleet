@@ -27,7 +27,7 @@ enum {
 /* The main namespace, most functions and variables will be contained in this. */
 namespace leet {
     namespace User {
-        class Credentials {
+        class Credentials { /* Only applies for the login account */
             private:
             public:
                 std::string Username; // Username
@@ -40,7 +40,7 @@ namespace leet {
                 int Type;
         }; /* https://playground.matrix.org/#post-/_matrix/client/v3/login */
 
-        class CredentialsResponse {
+        class CredentialsResponse { /* Only applies for the login account */
             private:
             public:
                 std::string AccessToken;
@@ -50,6 +50,14 @@ namespace leet {
                 std::string UserID; // Should correspond to leet::User::Credentials.User
                 int Expiration; // Probably unused, at least for now
         }; /* https://playground.matrix.org/#post-/_matrix/client/v3/login */
+
+        class Profile { // Ideally, you should have a two classes for the login user
+            private:
+            public:
+                std::string UserID;
+                std::string DisplayName;
+                std::string AvatarURL;
+        }; /* https://spec.matrix.org/v1.8/client-server-api/#profiles */
     }
 
     namespace Room {
@@ -65,8 +73,12 @@ namespace leet {
         public:
             std::string Homeserver;
             int Type;
+
+            /* The login user */
             User::Credentials Credentials;
             User::CredentialsResponse CredentialsResponse;
+            User::Profile Profile;
+
             Room::Room activeRoom;
     };
 
@@ -76,6 +88,8 @@ namespace leet {
     std::string friendlyError;
     int errorCode = 0;
     int TransID = 0;
+
+    std::string defaultHomeserver = "matrix.org";
 
     void setSettings(MatrixOptions *);
     void saveCredentials(User::Credentials *);
@@ -94,12 +108,15 @@ namespace leet {
     int generateTransID();
 
     User::CredentialsResponse connectHomeserver();
+    User::Profile getUserData(const std::string UserID);
     std::string getAPI(const std::string api);
     std::string invoke(const std::string URL, const std::string Data);
 
     std::vector<std::string> returnRooms();
     std::string findRoomID(std::string Alias);
     void setRoom(const std::string Room);
+
+    std::string findUserID(const std::string Alias);
 
     void sendSimpleMessage(User::CredentialsResponse *, const std::string Message);
 }
