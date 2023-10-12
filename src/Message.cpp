@@ -6,6 +6,9 @@
  * https://git.speedie.site/speedie/libleet
  */
 
+/* This is a simple function used to send a message. While it works, you should probably
+ * not use it outside of a test environment.
+ */
 void leet::sendSimpleMessage(leet::User::CredentialsResponse *resp, const std::string Message) {
     using json = nlohmann::json;
     const int TransID { leet::generateTransID() };
@@ -20,10 +23,7 @@ void leet::sendSimpleMessage(leet::User::CredentialsResponse *resp, const std::s
 
     std::string Output { invokeRequest_Put(leet::getAPI(APIUrl), list.dump(), resp->AccessToken) };
 
-    /* Make a network request attempting a login */
-    json reqOutput = {
-        json::parse(Output)
-    };
+    json reqOutput = { json::parse(Output) };
 
     for (auto &output : reqOutput) {
         leet::errorCode = 0;

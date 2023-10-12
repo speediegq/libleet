@@ -6,6 +6,7 @@
  * https://git.speedie.site/speedie/libleet
  */
 
+#include <string>
 #include <vector>
 
 #ifndef LIBLEET_HPP
@@ -68,6 +69,14 @@ namespace leet {
         };
     }
 
+    namespace Message {
+        class Message {
+            private:
+            public:
+                std::string messageText;
+        };
+    }
+
     class MatrixOptions {
         private:
         public:
@@ -123,6 +132,7 @@ namespace leet {
     void setRoom(const std::string Room);
 
     std::string findUserID(const std::string Alias);
+    bool checkIfUsernameIsAvailable(const std::string Username);
 
     void sendSimpleMessage(User::CredentialsResponse *, const std::string Message);
 }

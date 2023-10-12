@@ -46,3 +46,27 @@ leet::User::Profile leet::getUserData(const std::string UserID) {
 
     return profile;
 }
+
+/* Returns true if username is valid and available for registering */
+bool leet::checkIfUsernameIsAvailable(const std::string Username) {
+    using json = nlohmann::json;
+    leet::errorCode = 0;
+    const std::string API { leet::getAPI("/_matrix/client/v3/register/available?username=" + Username) };
+    const std::string Output = invokeRequest_Get(API);
+    json reqOutput = { json::parse(Output) };
+
+    for (auto &output : reqOutput) {
+        if (output["errcode"].is_string()) {
+            leet::errorCode = 1;
+            leet::Error = output["errcode"].get<std::string>();
+            if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
+            return false;
+        }
+
+        if (output["available"].is_boolean()) {
+            return output["available"].get<bool>();
+        }
+    }
+
+    return false;
+}
