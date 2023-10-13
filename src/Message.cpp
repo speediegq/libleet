@@ -91,14 +91,13 @@ std::vector<leet::Message::Message> leet::returnMessages(leet::User::Credentials
 
         // attachments
         if (currKey.value().contains("/content/info/size"_json_pointer)) message.attachmentSize = currKey.value()["content"]["info"]["size"];
+        if (currKey.value().contains("/content/info/duration"_json_pointer)) message.attachmentLength = currKey.value()["content"]["info"]["duration"];
         if (currKey.value().contains("/content/info/w"_json_pointer)) message.attachmentWidth = currKey.value()["content"]["info"]["w"];
         if (currKey.value().contains("/content/info/h"_json_pointer)) message.attachmentHeight = currKey.value()["content"]["info"]["h"];
         if (currKey.value().contains("/content/url"_json_pointer)) message.attachmentURL = currKey.value()["content"]["url"];
 
+        // handle thumbnails
         if (!message.messageType.compare("m.video")) {
-            if (currKey.value().contains("/content/info/duration"_json_pointer)) message.videoLength = currKey.value()["content"]["info"]["duration"];
-
-            // thumbnail stuff
             if (currKey.value().contains("/content/info/thumbnail_info/w"_json_pointer)) message.thumbnailWidth = currKey.value()["content"]["info"]["thumbnail_info"]["w"];
             if (currKey.value().contains("/content/info/thumbnail_info/h"_json_pointer)) message.thumbnailHeight = currKey.value()["content"]["info"]["thumbnail_info"]["h"];
             if (currKey.value().contains("/content/info/thumbnail_info/size"_json_pointer)) message.thumbnailSize = currKey.value()["content"]["info"]["thumbnail_info"]["size"];

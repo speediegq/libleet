@@ -88,10 +88,10 @@ namespace leet {
                 int thumbnailWidth;
                 int thumbnailHeight;
                 int thumbnailSize;
+                int attachmentLength; /* mainly applies for videos and music */
                 std::string thumbnailMimeType;
                 std::string thumbnailURL;
                 std::string attachmentURL;
-                int videoLength;
         };
     }
 
