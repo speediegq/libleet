@@ -7,6 +7,7 @@
  */
 
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <future>
 #include <vector>
@@ -62,6 +63,6 @@ int leet::generateTransID() {
     return ++leet::TransID;
 }
 
-void leet::setRoom(const std::string Room) {
-    leet::MatrixOption.activeRoom.RoomID = Room;
+void leet::setRoom(leet::Room::Room *room) {
+    leet::MatrixOption.activeRoom = *room;
 }

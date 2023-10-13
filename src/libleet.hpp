@@ -131,7 +131,7 @@ namespace leet {
 
     std::vector<Room::Room> returnRooms(leet::User::CredentialsResponse *resp);
     std::string findRoomID(std::string Alias);
-    void setRoom(const std::string Room);
+    void setRoom(leet::Room::Room *room);
 
     std::string findUserID(const std::string Alias);
     std::vector<User::Profile> returnUsersInRoom(leet::User::CredentialsResponse *resp, const std::string RoomID);
@@ -139,6 +139,7 @@ namespace leet {
 
     bool checkIfUsernameIsAvailable(const std::string Username);
 
+    void sendMessage(User::CredentialsResponse *, Message::Message *);
     void sendSimpleMessage(User::CredentialsResponse *, const std::string Message);
 }
 
