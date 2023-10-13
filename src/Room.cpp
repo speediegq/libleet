@@ -61,6 +61,10 @@ std::string leet::findRoomID(std::string Alias) {
 
     leet::errorCode = 0;
 
+    if (Alias[0] == '!') { // It's a proper room ID already
+        return Alias;
+    }
+
     // Replace the '#' character with '%23' so that Matrix is happy
     Alias.replace(0, 1, "%23");
 

@@ -74,6 +74,24 @@ namespace leet {
             private:
             public:
                 std::string messageText;
+                std::string formattedText;
+                std::string Format;
+                std::string Type;
+                std::string messageType;
+                std::string eventID;
+                std::string Sender;
+                std::string mimeType;
+                int Age;
+                int attachmentWidth;
+                int attachmentHeight;
+                int attachmentSize;
+                int thumbnailWidth;
+                int thumbnailHeight;
+                int thumbnailSize;
+                std::string thumbnailMimeType;
+                std::string thumbnailURL;
+                std::string attachmentURL;
+                int videoLength;
         };
     }
 
@@ -141,6 +159,7 @@ namespace leet {
 
     void sendMessage(User::CredentialsResponse *, Message::Message *);
     void sendSimpleMessage(User::CredentialsResponse *, const std::string Message);
+    std::vector<Message::Message> returnMessages(User::CredentialsResponse *resp, const int messageCount);
 }
 
 #endif
