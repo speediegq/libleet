@@ -115,6 +115,8 @@ namespace leet {
      * the server, and most likely ignored.
      */
     int generateTransID();
+    bool saveTransID(const std::string File);
+    bool loadTransID(const std::string File);
 
     User::CredentialsResponse connectHomeserver();
     User::Profile getUserData(const std::string UserID);
