@@ -1,11 +1,11 @@
 - TODO
-  - Functions for displaying messages
+  - ~~Functions for displaying messages~~ (more to do, but still)
   - Functions for room administration
   - Functions for joining/leaving rooms
   - Functions for displaying encryption status for users and rooms
   - ~~Functions for displaying room members~~
   - File embed/upload
-  - Wrapper function(s) returning a vector of 'User' objects
+  - ~~Wrapper function(s) returning a vector of 'User' objects~~
   - mxc:// URLs
   - Spaces
   - Discovery
