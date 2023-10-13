@@ -159,6 +159,8 @@ namespace leet {
     std::string invokeRequest_Get(const std::string URL);
     std::string invokeRequest_Put(const std::string URL, const std::string Data);
     std::string invokeRequest_Post(const std::string URL, const std::string Data);
+    std::string invokeRequest_Post_File(const std::string URL, const std::string File);
+    std::string invokeRequest_Post_File(const std::string URL, const std::string File, const std::string Authentication);
 
     std::vector<Room::Room> returnRooms(User::CredentialsResponse *resp);
     std::string findRoomID(std::string Alias);
@@ -174,6 +176,9 @@ namespace leet {
     std::vector<Message::Message> returnMessages(User::CredentialsResponse *resp, const int messageCount);
 
     std::string returnFilter(User::CredentialsResponse *resp, Filter::Filter *filter);
+
+    std::string uploadFile(User::CredentialsResponse *resp, const std::string File);
+    bool downloadFile(User::CredentialsResponse *resp, const std::string File, const std::string outputFile);
 }
 
 #endif

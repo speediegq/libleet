@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include "../src/libleet.hpp"
 #include "../src/libleet.cpp"
 
@@ -11,7 +12,7 @@ int main(int argc, char** argv) {
     options.Homeserver = "https://matrix.org";
     cred.Type = TPassword;
     cred.Username = "speedie";
-    cred.DeviceID = "libleet test client";
+    cred.DeviceID = "libleet test client 2";
 
     std::getline(std::cin, cred.Password);
 
@@ -54,6 +55,16 @@ int main(int argc, char** argv) {
 
     /* Read user messages in a loop */
     for (;;) {
+        std::cout << "\033[2J\033[1;1H";
+        std::vector<leet::Message::Message> messages = leet::returnMessages(&resp, 500);
+        std::reverse(messages.begin(), messages.end());
+
+        int i{1};
+        for (auto &message : messages) {
+            std::cout << i << ". " << message.Sender << " - " << message.messageText << std::endl;
+            ++i;
+        }
+
         std::string myMessage;
 
         std::cout << "> ";

@@ -24,3 +24,11 @@ std::string leet::invokeRequest_Put(const std::string URL, const std::string Dat
 std::string leet::invokeRequest_Post(const std::string URL, const std::string Data, const std::string Authentication) {
     return cpr::Post(cpr::Url{URL}, cpr::Body{Data}, cpr::Header{{ "Authorization", "Bearer " + Authentication }}).text;
 }
+std::string leet::invokeRequest_Post_File(const std::string URL, const std::string File, const std::string Authentication) {
+    std::filesystem::path file{ File }; if (!std::filesystem::exists(file)) return "";
+    return cpr::Post(cpr::Url{URL}, cpr::Body{ cpr::File{File} }, cpr::Header{{ "Authorization", "Bearer " + Authentication }, {"Content-Type", "application/octet-stream"}}).text;
+}
+std::string leet::invokeRequest_Post_File(const std::string URL, const std::string File) {
+    std::filesystem::path file{ File }; if (!std::filesystem::exists(file)) return "";
+    return cpr::Post(cpr::Url{URL}, cpr::Body{ cpr::File{File} }, cpr::Header{{"Content-Type", "application/octet-stream"}}).text;
+}
