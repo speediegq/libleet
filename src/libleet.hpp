@@ -95,6 +95,19 @@ namespace leet {
         };
     }
 
+    namespace Filter {
+        class Filter {
+            private:
+            public:
+                std::vector<std::string> notSenders = {};
+                std::vector<std::string> Senders = {};
+                std::vector<std::string> notRooms = {};
+                std::vector<std::string> Rooms = {};
+                std::vector<std::string> Fields = { "type", "content", "sender" };
+                int Limit = 0;
+        };
+    }
+
     class MatrixOptions {
         private:
         public:
@@ -127,7 +140,7 @@ namespace leet {
      *
      * If your program finishes execution, you must preserve the value of
      * leet::TransID until the next session and restore it (i.e. leet::TransID = <old value>;)
-     * before calling any functions that use a transaction ID. (such as sendSimpleMessage)
+     * before calling any functions that use a transaction ID. (such as sendMessage)
      *
      * If you use an ID that has been used before, the action will be considered a duplicate by
      * the server, and most likely ignored.
@@ -147,19 +160,20 @@ namespace leet {
     std::string invokeRequest_Put(const std::string URL, const std::string Data);
     std::string invokeRequest_Post(const std::string URL, const std::string Data);
 
-    std::vector<Room::Room> returnRooms(leet::User::CredentialsResponse *resp);
+    std::vector<Room::Room> returnRooms(User::CredentialsResponse *resp);
     std::string findRoomID(std::string Alias);
-    void setRoom(leet::Room::Room *room);
+    void setRoom(Room::Room *room);
 
     std::string findUserID(const std::string Alias);
-    std::vector<User::Profile> returnUsersInRoom(leet::User::CredentialsResponse *resp, const std::string RoomID);
-    std::vector<User::Profile> returnUsersInRoom(leet::User::CredentialsResponse *resp);
+    std::vector<User::Profile> returnUsersInRoom(User::CredentialsResponse *resp, const std::string RoomID);
+    std::vector<User::Profile> returnUsersInRoom(User::CredentialsResponse *resp);
 
     bool checkIfUsernameIsAvailable(const std::string Username);
 
     void sendMessage(User::CredentialsResponse *, Message::Message *);
-    void sendSimpleMessage(User::CredentialsResponse *, const std::string Message);
     std::vector<Message::Message> returnMessages(User::CredentialsResponse *resp, const int messageCount);
+
+    std::string returnFilter(User::CredentialsResponse *resp, Filter::Filter *filter);
 }
 
 #endif

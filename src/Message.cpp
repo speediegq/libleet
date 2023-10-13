@@ -6,36 +6,6 @@
  * https://git.speedie.site/speedie/libleet
  */
 
-/* This is a simple function used to send a message. While it works, you should probably
- * not use it outside of a test environment.
- */
-void leet::sendSimpleMessage(leet::User::CredentialsResponse *resp, const std::string Message) {
-    using json = nlohmann::json;
-    const int TransID { leet::generateTransID() };
-    const std::string RoomID { leet::MatrixOption.activeRoom.RoomID };
-    const std::string eventType { "m.room.message" };
-    const std::string APIUrl { "/_matrix/client/v3/rooms/" + RoomID + "/send/" + eventType + "/" + std::to_string(TransID) };
-
-    json list = {
-        { "body", Message },
-        { "msgtype", "m.text" },
-    };
-
-    std::string Output { invokeRequest_Put(leet::getAPI(APIUrl), list.dump(), resp->AccessToken) };
-
-    json reqOutput = { json::parse(Output) };
-
-    for (auto &output : reqOutput) {
-        leet::errorCode = 0;
-
-        if (output["errcode"].is_string()) {
-            leet::errorCode = 1;
-            leet::Error = output["errcode"].get<std::string>();
-            if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
-        }
-    }
-}
-
 void leet::sendMessage(leet::User::CredentialsResponse *resp, leet::Message::Message *msg) {
     using json = nlohmann::json;
     const int TransID { leet::generateTransID() };
@@ -48,7 +18,7 @@ void leet::sendMessage(leet::User::CredentialsResponse *resp, leet::Message::Mes
         { "msgtype", "m.text" },
     };
 
-    std::string Output { invokeRequest_Put(leet::getAPI(APIUrl), list.dump(), resp->AccessToken) };
+    std::string Output { leet::invokeRequest_Put(leet::getAPI(APIUrl), list.dump(), resp->AccessToken) };
 
     json reqOutput = { json::parse(Output) };
 
@@ -69,7 +39,7 @@ std::vector<leet::Message::Message> leet::returnMessages(leet::User::Credentials
     const std::string RoomID { leet::MatrixOption.activeRoom.RoomID };
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + RoomID + "/messages?dir=b&limit=" + std::to_string(messageCount) };
 
-    std::string Output { invokeRequest_Get(leet::getAPI(APIUrl), resp->AccessToken) };
+    std::string Output { leet::invokeRequest_Get(leet::getAPI(APIUrl), resp->AccessToken) };
 
     json reqOutput = json::parse(Output);
 
@@ -109,4 +79,43 @@ std::vector<leet::Message::Message> leet::returnMessages(leet::User::Credentials
     }
 
     return vector;
+}
+
+std::string leet::returnFilter(leet::User::CredentialsResponse *resp, leet::Filter::Filter *filter) {
+    using json = nlohmann::json;
+    const std::string APIUrl { "/_matrix/client/v3/user/" + leet::MatrixOption.CredentialsResponse.UserID + "/filter" };
+
+    json list;
+
+    list["event_format"] = "client";
+    list["event_fields"] = filter->Fields;
+    list["presence"]["senders"] = filter->Senders;
+    list["presence"]["not_senders"] = filter->notSenders;
+    list["room"]["ephemeral"]["rooms"] = filter->Rooms;
+    list["room"]["ephemeral"]["not_rooms"] = filter->notRooms;
+    list["room"]["ephemeral"]["senders"] = filter->Senders;
+    list["room"]["ephemeral"]["not_senders"] = filter->notSenders;
+    list["room"]["state"]["rooms"] = filter->Rooms;
+    list["room"]["state"]["not_rooms"] = filter->notRooms;
+
+    if (filter->Limit != 0) {
+        list["room"]["timeline"]["limit"] = filter->Limit;
+    }
+
+    list["room"]["timeline"]["not_rooms"] = filter->notRooms;
+    list["room"]["timeline"]["not_senders"] = filter->notSenders;
+
+    std::string Output { leet::invokeRequest_Post(leet::getAPI(APIUrl), list.dump(), resp->AccessToken) };
+
+    json reqOutput = json::parse(Output);
+
+    for (auto &output : reqOutput) {
+        leet::errorCode = 0;
+
+        if (output["filter_id"].is_string()) {
+            return output["filter_id"].get<std::string>();
+        }
+    }
+
+    return "";
 }
