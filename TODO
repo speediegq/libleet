@@ -6,7 +6,7 @@
   - ~~Functions for displaying room members~~
   - File embed/upload
   - ~~Wrapper function(s) returning a vector of 'User' objects~~
-  - mxc:// URLs
+  - ~~mxc:// URLs~~
   - Spaces
   - Discovery
   - Registering
