@@ -86,8 +86,6 @@ bool leet::downloadFile(leet::User::CredentialsResponse *resp, const std::string
     }
 
     // Now that we have what we need, let's make a request
-    using json = nlohmann::json;
-
     const std::string API { leet::getAPI("/_matrix/media/v3/download/" + Server + "/" + ID + "?allow_redirect=false") };
     std::filesystem::path file{ outputFile };
 
