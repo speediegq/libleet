@@ -85,3 +85,16 @@ std::string leet::returnServerDiscovery(std::string Server) {
     leet::errorCode = 1;
     return "";
 }
+
+/* Returns the home server from a username string */
+std::string leet::returnHomeServerFromString(std::string UserID) {
+    if (UserID[0] != '@') {
+        leet::errorCode = 1;
+        return "";
+    }
+
+    std::size_t colonPosition = UserID.find(':');
+    if (colonPosition != std::string::npos) return UserID.substr(colonPosition + 1);
+
+    return "";
+}

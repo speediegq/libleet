@@ -15,8 +15,17 @@ int main(int argc, char** argv) {
     cred.Password = "myPassword";
     cred.DeviceID = "libleet test client 3";
 
-    /* We'll use matrix.org as a default, since it is very common */
-    options.Homeserver = "https://matrix.org";
+    options.Homeserver = leet::defaultHomeserver;
+
+    /* Now let's try discovery */
+    options.Homeserver = leet::returnServerDiscovery(leet::returnHomeServerFromString(cred.Username));
+
+    /* Create a proper username. If we don't do this, leet::defaultHomeserver will be used as a fallback.
+     * We don't want this, because it means only accounts registered under matrix.org will be functional.
+     */
+    if (cred.Username[0] != '@') {
+        cred.Username = "@" + cred.Username + ":" + options.Homeserver;
+    }
 
     leet::setSettings(&options);
     leet::saveCredentials(&cred);
