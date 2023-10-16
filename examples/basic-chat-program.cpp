@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
 
     cred.Type = TPassword;
     cred.Username = "@speedie:matrix.org";
-    cred.Password = "^<n]0k[v4hx`D!='vgNF/vbat";
+    cred.Password = "myPassword";
     cred.DeviceID = "libleet test client 3";
 
     /* We'll use matrix.org as a default, since it is very common */
