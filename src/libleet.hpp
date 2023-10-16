@@ -149,6 +149,8 @@ namespace leet {
     bool saveTransID(const std::string File);
     bool loadTransID(const std::string File);
 
+    std::string returnServerDiscovery(std::string Server);
+
     User::CredentialsResponse connectHomeserver();
     User::Profile getUserData(const std::string UserID);
     std::string getAPI(const std::string api);

@@ -11,6 +11,7 @@ C++ Matrix library
 - User listing
 - Aliases
 - mxc:// uploading and downloading
+- Discovery
 
 This library is very much work in progress. Expect things to change,
 and as such it is not suitable for use yet. If you wish to help

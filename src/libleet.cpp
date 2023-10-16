@@ -66,3 +66,22 @@ int leet::generateTransID() {
 void leet::setRoom(leet::Room::Room *room) {
     leet::MatrixOption.activeRoom = *room;
 }
+
+/* Finds a server using discovery */
+std::string leet::returnServerDiscovery(std::string Server) {
+    using json = nlohmann::json;
+    leet::errorCode = 0;
+
+    if (Server[0] != 'h' || Server[1] != 't' || Server[2] != 't' || Server[3] != 'p') {
+        Server = "https://" + Server;
+    }
+
+    const std::string Output = leet::invokeRequest_Get(Server + "/.well-known/matrix/client");
+
+    json reqOutput = { json::parse(Output) };
+
+    for (auto &output : reqOutput) if (output["m.homeserver"]["base_url"].is_string()) return output["m.homeserver"]["base_url"].get<std::string>();
+
+    leet::errorCode = 1;
+    return "";
+}
