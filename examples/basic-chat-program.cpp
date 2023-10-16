@@ -9,12 +9,13 @@ int main(int argc, char** argv) {
     leet::User::Credentials cred;
     leet::User::CredentialsResponse resp;
 
-    options.Homeserver = "https://matrix.org";
     cred.Type = TPassword;
-    cred.Username = "speedie";
-    cred.DeviceID = "libleet test client 2";
+    cred.Username = "@speedie:matrix.org";
+    cred.Password = "^<n]0k[v4hx`D!='vgNF/vbat";
+    cred.DeviceID = "libleet test client 3";
 
-    std::getline(std::cin, cred.Password);
+    /* We'll use matrix.org as a default, since it is very common */
+    options.Homeserver = "https://matrix.org";
 
     leet::setSettings(&options);
     leet::saveCredentials(&cred);
@@ -61,7 +62,7 @@ int main(int argc, char** argv) {
 
         int i{1};
         for (auto &message : messages) {
-            std::cout << i << ". " << message.Sender << " - " << message.messageText << std::endl;
+            std::cout << "\033[0;31m" << i << ". \033[0m" << message.Sender << " - " << message.messageText << std::endl;
             ++i;
         }
 
@@ -78,7 +79,33 @@ int main(int argc, char** argv) {
 
         /* Message class, this will contain message information, and the message itself */
         leet::Message::Message msg;
+
         msg.messageText = myMessage;
+        msg.messageType = "m.text";
+
+        /* We upload a file if it exists
+         * Please note that this is a terrible implementation, ideally you
+         * should check if the file is an audio file, video file, image, and finally a generic file if all else fails.
+         *
+         * But for the simplicity of this example, we're going to use m.file, which will tell Matrix that it is a generic file.
+         * Below is an example of uploading a video, though.
+         */
+        std::filesystem::path file{ myMessage };
+        if (std::filesystem::exists(file)) {
+            msg.messageType = "m.file";
+            msg.messageText = file.filename();
+            msg.attachmentURL = leet::uploadFile(&resp, myMessage);
+
+            if (leet::errorCode != 0) { /* Something went wrong */
+                continue;
+            }
+        }
+
+        /* Example of uploading a video
+        msg.messageText = "test.mp4"; // Text, doesn't matter that much but Element does this so we'll copy it
+        msg.messageType = "m.video"; // m.audio, m.video, m.image, m.text, m.file, ...
+        msg.attachmentURL = leet::uploadFile(&resp, "/home/speedie/test.mp4"); // uploadFile uploads the file and returns a mxc:// URL
+        */
 
         /* Send the message */
         leet::sendMessage(&resp, &msg);

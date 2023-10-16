@@ -13,10 +13,24 @@ void leet::sendMessage(leet::User::CredentialsResponse *resp, leet::Message::Mes
     const std::string eventType { "m.room.message" };
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + RoomID + "/send/" + eventType + "/" + std::to_string(TransID) };
 
-    json list = {
-        { "body", msg->messageText },
-        { "msgtype", "m.text" },
-    };
+    json list;
+
+    if (!msg->messageType.compare("m.image") || !msg->messageType.compare("m.audio") || !msg->messageType.compare("m.video") || !msg->messageType.compare("m.file")) {
+        if (msg->attachmentURL[0] != 'm' || msg->attachmentURL[1] != 'x' || msg->attachmentURL[2] != 'c') {
+            leet::errorCode = 1;
+            return;
+        }
+        list = {
+            { "body", msg->messageText },
+            { "msgtype", msg->messageType },
+            { "url", msg->attachmentURL },
+        };
+    } else {
+        list = {
+            { "body", msg->messageText },
+            { "msgtype", "m.text" },
+        };
+    }
 
     std::string Output { leet::invokeRequest_Put(leet::getAPI(APIUrl), list.dump(), resp->AccessToken) };
 
