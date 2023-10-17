@@ -9,6 +9,8 @@ C++ Matrix library
 - Message (including attachment) downloading
 - Message sending
 - User listing
+- Room listing (including those inside spaces)
+- Space listing
 - Aliases
 - mxc:// uploading and downloading
 - Discovery

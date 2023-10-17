@@ -66,6 +66,33 @@ namespace leet {
             private:
             public:
                 std::string RoomID;
+                std::string roomType;
+                std::string Name;
+                std::string AvatarURL;
+                bool guestCanJoin;
+                bool worldReadable;
+                std::string Alias;
+                std::string Topic;
+                std::string joinRule;
+                int memberCount;
+        };
+    }
+
+    namespace Space {
+        class Space {
+            private:
+            public:
+                std::string SpaceID;
+                std::string roomType;
+                std::string Name;
+                std::vector<Room::Room> Rooms;
+                std::string AvatarURL;
+                std::string joinRule;
+                bool guestCanJoin;
+                bool worldReadable;
+                std::string Alias;
+                std::string Topic;
+                int memberCount;
         };
     }
 
@@ -168,6 +195,9 @@ namespace leet {
     std::vector<Room::Room> returnRooms(User::CredentialsResponse *resp);
     std::string findRoomID(std::string Alias);
     void setRoom(Room::Room *room);
+
+    std::vector<Space::Space> returnSpaces(User::CredentialsResponse *resp);
+    std::vector<Room::Room> returnRoomsInSpace(User::CredentialsResponse *resp, const std::string SpaceID, const int Limit);
 
     std::string findUserID(const std::string Alias);
     std::vector<User::Profile> returnUsersInRoom(User::CredentialsResponse *resp, const std::string RoomID);
