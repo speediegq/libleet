@@ -197,7 +197,7 @@ namespace leet {
     std::string findRoomID(std::string Alias);
     void setRoom(Room::Room *room);
 
-    std::vector<Space::Space> returnSpaces(User::CredentialsResponse *resp);
+    std::vector<Space::Space> returnSpaces(User::CredentialsResponse *resp, const int Limit);
     std::vector<Room::Room> returnRoomsInSpace(User::CredentialsResponse *resp, const std::string SpaceID, const int Limit);
 
     std::string findUserID(const std::string Alias);

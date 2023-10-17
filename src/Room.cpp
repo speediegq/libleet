@@ -135,13 +135,13 @@ std::vector<leet::Room::Room> leet::returnRoomsInSpace(leet::User::CredentialsRe
 }
 
 /* Returns a vector of all spaces */
-std::vector<leet::Space::Space> leet::returnSpaces(leet::User::CredentialsResponse *resp) {
+std::vector<leet::Space::Space> leet::returnSpaces(leet::User::CredentialsResponse *resp, const int Limit) {
     std::vector<leet::Space::Space> spaces;
     std::vector<leet::Room::Room> rooms = leet::returnRoomIDs(resp);
 
     for (auto &room : rooms) { // each room id
         leet::Space::Space space;
-        std::vector<leet::Room::Room> roomsInSpace = leet::returnRoomsInSpace(resp, room.RoomID, 20);
+        std::vector<leet::Room::Room> roomsInSpace = leet::returnRoomsInSpace(resp, room.RoomID, Limit);
 
         for (auto &roomInSpace : roomsInSpace) { // each room in the space
             if (roomInSpace.roomType.compare("m.space")) {
