@@ -205,6 +205,7 @@ namespace leet {
     std::vector<User::Profile> returnUsersInRoom(User::CredentialsResponse *resp);
 
     bool checkIfUsernameIsAvailable(const std::string Username);
+    void toggleTyping(User::CredentialsResponse *resp, const int Timeout, const bool Typing, const std::string UserID, const std::string RoomID);
 
     void sendMessage(User::CredentialsResponse *, Message::Message *);
     std::vector<Message::Message> returnMessages(User::CredentialsResponse *resp, const int messageCount);

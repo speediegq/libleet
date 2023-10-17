@@ -169,3 +169,26 @@ std::vector<leet::Space::Space> leet::returnSpaces(leet::User::CredentialsRespon
 
     return spaces;
 }
+
+void leet::toggleTyping(leet::User::CredentialsResponse *resp, const int Timeout, const bool Typing, const std::string UserID, const std::string RoomID) {
+    using json = nlohmann::json;
+
+    json list = {
+        { "timeout", Timeout },
+        { "typing", Typing },
+    };
+
+    const std::string Output { leet::invokeRequest_Put(leet::getAPI("/_matrix/client/v3/rooms/" + RoomID + "/typing/" + UserID), list.dump(), resp->AccessToken) };
+
+    json reqOutput = { json::parse(Output) };
+
+    for (auto &output : reqOutput) {
+        leet::errorCode = 0;
+
+        if (output["errcode"].is_string()) {
+            leet::errorCode = 1;
+            leet::Error = output["errcode"].get<std::string>();
+            if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
+        }
+    }
+}
