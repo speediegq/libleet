@@ -17,8 +17,11 @@ std::string leet::findUserID(const std::string Alias) {
 leet::User::Profile leet::getUserData(const std::string UserID) {
     using json = nlohmann::json;
     leet::errorCode = 0;
-
     leet::User::Profile profile;
+
+    if (UserID[0] != '@') {
+        return profile;
+    }
 
     profile.UserID = leet::findUserID(UserID);
 

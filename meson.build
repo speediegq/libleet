@@ -14,6 +14,7 @@ project_source_files = [
 project_dependencies = [
   dependency('nlohmann_json'),
   dependency('cpr'),
+  dependency('olm'),
 ]
 
 build_args = [
