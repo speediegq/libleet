@@ -22,6 +22,7 @@ implement some of the many Matrix features, feel free to do so.
 ## Dependencies
 
 - cpr
+- olm
 - nlohmann_json
 - C++17
 
