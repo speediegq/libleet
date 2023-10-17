@@ -6,55 +6,6 @@
  * https://git.speedie.site/speedie/libleet
  */
 
-/* Returns an array of all rooms */
-std::vector<leet::Room::Room> leet::returnRooms(leet::User::CredentialsResponse *resp) {
-    using json = nlohmann::json;
-
-    std::vector<leet::Room::Room> vector;
-
-    const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/joined_rooms"), resp->AccessToken);
-    json returnOutput = json::parse(Output);
-
-    auto &rooms = returnOutput["joined_rooms"];
-
-    for (auto currKey = rooms.begin(); currKey != rooms.end(); ++currKey) {
-        leet::Room::Room room;
-        room.RoomID = currKey.value();
-        vector.push_back(room);
-    }
-
-    return vector;
-}
-
-/* Returns an array of all users in a room */
-std::vector<leet::User::Profile> leet::returnUsersInRoom(leet::User::CredentialsResponse *resp, const std::string RoomID) {
-    using json = nlohmann::json;
-
-    const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/rooms/" + RoomID + "/joined_members"), resp->AccessToken);
-    json returnOutput = json::parse(Output);
-
-    std::vector<leet::User::Profile> vector;
-
-    auto &users = returnOutput["joined"];
-
-    for (auto currKey = users.begin(); currKey != users.end(); ++currKey) {
-        leet::User::Profile profile;
-
-        if (currKey.value().contains("avatar_url")) profile.AvatarURL = currKey.value()["display_name"];
-        if (currKey.value().contains("display_name")) profile.DisplayName = currKey.value()["display_name"];
-        profile.UserID = currKey.key();
-
-        vector.push_back(profile);
-    }
-
-    return vector;
-}
-
-/* Returns an array of all users in activeRoom */
-std::vector<leet::User::Profile> returnUsersInRoom(leet::User::CredentialsResponse *resp) {
-    return leet::returnUsersInRoom(resp, leet::MatrixOption.activeRoom.RoomID);
-}
-
 /* Converts an alias to a proper room ID */
 std::string leet::findRoomID(std::string Alias) {
     using json = nlohmann::json;
@@ -85,6 +36,70 @@ std::string leet::findRoomID(std::string Alias) {
     }
 
     return "";
+}
+
+/* Returns an array of all rooms */
+std::vector<leet::Room::Room> leet::returnRooms(leet::User::CredentialsResponse *resp, const int Limit) {
+    using json = nlohmann::json;
+
+    std::vector<leet::Room::Room> vector;
+    std::vector<leet::Room::Room> vector_with_val;
+
+    const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/joined_rooms"), resp->AccessToken);
+    json returnOutput = json::parse(Output);
+
+    auto &rooms = returnOutput["joined_rooms"];
+
+    for (auto currKey = rooms.begin(); currKey != rooms.end(); ++currKey) {
+        leet::Room::Room room;
+        room.RoomID = currKey.value();
+        vector.push_back(room);
+    }
+
+    for (auto& currKey : vector) {
+        json returnOutput = json::parse(leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v1/rooms/" + currKey.RoomID + "/hierarchy?limit=" + std::to_string(Limit)), resp->AccessToken));
+
+        auto &room = returnOutput["rooms"];
+
+        for (auto i = room.begin(); i != room.end(); ++i) {
+            leet::Room::Room room;
+
+            if (i.value().contains("room_id")) room.RoomID = i.value()["room_id"];
+            if (i.value().contains("join_rule")) room.joinRule = i.value()["join_rule"];
+            if (i.value().contains("avatar_url")) room.AvatarURL = i.value()["avatar_url"];
+            if (i.value().contains("canonical_alias")) room.Alias = i.value()["canonical_alias"];
+            if (i.value().contains("name")) room.Name = i.value()["name"];
+            if (i.value().contains("num_joined_members")) room.memberCount = i.value()["num_joined_members"];
+            if (i.value().contains("topic")) room.Topic = i.value()["topic"];
+            if (i.value().contains("guest_can_join")) room.guestCanJoin = i.value()["guest_can_join"];
+            if (i.value().contains("world_readable")) room.worldReadable = i.value()["world_readable"];
+            if (i.value().contains("room_type")) room.roomType = i.value()["room_type"];
+
+            vector_with_val.push_back(room);
+        }
+    }
+
+    return vector_with_val;
+}
+
+/* Returns an array of all room IDs */
+std::vector<leet::Room::Room> leet::returnRoomIDs(leet::User::CredentialsResponse *resp) {
+    using json = nlohmann::json;
+
+    std::vector<leet::Room::Room> vector;
+
+    const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/joined_rooms"), resp->AccessToken);
+    json returnOutput = json::parse(Output);
+
+    auto &rooms = returnOutput["joined_rooms"];
+
+    for (auto currKey = rooms.begin(); currKey != rooms.end(); ++currKey) {
+        leet::Room::Room room;
+        room.RoomID = currKey.value();
+        vector.push_back(room);
+    }
+
+    return vector;
 }
 
 std::vector<leet::Room::Room> leet::returnRoomsInSpace(leet::User::CredentialsResponse *resp, const std::string SpaceID, const int Limit) {
@@ -122,7 +137,7 @@ std::vector<leet::Room::Room> leet::returnRoomsInSpace(leet::User::CredentialsRe
 /* Returns a vector of all spaces */
 std::vector<leet::Space::Space> leet::returnSpaces(leet::User::CredentialsResponse *resp) {
     std::vector<leet::Space::Space> spaces;
-    std::vector<leet::Room::Room> rooms = leet::returnRooms(resp);
+    std::vector<leet::Room::Room> rooms = leet::returnRoomIDs(resp);
 
     for (auto &room : rooms) { // each room id
         leet::Space::Space space;

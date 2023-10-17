@@ -192,7 +192,8 @@ namespace leet {
     std::string invokeRequest_Post_File(const std::string URL, const std::string File);
     std::string invokeRequest_Post_File(const std::string URL, const std::string File, const std::string Authentication);
 
-    std::vector<Room::Room> returnRooms(User::CredentialsResponse *resp);
+    std::vector<Room::Room> returnRooms(User::CredentialsResponse *resp, const int Limit);
+    std::vector<Room::Room> returnRoomIDs(User::CredentialsResponse *resp);
     std::string findRoomID(std::string Alias);
     void setRoom(Room::Room *room);
 

@@ -73,3 +73,32 @@ bool leet::checkIfUsernameIsAvailable(const std::string Username) {
 
     return false;
 }
+
+/* Returns an array of all users in a room */
+std::vector<leet::User::Profile> leet::returnUsersInRoom(leet::User::CredentialsResponse *resp, const std::string RoomID) {
+    using json = nlohmann::json;
+
+    const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/rooms/" + RoomID + "/joined_members"), resp->AccessToken);
+    json returnOutput = json::parse(Output);
+
+    std::vector<leet::User::Profile> vector;
+
+    auto &users = returnOutput["joined"];
+
+    for (auto currKey = users.begin(); currKey != users.end(); ++currKey) {
+        leet::User::Profile profile;
+
+        if (currKey.value().contains("avatar_url")) profile.AvatarURL = currKey.value()["display_name"];
+        if (currKey.value().contains("display_name")) profile.DisplayName = currKey.value()["display_name"];
+        profile.UserID = currKey.key();
+
+        vector.push_back(profile);
+    }
+
+    return vector;
+}
+
+/* Returns an array of all users in activeRoom */
+std::vector<leet::User::Profile> returnUsersInRoom(leet::User::CredentialsResponse *resp) {
+    return leet::returnUsersInRoom(resp, leet::MatrixOption.activeRoom.RoomID);
+}
