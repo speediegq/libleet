@@ -108,7 +108,7 @@ namespace leet {
                 std::string eventID;
                 std::string Sender;
                 std::string mimeType;
-                int Age;
+                int32_t Age;
                 int attachmentWidth;
                 int attachmentHeight;
                 int attachmentSize;
@@ -134,6 +134,16 @@ namespace leet {
                 int Limit = 0;
         };
     }
+
+    namespace Event {
+        class Event {
+            private:
+            public:
+                std::string eventID;
+                int32_t Age;
+        };
+    }
+
 
     class MatrixOptions {
         private:
@@ -214,6 +224,10 @@ namespace leet {
 
     std::string uploadFile(User::CredentialsResponse *resp, const std::string File);
     bool downloadFile(User::CredentialsResponse *resp, const std::string File, const std::string outputFile);
+
+    int32_t returnUnixTimestamp();
+    Event::Event returnEventFromTimestamp(User::CredentialsResponse *resp, const std::string RoomID, const int32_t Timestamp, const bool Direction);
+    Event::Event returnLatestEvent(User::CredentialsResponse *resp, const std::string RoomID);
 }
 
 #endif

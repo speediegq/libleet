@@ -13,6 +13,7 @@
 #include <vector>
 #include <regex>
 #include <filesystem>
+#include <chrono>
 #include <nlohmann/json.hpp>
 #include <cpr/cpr.h>
 
@@ -23,6 +24,7 @@
 #include "Room.cpp"
 #include "Message.cpp"
 #include "File.cpp"
+#include "Event.cpp"
 
 void leet::setSettings(leet::MatrixOptions *options) {
     leet::MatrixOption.Homeserver = options->Homeserver;

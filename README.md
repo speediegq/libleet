@@ -24,7 +24,7 @@ implement some of the many Matrix features, feel free to do so.
 - cpr
 - olm
 - nlohmann_json
-- C++17
+- C++20
 
 ## Design goals
 
