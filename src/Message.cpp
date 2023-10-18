@@ -32,7 +32,7 @@ void leet::sendMessage(leet::User::CredentialsResponse *resp, leet::Message::Mes
         };
     }
 
-    std::string Output { leet::invokeRequest_Put(leet::getAPI(APIUrl), list.dump(), resp->AccessToken) };
+    std::string Output { leet::invokeRequest_Put(leet::getAPI(APIUrl), list.dump(), resp->accessToken) };
 
     json reqOutput = { json::parse(Output) };
 
@@ -53,7 +53,7 @@ std::vector<leet::Message::Message> leet::returnMessages(leet::User::Credentials
     const std::string RoomID { leet::MatrixOption.activeRoom.RoomID };
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + RoomID + "/messages?dir=b&limit=" + std::to_string(messageCount) };
 
-    std::string Output { leet::invokeRequest_Get(leet::getAPI(APIUrl), resp->AccessToken) };
+    std::string Output { leet::invokeRequest_Get(leet::getAPI(APIUrl), resp->accessToken) };
 
     json reqOutput = json::parse(Output);
 
@@ -97,7 +97,7 @@ std::vector<leet::Message::Message> leet::returnMessages(leet::User::Credentials
 
 std::string leet::returnFilter(leet::User::CredentialsResponse *resp, leet::Filter::Filter *filter) {
     using json = nlohmann::json;
-    const std::string APIUrl { "/_matrix/client/v3/user/" + leet::MatrixOption.CredentialsResponse.UserID + "/filter" };
+    const std::string APIUrl { "/_matrix/client/v3/user/" + leet::MatrixOption.CredentialsResponse.userID + "/filter" };
 
     json list;
 
@@ -119,7 +119,7 @@ std::string leet::returnFilter(leet::User::CredentialsResponse *resp, leet::Filt
     list["room"]["timeline"]["not_rooms"] = filter->notRooms;
     list["room"]["timeline"]["not_senders"] = filter->notSenders;
 
-    std::string Output { leet::invokeRequest_Post(leet::getAPI(APIUrl), list.dump(), resp->AccessToken) };
+    std::string Output { leet::invokeRequest_Post(leet::getAPI(APIUrl), list.dump(), resp->accessToken) };
 
     json reqOutput = json::parse(Output);
 

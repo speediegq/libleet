@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
     cred.Type = TPassword;
     cred.Username = "@speedie:matrix.org";
     cred.Password = "myPassword";
-    cred.DeviceID = "libleet test client 3";
+    cred.deviceID = "libleet test client 3";
 
     options.Homeserver = leet::defaultHomeserver;
 
@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
     leet::saveCredentials(&cred);
 
     /* Attempt a login */
-    resp = leet::connectHomeserver();
+    resp = leet::loginAccount();
 
     if (leet::errorCode == 0) {
         leet::clearUserCredentials();

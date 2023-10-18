@@ -6,7 +6,7 @@
  * https://git.speedie.site/speedie/libleet
  */
 
-leet::User::CredentialsResponse leet::connectHomeserver() {
+leet::User::CredentialsResponse leet::loginAccount() {
     leet::User::CredentialsResponse resp;
     using json = nlohmann::json;
 
@@ -16,19 +16,25 @@ leet::User::CredentialsResponse leet::connectHomeserver() {
         actualType = "m.login.password";
     } else if (leet::MatrixOption.Credentials.Type == TToken) {
         actualType = "m.login.token";
+    } else {
+        actualType = "m.login.password";
     }
 
-    json list = {
-        { "device_id", leet::MatrixOption.Credentials.DeviceID },
-        { "identifier", {
-            { "type", "m.id.user" },
-            { "user", leet::MatrixOption.Credentials.Username },
-        } },
-        { "initial_device_display_name", leet::MatrixOption.Credentials.DisplayName },
-        { "password", leet::MatrixOption.Credentials.Password },
-        { "refresh_token", leet::MatrixOption.Credentials.RefreshToken },
-        { "type", actualType },
-    };
+    json list;
+
+    list["device_id"] = leet::MatrixOption.Credentials.deviceID;
+    list["identifier"]["type"] = "m.id.user"; // Currently only supported method
+    list["identifier"]["user"] = leet::MatrixOption.Credentials.Username;
+    list["initial_device_display_name"] = leet::MatrixOption.Credentials.displayName;
+
+    if (leet::MatrixOption.Credentials.Type == TToken) {
+        list["token"] = leet::MatrixOption.Credentials.Token;
+    } else {
+        list["password"] = leet::MatrixOption.Credentials.Password;
+    }
+
+    list["refresh_token"] = leet::MatrixOption.Credentials.refreshToken;
+    list["type"] = actualType;
 
     /* Make a network request attempting a login */
     json loginOutput = {
@@ -40,10 +46,10 @@ leet::User::CredentialsResponse leet::connectHomeserver() {
 
         resp.Homeserver = leet::MatrixOption.Homeserver;
 
-        if (output["access_token"].is_string()) resp.AccessToken = output["access_token"].get<std::string>();
-        if (output["device_id"].is_string()) resp.DeviceID = output["device_id"].get<std::string>();
-        if (output["refresh_token"].is_string()) resp.RefreshToken = output["refresh_token"].get<std::string>();
-        if (output["user_id"].is_string()) resp.UserID = output["user_id"].get<std::string>();
+        if (output["access_token"].is_string()) resp.accessToken = output["access_token"].get<std::string>();
+        if (output["device_id"].is_string()) resp.deviceID = output["device_id"].get<std::string>();
+        if (output["refresh_token"].is_string()) resp.refreshToken = output["refresh_token"].get<std::string>();
+        if (output["user_id"].is_string()) resp.userID = output["user_id"].get<std::string>();
 
         if (output["errcode"].is_string()) {
             leet::errorCode = 1;

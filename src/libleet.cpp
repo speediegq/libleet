@@ -33,26 +33,30 @@ void leet::setSettings(leet::MatrixOptions *options) {
 
 /* std::string leet::User::Credentials.Username = <username>
  * std::string leet::User::Credentials.Password = <password>
- * std::string leet::User::Credentials.DisplayName = <display name>
+ * std::string leet::User::Credentials.displayName = <display name>
  *
  * leet::User::Credentials passed to function.
  */
 void leet::saveCredentials(leet::User::Credentials *cred) {
-    leet::MatrixOption.Credentials.Username = leet::findUserID(cred->Username);
+    leet::MatrixOption.Credentials.Username = leet::finduserID(cred->Username);
     leet::MatrixOption.Credentials.Password = cred->Password;
-    leet::MatrixOption.Credentials.DisplayName = cred->DisplayName;
-    leet::MatrixOption.Credentials.DeviceID = cred->DeviceID;
+    leet::MatrixOption.Credentials.displayName = cred->displayName;
+    leet::MatrixOption.Credentials.deviceID = cred->deviceID;
+    leet::MatrixOption.Credentials.Token = cred->Token;
+    leet::MatrixOption.Credentials.refreshToken = cred->refreshToken;
 
-    leet::MatrixOption.Profile.UserID = leet::findUserID(cred->Username);
-    leet::MatrixOption.Profile.DisplayName = cred->DisplayName;
+    leet::MatrixOption.Profile.userID = leet::finduserID(cred->Username);
+    leet::MatrixOption.Profile.displayName = cred->displayName;
 }
 
 /* This function reverts the changes made by the above function */
 void leet::clearUserCredentials() {
     leet::MatrixOption.Credentials.Username = "";
     leet::MatrixOption.Credentials.Password = "";
-    leet::MatrixOption.Credentials.DisplayName = "";
-    leet::MatrixOption.Credentials.DeviceID = "";
+    leet::MatrixOption.Credentials.displayName = "";
+    leet::MatrixOption.Credentials.deviceID = "";
+    leet::MatrixOption.Credentials.Token = "";
+    leet::MatrixOption.Credentials.refreshToken = "";
 }
 
 /* api: /_matrix/client/v3/login */
@@ -89,14 +93,14 @@ std::string leet::returnServerDiscovery(std::string Server) {
 }
 
 /* Returns the home server from a username string */
-std::string leet::returnHomeServerFromString(std::string UserID) {
-    if (UserID[0] != '@') {
+std::string leet::returnHomeServerFromString(std::string userID) {
+    if (userID[0] != '@') {
         leet::errorCode = 1;
         return "";
     }
 
-    std::size_t colonPosition = UserID.find(':');
-    if (colonPosition != std::string::npos) return UserID.substr(colonPosition + 1);
+    std::size_t colonPosition = userID.find(':');
+    if (colonPosition != std::string::npos) return userID.substr(colonPosition + 1);
 
     return "";
 }

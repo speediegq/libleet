@@ -46,7 +46,7 @@ bool leet::loadTransID(const std::string File) {
 
 std::string leet::uploadFile(leet::User::CredentialsResponse *resp, const std::string File) {
     using json = nlohmann::json;
-    const std::string Output = leet::invokeRequest_Post_File(leet::getAPI("/_matrix/media/v3/upload"), File, resp->AccessToken);
+    const std::string Output = leet::invokeRequest_Post_File(leet::getAPI("/_matrix/media/v3/upload"), File, resp->accessToken);
     json returnOutput = { json::parse(Output) };
 
     for (auto &output : returnOutput) {

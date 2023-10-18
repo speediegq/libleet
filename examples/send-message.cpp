@@ -12,13 +12,13 @@ int main(int argc, char** argv) {
     options.Homeserver = "https://matrix.org";
     cred.Type = TPassword;
     cred.Username = "speedie";
-    cred.DeviceID = "libleet test client";
+    cred.deviceID = "libleet test client";
     std::getline(std::cin, cred.Password);
 
     leet::setSettings(&options);
     leet::saveCredentials(&cred);
 
-    resp = leet::connectHomeserver();
+    resp = leet::loginAccount();
 
     if (leet::errorCode == 0) {
         leet::clearUserCredentials();

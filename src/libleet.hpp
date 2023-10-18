@@ -14,7 +14,7 @@
 
 /* Identifier */
 enum {
-    LUserID,
+    LuserID,
     LThirdPartyID, /* Unsupported for now */
     LPhone, /* Unsupported for now */
 };
@@ -33,10 +33,10 @@ namespace leet {
             public:
                 std::string Username; // Username
                 std::string Password; // Password
-                std::string DisplayName; // Client side display name
-                std::string DeviceID; // Unique ID
-                int Identifier; // Identifier used to log in, LUserID is most likely used.
-                bool RefreshToken;
+                std::string displayName; // Client side display name
+                std::string deviceID; // Unique ID
+                int Identifier; // Identifier used to log in, LuserID is most likely used.
+                bool refreshToken;
                 std::string Token;
                 int Type;
         }; /* https://playground.matrix.org/#post-/_matrix/client/v3/login */
@@ -44,20 +44,20 @@ namespace leet {
         class CredentialsResponse { /* Only applies for the login account */
             private:
             public:
-                std::string AccessToken;
-                std::string RefreshToken;
-                std::string DeviceID; // @<user>:<homeserver>
+                std::string accessToken;
+                std::string refreshToken;
+                std::string deviceID; // @<user>:<homeserver>
                 std::string Homeserver; // Should correspond to leet::MatrixOptions::Homeserver
-                std::string UserID; // Should correspond to leet::User::Credentials.User
+                std::string userID; // Should correspond to leet::User::Credentials.User
                 int Expiration; // Probably unused, at least for now
         }; /* https://playground.matrix.org/#post-/_matrix/client/v3/login */
 
         class Profile { // Ideally, you should have a two classes for the login user
             private:
             public:
-                std::string UserID;
-                std::string DisplayName;
-                std::string AvatarURL;
+                std::string userID;
+                std::string displayName;
+                std::string avatarURL;
         }; /* https://spec.matrix.org/v1.8/client-server-api/#profiles */
     }
 
@@ -68,7 +68,7 @@ namespace leet {
                 std::string RoomID;
                 std::string roomType;
                 std::string Name;
-                std::string AvatarURL;
+                std::string avatarURL;
                 bool guestCanJoin;
                 bool worldReadable;
                 std::string Alias;
@@ -82,11 +82,11 @@ namespace leet {
         class Space {
             private:
             public:
-                std::string SpaceID;
+                std::string spaceID;
                 std::string roomType;
                 std::string Name;
                 std::vector<Room::Room> Rooms;
-                std::string AvatarURL;
+                std::string avatarURL;
                 std::string joinRule;
                 bool guestCanJoin;
                 bool worldReadable;
@@ -187,10 +187,10 @@ namespace leet {
     bool loadTransID(const std::string File);
 
     std::string returnServerDiscovery(std::string Server);
-    std::string returnHomeServerFromString(std::string UserID);
+    std::string returnHomeServerFromString(std::string userID);
 
-    User::CredentialsResponse connectHomeserver();
-    User::Profile getUserData(const std::string UserID);
+    User::CredentialsResponse loginAccount();
+    User::Profile getUserData(const std::string userID);
     std::string getAPI(const std::string api);
 
     std::string invokeRequest_Get(const std::string URL, const std::string Authentication);
@@ -208,14 +208,14 @@ namespace leet {
     void setRoom(Room::Room *room);
 
     std::vector<Space::Space> returnSpaces(User::CredentialsResponse *resp, const int Limit);
-    std::vector<Room::Room> returnRoomsInSpace(User::CredentialsResponse *resp, const std::string SpaceID, const int Limit);
+    std::vector<Room::Room> returnRoomsInSpace(User::CredentialsResponse *resp, const std::string spaceID, const int Limit);
 
-    std::string findUserID(const std::string Alias);
+    std::string finduserID(const std::string Alias);
     std::vector<User::Profile> returnUsersInRoom(User::CredentialsResponse *resp, const std::string RoomID);
     std::vector<User::Profile> returnUsersInRoom(User::CredentialsResponse *resp);
 
     bool checkIfUsernameIsAvailable(const std::string Username);
-    void toggleTyping(User::CredentialsResponse *resp, const int Timeout, const bool Typing, const std::string UserID, const std::string RoomID);
+    void toggleTyping(User::CredentialsResponse *resp, const int Timeout, const bool Typing, const std::string userID, const std::string RoomID);
 
     void sendMessage(User::CredentialsResponse *, Message::Message *);
     std::vector<Message::Message> returnMessages(User::CredentialsResponse *resp, const int messageCount);

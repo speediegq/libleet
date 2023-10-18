@@ -15,7 +15,7 @@ leet::Event::Event leet::returnEventFromTimestamp(leet::User::CredentialsRespons
     leet::Event::Event event;
     std::string Dir = Direction ? "f" : "b";
 
-    const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v1/rooms/" + RoomID + "/timestamp_to_event" + "?ts=" + std::to_string(Timestamp) + "&dir=" + Dir), resp->AccessToken);
+    const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v1/rooms/" + RoomID + "/timestamp_to_event" + "?ts=" + std::to_string(Timestamp) + "&dir=" + Dir), resp->accessToken);
     json reqOutput = { json::parse(Output) };
 
     for (auto &output : reqOutput) {
