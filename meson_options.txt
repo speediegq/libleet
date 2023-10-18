@@ -1,0 +1,1 @@
+option('encryption', type : 'boolean', value : true, description : 'Enable end to end encryption support')

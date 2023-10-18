@@ -23,7 +23,8 @@ implement some of the many Matrix features, feel free to do so.
 
 - cpr
 - olm
-- nlohmann_json
+- openssl
+- nlohmann\_json
 - C++20
 
 ## Design goals
@@ -37,3 +38,7 @@ designing their user interface
 ## Features to implement
 
 See TODO.
+
+## License
+
+Affero GNU General Public License version 3.0.

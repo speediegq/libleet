@@ -25,6 +25,9 @@
 #include "Message.cpp"
 #include "File.cpp"
 #include "Event.cpp"
+#ifdef ENCRYPTION
+#include "Encryption.cpp"
+#endif
 
 void leet::setSettings(leet::MatrixOptions *options) {
     leet::MatrixOption.Homeserver = options->Homeserver;
