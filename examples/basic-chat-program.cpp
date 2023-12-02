@@ -159,11 +159,6 @@ int main() {
 
         int i{1};
         for (auto &message : messages) {
-#ifndef NO_ENCRYPTION
-            if (message.Encrypted) {
-                message = leet::decryptMessage(&resp, &enc, &message, &sync);
-            }
-#endif
             std::cout << "\033[0;31m" << i << ". \033[0m" << message.Sender << " - " << message.messageText << "\n";
             ++i;
         }
