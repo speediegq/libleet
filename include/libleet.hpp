@@ -481,6 +481,12 @@ namespace leet {
      * @return Returns supported Matrix specification versions in the form of an std::vector<std::string>.
      */
     std::vector<std::string> returnSupportedSpecs();
+    /**
+     * @brief  Return max upload size limit
+     * @param  CredentialsResponse object, used for authentication.
+     * @return Max upload size limit in bytes.
+     */
+    const int returnMaxUploadLimit(User::CredentialsResponse* resp);
 
     /**
      * @brief  Attempts to create an account on the home server.

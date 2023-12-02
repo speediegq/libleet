@@ -103,3 +103,27 @@ std::vector<std::string> leet::returnSupportedSpecs() {
 
     return vector;
 }
+
+const int leet::returnMaxUploadLimit(leet::User::CredentialsResponse* resp) {
+    using json = nlohmann::json;
+    const std::string APIUrl { "/_matrix/media/v3/config" };
+    const std::string Output { leet::invokeRequest_Get(leet::getAPI(APIUrl), resp->accessToken) };
+
+    json reqOutput;
+
+    try {
+        reqOutput = { json::parse(Output) };
+    }  catch (const json::parse_error& e) {
+        return 0;
+    }
+
+    for (auto& output : reqOutput) {
+        leet::errorCode = 0;
+
+        if (output["m.upload.size"].is_number_integer()) return output["m.upload.size"].get<int>();
+        if (output["errcode"].is_string()) leet::Error = output["errcode"].get<std::string>();
+        if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
+    }
+
+    return 0;
+}
