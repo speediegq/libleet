@@ -90,3 +90,34 @@ leet::Sync::Sync leet::returnSync(leet::User::CredentialsResponse* resp) {
 
     return sync;
 }
+
+void leet::reportEvent(leet::User::CredentialsResponse* resp, leet::Room::Room* room, leet::Event::Event* event, const std::string& Reason, const int Score) {
+    using json = nlohmann::json;
+    const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/report/" + event->eventID };
+
+    json body;
+
+    body["reason"] = Reason;
+    if (Score > 0 || Score < -100) {
+        body["score"] = 0;
+    } else {
+        body["score"] = Score;
+    }
+
+    const std::string Output { leet::invokeRequest_Post(leet::getAPI(APIUrl), body.dump(), resp->accessToken) };
+
+    json reqOutput;
+
+    try {
+        reqOutput = { json::parse(Output) };
+    }  catch (const json::parse_error& e) {
+        return;
+    }
+
+    for (auto& output : reqOutput) {
+        leet::errorCode = 0;
+
+        if (output["errcode"].is_string()) leet::Error = output["errcode"].get<std::string>();
+        if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
+    }
+}

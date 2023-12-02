@@ -749,6 +749,16 @@ namespace leet {
     Event::Event returnLatestEvent(User::CredentialsResponse* resp, Room::Room* room);
 
     /**
+     * @brief  Report an event to the home server owner.
+     * @param  resp CredentialsResponse object, required for authentication.
+     * @param  room Room the event can be found in.
+     * @param  event The event to report.
+     * @param  Reason Reason for the report being made.
+     * @param  Score A score between -100 and 0 with -100 being the most offensive and 0 is inoffensive. If the integer is not in this range 0 will be used.
+     */
+    void reportEvent(User::CredentialsResponse* resp, Room::Room* room, Event::Event* event, const std::string& Reason, const int Score);
+
+    /**
      * @brief  Get sync information from the server.
      * @param  resp CredentialsResponse object, required for authentication.
      * @return Returns a Sync object with the fields.

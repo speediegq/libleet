@@ -29,6 +29,7 @@ work-in-progress Matrix client [stellar](https://git.speedie.site/speedie/stella
   - Can send encrypted text messages.
   - Currently **cannot** send encrypted attachments, read encrypted messages,
   verify interactively or use key backups.
+- Reporting content
 - VOIP
   - Can retrieve TURN server credentials. Not much thought has been put into
   VOIP support, because I am not a big fan of how it is implemented in Matrix.
@@ -46,7 +47,6 @@ work-in-progress Matrix client [stellar](https://git.speedie.site/speedie/stella
 - Push notification endpoints
 - Read marker
 - User presence
-- Reporting content
 - Room upgrades
 
 ## Dependencies
