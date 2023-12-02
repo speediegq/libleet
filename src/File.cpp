@@ -6,23 +6,22 @@
  * https://git.speedie.site/speedie/libleet
  */
 
-bool leet::saveTransID(const std::string File) {
+template <typename T> T leet::saveToFile(const std::string& File, T Data) {
     std::filesystem::path file{ File };
-
-    if (!std::filesystem::create_directories(file.parent_path()) && !std::filesystem::is_directory(file.parent_path())) {
-        return false;
-    }
-
     std::ofstream outputFile;
 
+    if (!std::filesystem::create_directories(file.parent_path()) && !std::filesystem::is_directory(file.parent_path())) {
+        throw("Failed to create directory");
+    }
+
     outputFile.open(File);
-    outputFile << leet::TransID;
+    outputFile << Data;
     outputFile.close();
 
-    return true;
+    return T();
 }
 
-bool leet::loadTransID(const std::string File) {
+template <typename T> T leet::loadFromFile(const std::string& File) {
     std::filesystem::path file{ File };
     std::string line;
     if (std::filesystem::exists(file)) {
@@ -33,9 +32,10 @@ bool leet::loadTransID(const std::string File) {
         }
 
         while (std::getline(inputFile, line)) {
-            leet::TransID = std::atoi(line.c_str());
+            T ret = std::atoi(line.c_str());
+
             inputFile.close();
-            return true;
+            return ret;
         }
 
         inputFile.close();
@@ -44,32 +44,51 @@ bool leet::loadTransID(const std::string File) {
     return false;
 }
 
-std::string leet::uploadFile(leet::User::CredentialsResponse *resp, const std::string File) {
-    using json = nlohmann::json;
-    const std::string Output = leet::invokeRequest_Post_File(leet::getAPI("/_matrix/media/v3/upload"), File, resp->accessToken);
-    json returnOutput = { json::parse(Output) };
+const bool leet::saveTransID(const std::string& File) {
+    leet::saveToFile<int>(File, leet::TransID);
+    return true;
+}
 
-    for (auto &output : returnOutput) {
+const bool leet::loadTransID(const std::string& File) {
+    return (leet::TransID = leet::loadFromFile<int>(File));
+}
+
+leet::Attachment::Attachment leet::uploadFile(leet::User::CredentialsResponse* resp, const std::string& File) {
+    using json = nlohmann::json;
+    leet::Attachment::Attachment theAttachment;
+    const std::string Output = leet::invokeRequest_Post_File(leet::getAPI("/_matrix/media/v3/upload"), File, resp->accessToken);
+
+    json returnOutput;
+    try {
+        returnOutput = { json::parse(Output) };
+    } catch (const json::parse_error& e) {
+        return theAttachment;
+    }
+
+    for (auto& output : returnOutput) {
         leet::errorCode = 0;
         leet::Error = "";
 
-        if (output["content_uri"].is_string())
-            return output["content_uri"].get<std::string>();
+        if (output["content_uri"].is_string()) {
+            theAttachment.URL = output["content_uri"].get<std::string>();
+            return theAttachment;
+        }
 
         if (output["errcode"].is_string()) {
             leet::errorCode = 1;
             leet::Error = output["errcode"].get<std::string>();
             if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
-            return "";
+            return theAttachment;
         }
     }
 
-    return "";
+    return theAttachment;
 }
 
-bool leet::downloadFile(leet::User::CredentialsResponse *resp, const std::string File, const std::string outputFile) {
+const bool leet::downloadFile(leet::User::CredentialsResponse* resp, leet::Attachment::Attachment* Attachment, const std::string& outputFile) {
     std::string Server{};
     std::string ID{};
+    std::string File{Attachment->URL};
     std::size_t it = File.find("mxc://");
 
     if (it != std::string::npos) {

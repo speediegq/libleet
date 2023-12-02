@@ -1,0 +1,582 @@
+\doxysection{leet\+::olm\+Account Class Reference}
+\hypertarget{classleet_1_1olmAccount}{}\label{classleet_1_1olmAccount}\index{leet::olmAccount@{leet::olmAccount}}
+
+
+{\ttfamily \#include $<$libleet.\+hpp$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{using}} \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}} = nlohmann\+::json
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handle\+Error}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Failure}})
+\begin{DoxyCompactList}\small\item\em Throws an \textquotesingle{}olm failure\+: \textquotesingle{} error. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} \mbox{\hyperlink{classleet_1_1olmAccount_a630917281fbc3411146c7f2eb6266601}{create\+Account}} ()
+\begin{DoxyCompactList}\small\item\em Creates an account. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} \mbox{\hyperlink{classleet_1_1olmAccount_aa87110b7a44952292e48fdb46ba30d00}{load\+Account}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Key}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Data}})
+\begin{DoxyCompactList}\small\item\em Loads an account from pickle data using the pickle key. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} \mbox{\hyperlink{classleet_1_1olmAccount_ac41a8db6a79cc11b67588592aa7f48cb}{create\+Megolm\+Session}} ()
+\begin{DoxyCompactList}\small\item\em Creates a Megolm session. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} \mbox{\hyperlink{classleet_1_1olmAccount_a2eda608498d23fbe094f4efcb9efb146}{load\+Megolm\+Session}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Key}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Data}})
+\begin{DoxyCompactList}\small\item\em Loads a Megolm session from pickle data. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} \mbox{\hyperlink{classleet_1_1olmAccount_af92b2a11dc88153b2ae48fdc895b2c41}{create\+Identity}} ()
+\begin{DoxyCompactList}\small\item\em Creates an identity. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} \mbox{\hyperlink{classleet_1_1olmAccount_ad11b6a0848606c7ffead1ef4741772f3}{upload}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{leet\+::\+User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}})
+\begin{DoxyCompactList}\small\item\em Uploads the device keys. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} \mbox{\hyperlink{classleet_1_1olmAccount_a10d76b67a728792ee645ba904d7a3f46}{create\+Session}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{leet\+::\+User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{classleet_1_1Room_1_1Room}{leet\+::\+Room\+::\+Room}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{room}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1User_1_1Profile}{leet\+::\+User\+::\+Profile}} $>$ \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{users}})
+\begin{DoxyCompactList}\small\item\em Creates a session with one or more users in the current room. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{classleet_1_1olmAccount_ab5422499f6fcef344d157f7d74cfffb8}{encrypt\+Message}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{leet\+::\+User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{message}})
+\begin{DoxyCompactList}\small\item\em Encrypt a message. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{classleet_1_1olmAccount_a84125cb85744db3979abae4da3dc8892}{pickle}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Key}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Account}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{acc}})
+\begin{DoxyCompactList}\small\item\em Pickle an Olm\+Account\texorpdfstring{$\ast$}{*}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Account}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classleet_1_1olmAccount_aa646061d451e058b6abf2f668e239e4d}{unpickle}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Key}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Data}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Account}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{acc}})
+\begin{DoxyCompactList}\small\item\em Unpickle an Olm\+Account\texorpdfstring{$\ast$}{*}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{classleet_1_1olmAccount_af8ba7cff11f6191f03cafd6165a88e6e}{pickle}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Key}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Inbound\+Group\+Session}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{session}})
+\begin{DoxyCompactList}\small\item\em Pickle an Olm\+Inbound\+Group\+Session\texorpdfstring{$\ast$}{*}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Inbound\+Group\+Session}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classleet_1_1olmAccount_a5e8d5432106c3e671d04efa6f988f536}{unpickle}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Key}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Data}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Inbound\+Group\+Session}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{session}})
+\begin{DoxyCompactList}\small\item\em Unpickle an Olm\+Inbound\+Group\+Session\texorpdfstring{$\ast$}{*}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{classleet_1_1olmAccount_a9509fa1fe0a4bafe9b7f71643ff2712f}{pickle}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Key}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Outbound\+Group\+Session}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{session}})
+\begin{DoxyCompactList}\small\item\em Pickle an Olm\+Outbound\+Group\+Session\texorpdfstring{$\ast$}{*}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Outbound\+Group\+Session}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classleet_1_1olmAccount_a6748ed0dba727be369c0d45f84a32ea5}{unpickle}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Key}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Data}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Outbound\+Group\+Session}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{session}})
+\begin{DoxyCompactList}\small\item\em Unpickle an Olm\+Outbound\+Group\+Session\texorpdfstring{$\ast$}{*}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{classleet_1_1olmAccount_a0c20c97df0c7806c621b329f102e5975}{pickle}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Key}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Session}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{session}})
+\begin{DoxyCompactList}\small\item\em Pickle an Olm\+Session\texorpdfstring{$\ast$}{*}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Session}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classleet_1_1olmAccount_af2426a3cf09da3b2636e82c1b72e6c59}{unpickle}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Key}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Data}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Session}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{session}})
+\begin{DoxyCompactList}\small\item\em Unpickle an Olm\+Session\texorpdfstring{$\ast$}{*}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} \mbox{\hyperlink{classleet_1_1olmAccount_aa19c65418db88ced5be3761d52526dde}{clear}} ()
+\begin{DoxyCompactList}\small\item\em Clean up by clearing the Olm account. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} \mbox{\hyperlink{classleet_1_1olmAccount_a380e1fef56330b3924de08f671ec0246}{destroy}} ()
+\begin{DoxyCompactList}\small\item\em Free memory that has been allocated. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classleet_1_1olmAccount_a9e16289f1ba1ab95e85433f230df99fa}{account\+Memory}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Account}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classleet_1_1olmAccount_a90563302e87f0772f6fc6a59d162630d}{utility\+Memory}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Utility}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classleet_1_1olmAccount_a899cc79b680746c8fdfccd374b314d2c}{Utility}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classleet_1_1olmAccount_a2856582d3fbc688d27d050405ef6e064}{megolm\+Session\+Memory}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Outbound\+Group\+Session}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classleet_1_1olmAccount_ae5a74c5a2e7819f293606eb6d480a0f0}{megolm\+Session}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{char}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classleet_1_1olmAccount_a173be267e027dda61392317996df091c}{megolm\+Session\+ID}}
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classleet_1_1olmAccount_a39d5c59e5cdcf9f1e3c3fb6ed93a15d0}{megolm\+Session\+IDLength}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{char}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classleet_1_1olmAccount_aeb82f0d36ae773e94567d37ddb5f0e95}{megolm\+Session\+Key}}
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classleet_1_1olmAccount_abed42411cef1634472f6197bb82c1553}{megolm\+Session\+Key\+Length}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{char}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classleet_1_1olmAccount_ac32d7240e542e5eb05f1f40f9980ebc6}{Identity}}
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classleet_1_1olmAccount_a93d8b9aefc2be25745611e7e1bf1a799}{identity\+Length}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{char}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classleet_1_1olmAccount_aeba3e7caea55f16f85669416daef6729}{Signature}}
+\item 
+std\+::size\+\_\+t \mbox{\hyperlink{classleet_1_1olmAccount_ac05a5e45616deea6b4f573a0b0570883}{signature\+Length}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} \mbox{\hyperlink{classleet_1_1olmAccount_a2ce1942fb235fc664c64aa02af51e39b}{keys\+Remaining}} \{0\}
+\item 
+std\+::string \mbox{\hyperlink{classleet_1_1olmAccount_a03e7b55200d1afbeeaa9ecea4ad5b487}{curve25519}}
+\item 
+std\+::string \mbox{\hyperlink{classleet_1_1olmAccount_a7f92aa6bd4c492bf558bf40ba161b9a0}{ed25519}}
+\item 
+std\+::map$<$ std\+::string, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Session}} \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{classleet_1_1olmAccount_a39680df039504cada271abb5d9e4899a}{olm\+Sessions}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} \mbox{\hyperlink{classleet_1_1olmAccount_aadcd18456837d84069cf1695e5d8515c}{account\+Memory\+Allocated}} \{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{false}}\}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} \mbox{\hyperlink{classleet_1_1olmAccount_add0ceec9c4c5ffa05cd2de377b5b6583}{identity\+Memory\+Allocated}} \{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{false}}\}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} \mbox{\hyperlink{classleet_1_1olmAccount_a2d2c0661f747ae25324cdef543dca71f}{signature\+Memory\+Allocated}} \{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{false}}\}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} \mbox{\hyperlink{classleet_1_1olmAccount_ae2453a849ff9a4b3d1c9fc33da9e2c10}{olm\+Session\+Memory\+Allocated}} \{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{false}}\}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} \mbox{\hyperlink{classleet_1_1olmAccount_ab4bd1e66652c36da4134febc552b8095}{megolm\+Session\+Memory\+Allocated}} \{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{false}}\}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} \mbox{\hyperlink{classleet_1_1olmAccount_aba60abf43933c689ec97556c17f9e6bb}{megolm\+Session\+IDMemory\+Allocated}} \{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{false}}\}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} \mbox{\hyperlink{classleet_1_1olmAccount_a98424b565dd41275786a44a487d90394}{utility\+Memory\+Allocated}} \{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{false}}\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}\label{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352} 
+\index{leet::olmAccount@{leet::olmAccount}!json@{json}}
+\index{json@{json}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{json}{json}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{using}} \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{leet\+::olm\+Account\+::json}} =  nlohmann\+::json}
+
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classleet_1_1olmAccount_aa19c65418db88ced5be3761d52526dde}\label{classleet_1_1olmAccount_aa19c65418db88ced5be3761d52526dde} 
+\index{leet::olmAccount@{leet::olmAccount}!clear@{clear}}
+\index{clear@{clear}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} leet\+::olm\+Account\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Clean up by clearing the Olm account. 
+
+\Hypertarget{classleet_1_1olmAccount_a630917281fbc3411146c7f2eb6266601}\label{classleet_1_1olmAccount_a630917281fbc3411146c7f2eb6266601} 
+\index{leet::olmAccount@{leet::olmAccount}!createAccount@{createAccount}}
+\index{createAccount@{createAccount}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{createAccount()}{createAccount()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} leet\+::olm\+Account\+::create\+Account (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates an account. 
+
+Creates an account, to be uploaded. In basic test clients, or clients that will only run once or run constantly it is fine to call this each time the program is restarted, but for proper clients you should call this function once, pickle the data, store the key and data and unpickle the data using \doxylink{classleet_1_1olmAccount_aa646061d451e058b6abf2f668e239e4d}{unpickle()} or the convenient \doxylink{classleet_1_1olmAccount_aa87110b7a44952292e48fdb46ba30d00}{load\+Account()} function. \Hypertarget{classleet_1_1olmAccount_af92b2a11dc88153b2ae48fdc895b2c41}\label{classleet_1_1olmAccount_af92b2a11dc88153b2ae48fdc895b2c41} 
+\index{leet::olmAccount@{leet::olmAccount}!createIdentity@{createIdentity}}
+\index{createIdentity@{createIdentity}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{createIdentity()}{createIdentity()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} leet\+::olm\+Account\+::create\+Identity (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates an identity. 
+
+\Hypertarget{classleet_1_1olmAccount_ac41a8db6a79cc11b67588592aa7f48cb}\label{classleet_1_1olmAccount_ac41a8db6a79cc11b67588592aa7f48cb} 
+\index{leet::olmAccount@{leet::olmAccount}!createMegolmSession@{createMegolmSession}}
+\index{createMegolmSession@{createMegolmSession}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{createMegolmSession()}{createMegolmSession()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} leet\+::olm\+Account\+::create\+Megolm\+Session (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates a Megolm session. 
+
+Creates a megolm session. \Hypertarget{classleet_1_1olmAccount_a10d76b67a728792ee645ba904d7a3f46}\label{classleet_1_1olmAccount_a10d76b67a728792ee645ba904d7a3f46} 
+\index{leet::olmAccount@{leet::olmAccount}!createSession@{createSession}}
+\index{createSession@{createSession}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{createSession()}{createSession()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} leet\+::olm\+Account\+::create\+Session (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{leet\+::\+User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{classleet_1_1Room_1_1Room}{leet\+::\+Room\+::\+Room}} \texorpdfstring{$\ast$}{*}}]{room,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1User_1_1Profile}{leet\+::\+User\+::\+Profile}} $>$ \&}]{users }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates a session with one or more users in the current room. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em room} & The room to send and create the event in. \\
+\hline
+{\em users} & Vector of users to create a session with. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classleet_1_1olmAccount_a380e1fef56330b3924de08f671ec0246}\label{classleet_1_1olmAccount_a380e1fef56330b3924de08f671ec0246} 
+\index{leet::olmAccount@{leet::olmAccount}!destroy@{destroy}}
+\index{destroy@{destroy}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{destroy()}{destroy()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} leet\+::olm\+Account\+::destroy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Free memory that has been allocated. 
+
+\Hypertarget{classleet_1_1olmAccount_ab5422499f6fcef344d157f7d74cfffb8}\label{classleet_1_1olmAccount_ab5422499f6fcef344d157f7d74cfffb8} 
+\index{leet::olmAccount@{leet::olmAccount}!encryptMessage@{encryptMessage}}
+\index{encryptMessage@{encryptMessage}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{encryptMessage()}{encryptMessage()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::olm\+Account\+::encrypt\+Message (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{leet\+::\+User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{message }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Encrypt a message. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em message} & \doxylink{namespaceleet_1_1Message}{Message} to encrypt. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a json string containing the encrypted cipher text.
+\end{DoxyReturn}
+Returns string json containing encrypted cipher text, which can then be uploaded to the server as an event \Hypertarget{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}\label{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b} 
+\index{leet::olmAccount@{leet::olmAccount}!handleError@{handleError}}
+\index{handleError@{handleError}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{handleError()}{handleError()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} leet\+::olm\+Account\+::handle\+Error (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{Failure }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Throws an \textquotesingle{}olm failure\+: \textquotesingle{} error. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Failure} & String to append to the error. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classleet_1_1olmAccount_aa87110b7a44952292e48fdb46ba30d00}\label{classleet_1_1olmAccount_aa87110b7a44952292e48fdb46ba30d00} 
+\index{leet::olmAccount@{leet::olmAccount}!loadAccount@{loadAccount}}
+\index{loadAccount@{loadAccount}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{loadAccount()}{loadAccount()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} leet\+::olm\+Account\+::load\+Account (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Key,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Loads an account from pickle data using the pickle key. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pickle\+Key} & Pickle key to use when unpickling the data. This must be stored by the client. \\
+\hline
+{\em pickle\+Data} & Pickle data to unpickle with the key. This must be stored by the client.\\
+\hline
+\end{DoxyParams}
+Loads an account from pickle data and a pickle key. The pickle key should be stored somewhere, preferably encrypted for security reasons. Your client should (must) store the pickle data as well. This function does not check if the data is valid, so you should make sure it is. A runtime error will occur otherwise.
+
+Don\textquotesingle{}t forget to free account\+Memory \Hypertarget{classleet_1_1olmAccount_a2eda608498d23fbe094f4efcb9efb146}\label{classleet_1_1olmAccount_a2eda608498d23fbe094f4efcb9efb146} 
+\index{leet::olmAccount@{leet::olmAccount}!loadMegolmSession@{loadMegolmSession}}
+\index{loadMegolmSession@{loadMegolmSession}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{loadMegolmSession()}{loadMegolmSession()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} leet\+::olm\+Account\+::load\+Megolm\+Session (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Key,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Loads a Megolm session from pickle data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pickle\+Key} & Pickle key to use when unpickling the data. This must be stored by the client. \\
+\hline
+{\em pickle\+Data} & Pickle data to unpickle with the key. This must be stored by the client.\\
+\hline
+\end{DoxyParams}
+Loads a megolm session from pickle data \Hypertarget{classleet_1_1olmAccount_a84125cb85744db3979abae4da3dc8892}\label{classleet_1_1olmAccount_a84125cb85744db3979abae4da3dc8892} 
+\index{leet::olmAccount@{leet::olmAccount}!pickle@{pickle}}
+\index{pickle@{pickle}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{pickle()}{pickle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::olm\+Account\+::pickle (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Key,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Account}} \texorpdfstring{$\ast$}{*}}]{acc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Pickle an Olm\+Account\texorpdfstring{$\ast$}{*}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pickle\+Key} & The key that should be used to pickle. The client should (must) store this safely. It is considered sensitive data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a pickle for an Olm\+Account. The client should (must) store this safely. It is considered sensitive data.
+\end{DoxyReturn}
+Returns a pickle for an Olm\+Account \Hypertarget{classleet_1_1olmAccount_af8ba7cff11f6191f03cafd6165a88e6e}\label{classleet_1_1olmAccount_af8ba7cff11f6191f03cafd6165a88e6e} 
+\index{leet::olmAccount@{leet::olmAccount}!pickle@{pickle}}
+\index{pickle@{pickle}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{pickle()}{pickle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::olm\+Account\+::pickle (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Key,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Inbound\+Group\+Session}} \texorpdfstring{$\ast$}{*}}]{session }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Pickle an Olm\+Inbound\+Group\+Session\texorpdfstring{$\ast$}{*}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pickle\+Key} & The key that should be used to pickle. The client should (must) store this safely. It is considered sensitive data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a pickle for an Olm\+Inbound\+Group\+Session. The client should (must) store this safely. It is considered sensitive data.
+\end{DoxyReturn}
+Returns a pickle for an Olm\+Inbound\+Group\+Session \Hypertarget{classleet_1_1olmAccount_a9509fa1fe0a4bafe9b7f71643ff2712f}\label{classleet_1_1olmAccount_a9509fa1fe0a4bafe9b7f71643ff2712f} 
+\index{leet::olmAccount@{leet::olmAccount}!pickle@{pickle}}
+\index{pickle@{pickle}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{pickle()}{pickle()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::olm\+Account\+::pickle (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Key,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Outbound\+Group\+Session}} \texorpdfstring{$\ast$}{*}}]{session }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Pickle an Olm\+Outbound\+Group\+Session\texorpdfstring{$\ast$}{*}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pickle\+Key} & The key that should be used to pickle. The client should (must) store this safely. It is considered sensitive data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a pickle for an Olm\+Outbound\+Group\+Session. The client should (must) store this safely. It is considered sensitive data.
+\end{DoxyReturn}
+Returns a pickle for an Olm\+Outbound\+Group\+Session \Hypertarget{classleet_1_1olmAccount_a0c20c97df0c7806c621b329f102e5975}\label{classleet_1_1olmAccount_a0c20c97df0c7806c621b329f102e5975} 
+\index{leet::olmAccount@{leet::olmAccount}!pickle@{pickle}}
+\index{pickle@{pickle}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{pickle()}{pickle()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::olm\+Account\+::pickle (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Key,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Session}} \texorpdfstring{$\ast$}{*}}]{session }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Pickle an Olm\+Session\texorpdfstring{$\ast$}{*}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pickle\+Key} & The key that should be used to pickle. The client should (must) store this safely. It is considered sensitive data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a pickle for an Olm\+Session. The client should (must) store this safely. It is considered sensitive data.
+\end{DoxyReturn}
+Returns a pickle for an Olm\+Session \Hypertarget{classleet_1_1olmAccount_aa646061d451e058b6abf2f668e239e4d}\label{classleet_1_1olmAccount_aa646061d451e058b6abf2f668e239e4d} 
+\index{leet::olmAccount@{leet::olmAccount}!unpickle@{unpickle}}
+\index{unpickle@{unpickle}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{unpickle()}{unpickle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Account}} \texorpdfstring{$\ast$}{*} leet\+::olm\+Account\+::unpickle (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Key,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Data,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Account}} \texorpdfstring{$\ast$}{*}}]{acc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Unpickle an Olm\+Account\texorpdfstring{$\ast$}{*}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pickle\+Key} & The key that should be used to unpickle. The client should (must) store this safely. It is considered sensitive data. \\
+\hline
+{\em pickle\+Data} & The pickle data returned by a \doxylink{classleet_1_1olmAccount_a84125cb85744db3979abae4da3dc8892}{pickle()} function. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns an Olm\+Account\texorpdfstring{$\ast$}{*}.
+\end{DoxyReturn}
+Returns a pickle for an Olm\+Account \Hypertarget{classleet_1_1olmAccount_a5e8d5432106c3e671d04efa6f988f536}\label{classleet_1_1olmAccount_a5e8d5432106c3e671d04efa6f988f536} 
+\index{leet::olmAccount@{leet::olmAccount}!unpickle@{unpickle}}
+\index{unpickle@{unpickle}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{unpickle()}{unpickle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Inbound\+Group\+Session}} \texorpdfstring{$\ast$}{*} leet\+::olm\+Account\+::unpickle (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Key,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Data,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Inbound\+Group\+Session}} \texorpdfstring{$\ast$}{*}}]{session }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Unpickle an Olm\+Inbound\+Group\+Session\texorpdfstring{$\ast$}{*}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pickle\+Key} & The key that should be used to unpickle. The client should (must) store this safely. It is considered sensitive data. \\
+\hline
+{\em pickle\+Data} & The pickle data returned by a \doxylink{classleet_1_1olmAccount_a84125cb85744db3979abae4da3dc8892}{pickle()} function. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns an Olm\+Inbound\+Group\+Session\texorpdfstring{$\ast$}{*}.
+\end{DoxyReturn}
+Returns a pickle for an Olm\+Inbound\+Group\+Session \Hypertarget{classleet_1_1olmAccount_a6748ed0dba727be369c0d45f84a32ea5}\label{classleet_1_1olmAccount_a6748ed0dba727be369c0d45f84a32ea5} 
+\index{leet::olmAccount@{leet::olmAccount}!unpickle@{unpickle}}
+\index{unpickle@{unpickle}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{unpickle()}{unpickle()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Outbound\+Group\+Session}} \texorpdfstring{$\ast$}{*} leet\+::olm\+Account\+::unpickle (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Key,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Data,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Outbound\+Group\+Session}} \texorpdfstring{$\ast$}{*}}]{session }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Unpickle an Olm\+Outbound\+Group\+Session\texorpdfstring{$\ast$}{*}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pickle\+Key} & The key that should be used to unpickle. The client should (must) store this safely. It is considered sensitive data. \\
+\hline
+{\em pickle\+Data} & The pickle data returned by a \doxylink{classleet_1_1olmAccount_a84125cb85744db3979abae4da3dc8892}{pickle()} function. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns an Olm\+Outbound\+Group\+Session\texorpdfstring{$\ast$}{*}.
+\end{DoxyReturn}
+Returns a pickle for an Olm\+Outbound\+Group\+Session \Hypertarget{classleet_1_1olmAccount_af2426a3cf09da3b2636e82c1b72e6c59}\label{classleet_1_1olmAccount_af2426a3cf09da3b2636e82c1b72e6c59} 
+\index{leet::olmAccount@{leet::olmAccount}!unpickle@{unpickle}}
+\index{unpickle@{unpickle}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{unpickle()}{unpickle()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Session}} \texorpdfstring{$\ast$}{*} leet\+::olm\+Account\+::unpickle (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Key,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Data,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Session}} \texorpdfstring{$\ast$}{*}}]{session }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Unpickle an Olm\+Session\texorpdfstring{$\ast$}{*}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pickle\+Key} & The key that should be used to unpickle. The client should (must) store this safely. It is considered sensitive data. \\
+\hline
+{\em pickle\+Data} & The pickle data returned by a \doxylink{classleet_1_1olmAccount_a84125cb85744db3979abae4da3dc8892}{pickle()} function. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns an Olm\+Session\texorpdfstring{$\ast$}{*}.
+\end{DoxyReturn}
+Returns a pickle for an Olm\+Session \Hypertarget{classleet_1_1olmAccount_ad11b6a0848606c7ffead1ef4741772f3}\label{classleet_1_1olmAccount_ad11b6a0848606c7ffead1ef4741772f3} 
+\index{leet::olmAccount@{leet::olmAccount}!upload@{upload}}
+\index{upload@{upload}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{upload()}{upload()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} leet\+::olm\+Account\+::upload (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{leet\+::\+User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Uploads the device keys. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}\label{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd} 
+\index{leet::olmAccount@{leet::olmAccount}!Account@{Account}}
+\index{Account@{Account}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{Account}{Account}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Account}}\texorpdfstring{$\ast$}{*} leet\+::olm\+Account\+::\+Account}
+
+\Hypertarget{classleet_1_1olmAccount_a9e16289f1ba1ab95e85433f230df99fa}\label{classleet_1_1olmAccount_a9e16289f1ba1ab95e85433f230df99fa} 
+\index{leet::olmAccount@{leet::olmAccount}!accountMemory@{accountMemory}}
+\index{accountMemory@{accountMemory}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{accountMemory}{accountMemory}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}}\texorpdfstring{$\ast$}{*} leet\+::olm\+Account\+::account\+Memory}
+
+\Hypertarget{classleet_1_1olmAccount_aadcd18456837d84069cf1695e5d8515c}\label{classleet_1_1olmAccount_aadcd18456837d84069cf1695e5d8515c} 
+\index{leet::olmAccount@{leet::olmAccount}!accountMemoryAllocated@{accountMemoryAllocated}}
+\index{accountMemoryAllocated@{accountMemoryAllocated}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{accountMemoryAllocated}{accountMemoryAllocated}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} leet\+::olm\+Account\+::account\+Memory\+Allocated \{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{false}}\}}
+
+\Hypertarget{classleet_1_1olmAccount_a03e7b55200d1afbeeaa9ecea4ad5b487}\label{classleet_1_1olmAccount_a03e7b55200d1afbeeaa9ecea4ad5b487} 
+\index{leet::olmAccount@{leet::olmAccount}!curve25519@{curve25519}}
+\index{curve25519@{curve25519}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{curve25519}{curve25519}}
+{\footnotesize\ttfamily std\+::string leet\+::olm\+Account\+::curve25519}
+
+\Hypertarget{classleet_1_1olmAccount_a7f92aa6bd4c492bf558bf40ba161b9a0}\label{classleet_1_1olmAccount_a7f92aa6bd4c492bf558bf40ba161b9a0} 
+\index{leet::olmAccount@{leet::olmAccount}!ed25519@{ed25519}}
+\index{ed25519@{ed25519}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{ed25519}{ed25519}}
+{\footnotesize\ttfamily std\+::string leet\+::olm\+Account\+::ed25519}
+
+\Hypertarget{classleet_1_1olmAccount_ac32d7240e542e5eb05f1f40f9980ebc6}\label{classleet_1_1olmAccount_ac32d7240e542e5eb05f1f40f9980ebc6} 
+\index{leet::olmAccount@{leet::olmAccount}!Identity@{Identity}}
+\index{Identity@{Identity}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{Identity}{Identity}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{char}}\texorpdfstring{$\ast$}{*} leet\+::olm\+Account\+::\+Identity}
+
+\Hypertarget{classleet_1_1olmAccount_a93d8b9aefc2be25745611e7e1bf1a799}\label{classleet_1_1olmAccount_a93d8b9aefc2be25745611e7e1bf1a799} 
+\index{leet::olmAccount@{leet::olmAccount}!identityLength@{identityLength}}
+\index{identityLength@{identityLength}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{identityLength}{identityLength}}
+{\footnotesize\ttfamily std\+::size\+\_\+t leet\+::olm\+Account\+::identity\+Length}
+
+\Hypertarget{classleet_1_1olmAccount_add0ceec9c4c5ffa05cd2de377b5b6583}\label{classleet_1_1olmAccount_add0ceec9c4c5ffa05cd2de377b5b6583} 
+\index{leet::olmAccount@{leet::olmAccount}!identityMemoryAllocated@{identityMemoryAllocated}}
+\index{identityMemoryAllocated@{identityMemoryAllocated}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{identityMemoryAllocated}{identityMemoryAllocated}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} leet\+::olm\+Account\+::identity\+Memory\+Allocated \{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{false}}\}}
+
+\Hypertarget{classleet_1_1olmAccount_a2ce1942fb235fc664c64aa02af51e39b}\label{classleet_1_1olmAccount_a2ce1942fb235fc664c64aa02af51e39b} 
+\index{leet::olmAccount@{leet::olmAccount}!keysRemaining@{keysRemaining}}
+\index{keysRemaining@{keysRemaining}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{keysRemaining}{keysRemaining}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} leet\+::olm\+Account\+::keys\+Remaining \{0\}}
+
+\Hypertarget{classleet_1_1olmAccount_ae5a74c5a2e7819f293606eb6d480a0f0}\label{classleet_1_1olmAccount_ae5a74c5a2e7819f293606eb6d480a0f0} 
+\index{leet::olmAccount@{leet::olmAccount}!megolmSession@{megolmSession}}
+\index{megolmSession@{megolmSession}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{megolmSession}{megolmSession}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Outbound\+Group\+Session}}\texorpdfstring{$\ast$}{*} leet\+::olm\+Account\+::megolm\+Session}
+
+\Hypertarget{classleet_1_1olmAccount_a173be267e027dda61392317996df091c}\label{classleet_1_1olmAccount_a173be267e027dda61392317996df091c} 
+\index{leet::olmAccount@{leet::olmAccount}!megolmSessionID@{megolmSessionID}}
+\index{megolmSessionID@{megolmSessionID}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{megolmSessionID}{megolmSessionID}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{char}}\texorpdfstring{$\ast$}{*} leet\+::olm\+Account\+::megolm\+Session\+ID}
+
+\Hypertarget{classleet_1_1olmAccount_a39d5c59e5cdcf9f1e3c3fb6ed93a15d0}\label{classleet_1_1olmAccount_a39d5c59e5cdcf9f1e3c3fb6ed93a15d0} 
+\index{leet::olmAccount@{leet::olmAccount}!megolmSessionIDLength@{megolmSessionIDLength}}
+\index{megolmSessionIDLength@{megolmSessionIDLength}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{megolmSessionIDLength}{megolmSessionIDLength}}
+{\footnotesize\ttfamily std\+::size\+\_\+t leet\+::olm\+Account\+::megolm\+Session\+IDLength}
+
+\Hypertarget{classleet_1_1olmAccount_aba60abf43933c689ec97556c17f9e6bb}\label{classleet_1_1olmAccount_aba60abf43933c689ec97556c17f9e6bb} 
+\index{leet::olmAccount@{leet::olmAccount}!megolmSessionIDMemoryAllocated@{megolmSessionIDMemoryAllocated}}
+\index{megolmSessionIDMemoryAllocated@{megolmSessionIDMemoryAllocated}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{megolmSessionIDMemoryAllocated}{megolmSessionIDMemoryAllocated}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} leet\+::olm\+Account\+::megolm\+Session\+IDMemory\+Allocated \{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{false}}\}}
+
+\Hypertarget{classleet_1_1olmAccount_aeb82f0d36ae773e94567d37ddb5f0e95}\label{classleet_1_1olmAccount_aeb82f0d36ae773e94567d37ddb5f0e95} 
+\index{leet::olmAccount@{leet::olmAccount}!megolmSessionKey@{megolmSessionKey}}
+\index{megolmSessionKey@{megolmSessionKey}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{megolmSessionKey}{megolmSessionKey}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{char}}\texorpdfstring{$\ast$}{*} leet\+::olm\+Account\+::megolm\+Session\+Key}
+
+\Hypertarget{classleet_1_1olmAccount_abed42411cef1634472f6197bb82c1553}\label{classleet_1_1olmAccount_abed42411cef1634472f6197bb82c1553} 
+\index{leet::olmAccount@{leet::olmAccount}!megolmSessionKeyLength@{megolmSessionKeyLength}}
+\index{megolmSessionKeyLength@{megolmSessionKeyLength}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{megolmSessionKeyLength}{megolmSessionKeyLength}}
+{\footnotesize\ttfamily std\+::size\+\_\+t leet\+::olm\+Account\+::megolm\+Session\+Key\+Length}
+
+\Hypertarget{classleet_1_1olmAccount_a2856582d3fbc688d27d050405ef6e064}\label{classleet_1_1olmAccount_a2856582d3fbc688d27d050405ef6e064} 
+\index{leet::olmAccount@{leet::olmAccount}!megolmSessionMemory@{megolmSessionMemory}}
+\index{megolmSessionMemory@{megolmSessionMemory}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{megolmSessionMemory}{megolmSessionMemory}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}}\texorpdfstring{$\ast$}{*} leet\+::olm\+Account\+::megolm\+Session\+Memory}
+
+\Hypertarget{classleet_1_1olmAccount_ab4bd1e66652c36da4134febc552b8095}\label{classleet_1_1olmAccount_ab4bd1e66652c36da4134febc552b8095} 
+\index{leet::olmAccount@{leet::olmAccount}!megolmSessionMemoryAllocated@{megolmSessionMemoryAllocated}}
+\index{megolmSessionMemoryAllocated@{megolmSessionMemoryAllocated}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{megolmSessionMemoryAllocated}{megolmSessionMemoryAllocated}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} leet\+::olm\+Account\+::megolm\+Session\+Memory\+Allocated \{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{false}}\}}
+
+\Hypertarget{classleet_1_1olmAccount_ae2453a849ff9a4b3d1c9fc33da9e2c10}\label{classleet_1_1olmAccount_ae2453a849ff9a4b3d1c9fc33da9e2c10} 
+\index{leet::olmAccount@{leet::olmAccount}!olmSessionMemoryAllocated@{olmSessionMemoryAllocated}}
+\index{olmSessionMemoryAllocated@{olmSessionMemoryAllocated}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{olmSessionMemoryAllocated}{olmSessionMemoryAllocated}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} leet\+::olm\+Account\+::olm\+Session\+Memory\+Allocated \{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{false}}\}}
+
+\Hypertarget{classleet_1_1olmAccount_a39680df039504cada271abb5d9e4899a}\label{classleet_1_1olmAccount_a39680df039504cada271abb5d9e4899a} 
+\index{leet::olmAccount@{leet::olmAccount}!olmSessions@{olmSessions}}
+\index{olmSessions@{olmSessions}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{olmSessions}{olmSessions}}
+{\footnotesize\ttfamily std\+::map$<$std\+::string, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Session}}\texorpdfstring{$\ast$}{*}$>$ leet\+::olm\+Account\+::olm\+Sessions}
+
+\Hypertarget{classleet_1_1olmAccount_aeba3e7caea55f16f85669416daef6729}\label{classleet_1_1olmAccount_aeba3e7caea55f16f85669416daef6729} 
+\index{leet::olmAccount@{leet::olmAccount}!Signature@{Signature}}
+\index{Signature@{Signature}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{Signature}{Signature}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{char}}\texorpdfstring{$\ast$}{*} leet\+::olm\+Account\+::\+Signature}
+
+\Hypertarget{classleet_1_1olmAccount_ac05a5e45616deea6b4f573a0b0570883}\label{classleet_1_1olmAccount_ac05a5e45616deea6b4f573a0b0570883} 
+\index{leet::olmAccount@{leet::olmAccount}!signatureLength@{signatureLength}}
+\index{signatureLength@{signatureLength}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{signatureLength}{signatureLength}}
+{\footnotesize\ttfamily std\+::size\+\_\+t leet\+::olm\+Account\+::signature\+Length}
+
+\Hypertarget{classleet_1_1olmAccount_a2d2c0661f747ae25324cdef543dca71f}\label{classleet_1_1olmAccount_a2d2c0661f747ae25324cdef543dca71f} 
+\index{leet::olmAccount@{leet::olmAccount}!signatureMemoryAllocated@{signatureMemoryAllocated}}
+\index{signatureMemoryAllocated@{signatureMemoryAllocated}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{signatureMemoryAllocated}{signatureMemoryAllocated}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} leet\+::olm\+Account\+::signature\+Memory\+Allocated \{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{false}}\}}
+
+\Hypertarget{classleet_1_1olmAccount_a899cc79b680746c8fdfccd374b314d2c}\label{classleet_1_1olmAccount_a899cc79b680746c8fdfccd374b314d2c} 
+\index{leet::olmAccount@{leet::olmAccount}!Utility@{Utility}}
+\index{Utility@{Utility}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{Utility}{Utility}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Olm\+Utility}}\texorpdfstring{$\ast$}{*} leet\+::olm\+Account\+::\+Utility}
+
+\Hypertarget{classleet_1_1olmAccount_a90563302e87f0772f6fc6a59d162630d}\label{classleet_1_1olmAccount_a90563302e87f0772f6fc6a59d162630d} 
+\index{leet::olmAccount@{leet::olmAccount}!utilityMemory@{utilityMemory}}
+\index{utilityMemory@{utilityMemory}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{utilityMemory}{utilityMemory}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}}\texorpdfstring{$\ast$}{*} leet\+::olm\+Account\+::utility\+Memory}
+
+\Hypertarget{classleet_1_1olmAccount_a98424b565dd41275786a44a487d90394}\label{classleet_1_1olmAccount_a98424b565dd41275786a44a487d90394} 
+\index{leet::olmAccount@{leet::olmAccount}!utilityMemoryAllocated@{utilityMemoryAllocated}}
+\index{utilityMemoryAllocated@{utilityMemoryAllocated}!leet::olmAccount@{leet::olmAccount}}
+\doxysubsubsection{\texorpdfstring{utilityMemoryAllocated}{utilityMemoryAllocated}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} leet\+::olm\+Account\+::utility\+Memory\+Allocated \{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{false}}\}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/speedie/libleet/include/\mbox{\hyperlink{libleet_8hpp}{libleet.\+hpp}}\end{DoxyCompactItemize}

@@ -6,19 +6,25 @@
  * https://git.speedie.site/speedie/libleet
  */
 
-int32_t leet::returnUnixTimestamp() {
+const int32_t leet::returnUnixTimestamp() {
     return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
-leet::Event::Event leet::returnEventFromTimestamp(leet::User::CredentialsResponse *resp, const std::string RoomID, const int32_t Timestamp, const bool Direction) {
+leet::Event::Event leet::returnEventFromTimestamp(leet::User::CredentialsResponse* resp, leet::Room::Room* room, const int32_t Timestamp, const bool Direction) {
     using json = nlohmann::json;
     leet::Event::Event event;
     std::string Dir = Direction ? "f" : "b";
 
-    const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v1/rooms/" + RoomID + "/timestamp_to_event" + "?ts=" + std::to_string(Timestamp) + "&dir=" + Dir), resp->accessToken);
-    json reqOutput = { json::parse(Output) };
+    const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v1/rooms/" + room->roomID + "/timestamp_to_event" + "?ts=" + std::to_string(Timestamp) + "&dir=" + Dir), resp->accessToken);
+    json reqOutput;
 
-    for (auto &output : reqOutput) {
+    try {
+        reqOutput = { json::parse(Output) };
+    } catch (const json::parse_error& e) {
+        return event;
+    }
+
+    for (auto& output : reqOutput) {
         leet::errorCode = 0;
 
         if (output["event_id"].is_string()) event.eventID = output["event_id"].get<std::string>();
@@ -28,12 +34,59 @@ leet::Event::Event leet::returnEventFromTimestamp(leet::User::CredentialsRespons
             leet::errorCode = 1;
             leet::Error = output["errcode"].get<std::string>();
             if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
+            break;
         }
     }
 
     return event;
 }
 
-leet::Event::Event leet::returnLatestEvent(leet::User::CredentialsResponse *resp, const std::string RoomID) {
-    return leet::returnEventFromTimestamp(resp, RoomID, leet::returnUnixTimestamp(), true);
+/* Return a sync class containing several things */
+leet::Sync::Sync leet::returnSync(leet::User::CredentialsResponse* resp) {
+    using json = nlohmann::json;
+    leet::Sync::Sync sync;
+
+    const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/sync"), resp->accessToken);
+    json theOutput;
+
+    try {
+        theOutput = json::parse(Output);
+    } catch (const json::parse_error& e) {
+        return sync;
+    }
+
+    sync.theRequest = theOutput;
+
+    auto& reqOutput = theOutput["to_device"]["events"];
+
+    for (auto& output : reqOutput) {
+        leet::errorCode = 0;
+
+        leet::Sync::megolmSession megolmSession;
+
+        if (!output["content"]["sender_key"].is_null()) {
+            megolmSession.senderKey = output["content"]["sender_key"];
+        }
+        if (!output["content"]["algorithm"].is_null()) {
+            megolmSession.Algorithm = output["content"]["algorithm"];
+        }
+        if (megolmSession.senderKey.compare("")) {
+            if (!output["content"]["ciphertext"][megolmSession.senderKey]["body"].is_null()) {
+                megolmSession.cipherText = output["content"]["ciphertext"][megolmSession.senderKey]["body"];
+            }
+            if (!output["content"]["ciphertext"][megolmSession.senderKey]["type"].is_null()) {
+                megolmSession.cipherType = output["content"]["ciphertext"][megolmSession.senderKey]["type"];
+            }
+        }
+        if (!output["sender"].is_null()) {
+            megolmSession.Sender = output["sender"];
+        }
+        if (!output["type"].is_null()) {
+            megolmSession.Type = output["type"];
+        }
+
+        sync.megolmSessions.push_back(megolmSession);
+    }
+
+    return sync;
 }

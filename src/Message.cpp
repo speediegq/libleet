@@ -6,12 +6,11 @@
  * https://git.speedie.site/speedie/libleet
  */
 
-void leet::sendMessage(leet::User::CredentialsResponse *resp, leet::Message::Message *msg) {
+void leet::sendMessage(leet::User::CredentialsResponse* resp, leet::Room::Room* room, leet::Message::Message* msg) {
     using json = nlohmann::json;
-    const int TransID { leet::generateTransID() };
-    const std::string RoomID { leet::MatrixOption.activeRoom.RoomID };
+    const int TransID { leet::TransID };
     const std::string eventType { "m.room.message" };
-    const std::string APIUrl { "/_matrix/client/v3/rooms/" + RoomID + "/send/" + eventType + "/" + std::to_string(TransID) };
+    const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/send/" + eventType + "/" + std::to_string(TransID) };
 
     json list;
 
@@ -20,23 +19,29 @@ void leet::sendMessage(leet::User::CredentialsResponse *resp, leet::Message::Mes
             leet::errorCode = 1;
             return;
         }
-        list = {
-            { "body", msg->messageText },
-            { "msgtype", msg->messageType },
-            { "url", msg->attachmentURL },
-        };
+
+        list["type"] = "m.room.message";
+        list["room_id"] = room->roomID;
+        list["body"] = msg->messageText;
+        list["msgtype"] = msg->messageType;
+        list["url"] = msg->attachmentURL;
     } else {
-        list = {
-            { "body", msg->messageText },
-            { "msgtype", "m.text" },
-        };
+        list["type"] = "m.room.message";
+        list["room_id"] = room->roomID;
+        list["body"] = msg->messageText;
+        list["msgtype"] = msg->messageType;
     }
 
-    std::string Output { leet::invokeRequest_Put(leet::getAPI(APIUrl), list.dump(), resp->accessToken) };
+    const std::string Output { leet::invokeRequest_Put(leet::getAPI(APIUrl), list.dump(), resp->accessToken) };
 
-    json reqOutput = { json::parse(Output) };
+    json reqOutput;
+    try {
+        reqOutput = { json::parse(Output) };
+    } catch (const json::parse_error& e) {
+        return;
+    }
 
-    for (auto &output : reqOutput) {
+    for (auto& output : reqOutput) {
         leet::errorCode = 0;
 
         if (output["errcode"].is_string()) {
@@ -47,46 +52,100 @@ void leet::sendMessage(leet::User::CredentialsResponse *resp, leet::Message::Mes
     }
 }
 
-std::vector<leet::Message::Message> leet::returnMessages(leet::User::CredentialsResponse *resp, const int messageCount) {
+#ifndef LEET_NO_ENCRYPTION
+void leet::sendEncryptedMessage(leet::User::CredentialsResponse* resp, leet::Encryption* enc, leet::Room::Room* room, leet::Message::Message* msg) {
+    using json = nlohmann::json;
+    const int TransID { leet::TransID };
+    const std::string eventType { "m.room.encrypted" };
+    const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/send/" + eventType + "/" + std::to_string(TransID) };
+
+    json Body;
+
+    Body["type"] = "m.room.message";
+    Body["room_id"] = room->roomID;
+    Body["content"]["body"] = msg->messageText;
+    Body["content"]["msgtype"] = "m.text";
+
+    const std::string Output { leet::invokeRequest_Put(leet::getAPI(APIUrl), enc->account.encryptMessage(resp, Body.dump()), resp->accessToken) };
+
+    json reqOutput;
+    try {
+        reqOutput = { json::parse(Output) };
+    } catch (const json::parse_error& e) {
+        return;
+    }
+
+    for (auto& output : reqOutput) {
+        leet::errorCode = 0;
+
+        if (output["errcode"].is_string()) {
+            leet::errorCode = 1;
+            leet::Error = output["errcode"].get<std::string>();
+            if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
+        }
+    }
+}
+#endif
+
+const std::vector<leet::Message::Message> leet::returnMessages(leet::User::CredentialsResponse* resp, leet::Room::Room* room, const int messageCount) {
     using json = nlohmann::json;
     std::vector<leet::Message::Message> vector;
-    const std::string RoomID { leet::MatrixOption.activeRoom.RoomID };
-    const std::string APIUrl { "/_matrix/client/v3/rooms/" + RoomID + "/messages?dir=b&limit=" + std::to_string(messageCount) };
+    const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/messages?dir=b&limit=" + std::to_string(messageCount) };
 
     std::string Output { leet::invokeRequest_Get(leet::getAPI(APIUrl), resp->accessToken) };
 
-    json reqOutput = json::parse(Output);
+    json reqOutput;
+    try {
+        reqOutput = json::parse(Output);
+    } catch (const json::parse_error& e) {
+        return vector;
+    }
 
-    auto &messages = reqOutput["chunk"];
+    auto& messages = reqOutput["chunk"];
 
-    for (auto currKey = messages.begin(); currKey != messages.end(); ++currKey) {
+    for (auto it = messages.begin(); it != messages.end(); ++it) {
         leet::Message::Message message;
 
-        if (currKey.value().contains("/content/msgtype"_json_pointer)) message.messageType = currKey.value()["content"]["msgtype"];
-        if (currKey.value().contains("/type"_json_pointer)) message.Type = currKey.value()["type"];
-        if (currKey.value().contains("/sender"_json_pointer)) message.Sender = currKey.value()["sender"];
+        message.Encrypted = false;
 
-        if (currKey.value().contains("/content/body"_json_pointer)) message.messageText = currKey.value()["content"]["body"];
-        if (currKey.value().contains("/content/formatted_body"_json_pointer)) message.formattedText = currKey.value()["content"]["formatted_body"];
-        if (currKey.value().contains("/content/format"_json_pointer)) message.Format = currKey.value()["content"]["format"];
-        if (currKey.value().contains("/content/info/mimetype"_json_pointer)) message.mimeType = currKey.value()["content"]["info"]["mimetype"];
-        if (currKey.value().contains("/event_id"_json_pointer)) message.eventID = currKey.value()["event_id"];
-        if (currKey.value().contains("/origin_server_ts"_json_pointer)) message.Age = currKey.value()["origin_server_ts"];
+        if (it.value().contains("/type"_json_pointer)) message.Type = it.value()["type"];
 
-        // attachments
-        if (currKey.value().contains("/content/info/size"_json_pointer)) message.attachmentSize = currKey.value()["content"]["info"]["size"];
-        if (currKey.value().contains("/content/info/duration"_json_pointer)) message.attachmentLength = currKey.value()["content"]["info"]["duration"];
-        if (currKey.value().contains("/content/info/w"_json_pointer)) message.attachmentWidth = currKey.value()["content"]["info"]["w"];
-        if (currKey.value().contains("/content/info/h"_json_pointer)) message.attachmentHeight = currKey.value()["content"]["info"]["h"];
-        if (currKey.value().contains("/content/url"_json_pointer)) message.attachmentURL = currKey.value()["content"]["url"];
+        // Encrypted message
+        if (!message.Type.compare("m.room.encrypted")) {
+            message.Encrypted = true;
+            message.megolm = false;
 
-        // handle thumbnails
+            if (it.value().contains("/content/ciphertext"_json_pointer)) message.cipherText = it.value()["content"]["ciphertext"];
+            if (it.value().contains("/content/sender_key"_json_pointer)) message.senderKey = it.value()["content"]["sender_key"];
+            if (it.value().contains("/content/device_id"_json_pointer)) message.deviceID = it.value()["content"]["device_id"];
+            if (it.value().contains("/content/session_id"_json_pointer)) message.sessionID = it.value()["content"]["session_id"];
+            if (it.value().contains("/content/algorithm"_json_pointer)) if (it.value()["content"]["algorithm"] == "m.megolm.v1.aes-sha2") message.megolm = true;
+        }
+
+        if (it.value().contains("/content/msgtype"_json_pointer)) message.messageType = it.value()["content"]["msgtype"];
+        if (it.value().contains("/sender"_json_pointer)) message.Sender = it.value()["sender"];
+
+        if (it.value().contains("/content/body"_json_pointer)) message.messageText = it.value()["content"]["body"];
+        if (it.value().contains("/content/formatted_body"_json_pointer)) message.formattedText = it.value()["content"]["formatted_body"];
+        if (it.value().contains("/content/format"_json_pointer)) message.Format = it.value()["content"]["format"];
+        if (it.value().contains("/content/info/mimetype"_json_pointer)) message.mimeType = it.value()["content"]["info"]["mimetype"];
+        if (it.value().contains("/event_id"_json_pointer)) message.eventID = it.value()["event_id"];
+        if (it.value().contains("/origin_server_ts"_json_pointer)) message.Age = it.value()["origin_server_ts"];
+
+        // Attachments
+        if (it.value().contains("/content/info/size"_json_pointer)) message.attachmentSize = it.value()["content"]["info"]["size"];
+        if (it.value().contains("/content/info/duration"_json_pointer)) message.attachmentLength = it.value()["content"]["info"]["duration"];
+        if (it.value().contains("/content/info/w"_json_pointer)) message.attachmentWidth = it.value()["content"]["info"]["w"];
+        if (it.value().contains("/content/info/h"_json_pointer)) message.attachmentHeight = it.value()["content"]["info"]["h"];
+        if (it.value().contains("/content/url"_json_pointer)) message.attachmentURL = it.value()["content"]["url"];
+
+        // Handle thumbnails
         if (!message.messageType.compare("m.video")) {
-            if (currKey.value().contains("/content/info/thumbnail_info/w"_json_pointer)) message.thumbnailWidth = currKey.value()["content"]["info"]["thumbnail_info"]["w"];
-            if (currKey.value().contains("/content/info/thumbnail_info/h"_json_pointer)) message.thumbnailHeight = currKey.value()["content"]["info"]["thumbnail_info"]["h"];
-            if (currKey.value().contains("/content/info/thumbnail_info/size"_json_pointer)) message.thumbnailSize = currKey.value()["content"]["info"]["thumbnail_info"]["size"];
-            if (currKey.value().contains("/content/info/thumbnail_info/mimetype"_json_pointer)) message.thumbnailMimeType = currKey.value()["content"]["info"]["thumbnail_info"]["mimetype"];
-            if (currKey.value().contains("/content/info/thumbnail_url"_json_pointer)) message.thumbnailURL = currKey.value()["content"]["info"]["thumbnail_url"];
+            if (it.value().contains("/content/info/thumbnail_info/w"_json_pointer)) message.thumbnailWidth = it.value()["content"]["info"]["thumbnail_info"]["w"];
+            if (it.value().contains("/content/info/thumbnail_info/h"_json_pointer)) message.thumbnailHeight = it.value()["content"]["info"]["thumbnail_info"]["h"];
+            if (it.value().contains("/content/info/thumbnail_info/size"_json_pointer)) message.thumbnailSize = it.value()["content"]["info"]["thumbnail_info"]["size"];
+            if (it.value().contains("/content/info/thumbnail_info/mimetype"_json_pointer)) message.thumbnailMimeType = it.value()["content"]["info"]["thumbnail_info"]["mimetype"];
+            if (it.value().contains("/content/info/thumbnail_url"_json_pointer)) message.thumbnailURL = it.value()["content"]["info"]["thumbnail_url"];
         }
 
         vector.push_back(message);
@@ -95,9 +154,9 @@ std::vector<leet::Message::Message> leet::returnMessages(leet::User::Credentials
     return vector;
 }
 
-std::string leet::returnFilter(leet::User::CredentialsResponse *resp, leet::Filter::Filter *filter) {
+const std::string leet::returnFilter(leet::User::CredentialsResponse* resp, leet::Filter::Filter *filter) {
     using json = nlohmann::json;
-    const std::string APIUrl { "/_matrix/client/v3/user/" + leet::MatrixOption.CredentialsResponse.userID + "/filter" };
+    const std::string APIUrl { "/_matrix/client/v3/user/" + resp->userID + "/filter" };
 
     json list;
 
@@ -121,9 +180,14 @@ std::string leet::returnFilter(leet::User::CredentialsResponse *resp, leet::Filt
 
     std::string Output { leet::invokeRequest_Post(leet::getAPI(APIUrl), list.dump(), resp->accessToken) };
 
-    json reqOutput = json::parse(Output);
+    json reqOutput;
+    try {
+        reqOutput = json::parse(Output);
+    } catch (const json::parse_error& e) {
+        return "";
+    }
 
-    for (auto &output : reqOutput) {
+    for (auto& output : reqOutput) {
         leet::errorCode = 0;
 
         if (output["filter_id"].is_string()) {

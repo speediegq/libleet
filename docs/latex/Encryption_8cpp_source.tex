@@ -1,0 +1,76 @@
+\doxysection{Encryption.\+cpp}
+\hypertarget{Encryption_8cpp_source}{}\label{Encryption_8cpp_source}\index{/home/speedie/libleet/src/Encryption.cpp@{/home/speedie/libleet/src/Encryption.cpp}}
+\mbox{\hyperlink{Encryption_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*\ libleet}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ Matrix\ client\ library\ written\ in\ C++}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *\ Licensed\ under\ the\ GNU\ Affero\ General\ Public\ License\ version\ 3.}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ See\ included\ LICENSE\ file\ for\ more\ information.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ https://git.speedie.site/speedie/libleet}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{comment}{/*\ Note\ that\ most\ of\ these\ functions\ are\ simply\ convenient\ wrappers\ which\ do\ most\ of\ the\ work\ for\ you.}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ If\ you\ want,\ you\ can\ set\ up\ an\ olmAccount\ and\ Encryption\ object\ manually.}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#ifndef\ LEET\_NO\_ENCRYPTION}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \mbox{\hyperlink{classleet_1_1Encryption}{leet::Encryption}}\ \mbox{\hyperlink{namespaceleet_a90817bf0adfacb8ac0c3d147b4e91383}{leet::initEncryption}}()\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ \mbox{\hyperlink{classleet_1_1Encryption}{leet::Encryption}}\ enc;}
+\DoxyCodeLine{00016\ \ \ \ \ enc.\mbox{\hyperlink{classleet_1_1Encryption_abe9300b67a75daedf15ff2a3d08540d6}{account}}.\mbox{\hyperlink{classleet_1_1olmAccount_a630917281fbc3411146c7f2eb6266601}{createAccount}}();}
+\DoxyCodeLine{00017\ \ \ \ \ enc.\mbox{\hyperlink{classleet_1_1Encryption_a9d7f4cc589f078123749f1ee4be2f423}{hasCreatedAccount}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordflow}{return}\ enc;}
+\DoxyCodeLine{00019\ \}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \mbox{\hyperlink{classleet_1_1Encryption}{leet::Encryption}}\ \mbox{\hyperlink{namespaceleet_abe4fc964ac712876ba14d6d584c74201}{leet::initEncryptionFromPickle}}(\textcolor{keyword}{const}\ std::string\&\ pickleKey,\ \textcolor{keyword}{const}\ std::string\&\ pickleData)\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \mbox{\hyperlink{classleet_1_1Encryption}{leet::Encryption}}\ enc;}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \ \ enc.\mbox{\hyperlink{classleet_1_1Encryption_abe9300b67a75daedf15ff2a3d08540d6}{account}}.\mbox{\hyperlink{classleet_1_1olmAccount_aa87110b7a44952292e48fdb46ba30d00}{loadAccount}}(pickleKey,\ pickleData);}
+\DoxyCodeLine{00025\ \ \ \ \ enc.\mbox{\hyperlink{classleet_1_1Encryption_a9d7f4cc589f078123749f1ee4be2f423}{hasCreatedAccount}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{return}\ enc;}
+\DoxyCodeLine{00028\ \}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \mbox{\hyperlink{classleet_1_1Encryption}{leet::Encryption}}\ \mbox{\hyperlink{namespaceleet_a9fcad94c6a7ae5a4c4f054dec8e0eee5}{leet::uploadKeys}}(\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{leet::User::CredentialsResponse}}*\ resp,\ \mbox{\hyperlink{classleet_1_1Encryption}{leet::Encryption}}*\ enc)\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \mbox{\hyperlink{classleet_1_1Encryption}{leet::Encryption}}\ ret\ =\ *enc;}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordflow}{if}\ (!ret.\mbox{\hyperlink{classleet_1_1Encryption_a9d7f4cc589f078123749f1ee4be2f423}{hasCreatedAccount}})\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}olmAccount:\ Account\ has\ not\ been\ created."{}}\ \};}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{if}\ (ret.\mbox{\hyperlink{classleet_1_1Encryption_a11be787f5f97dfd5de5a6862f9ab349c}{Cleaned}})\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}olmAccount:\ Memory\ has\ already\ been\ cleared."{}}\ \};}
+\DoxyCodeLine{00038\ \ \ \ \ \}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ ret.\mbox{\hyperlink{classleet_1_1Encryption_abe9300b67a75daedf15ff2a3d08540d6}{account}}.\mbox{\hyperlink{classleet_1_1olmAccount_af92b2a11dc88153b2ae48fdc895b2c41}{createIdentity}}();}
+\DoxyCodeLine{00041\ \ \ \ \ ret.\mbox{\hyperlink{classleet_1_1Encryption_abe9300b67a75daedf15ff2a3d08540d6}{account}}.\mbox{\hyperlink{classleet_1_1olmAccount_ad11b6a0848606c7ffead1ef4741772f3}{upload}}(resp);}
+\DoxyCodeLine{00042\ \ \ \ \ ret.\mbox{\hyperlink{classleet_1_1Encryption_a1782b7f9823c06e6d105b9e86e08304e}{hasUploadedKeys}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{00045\ \}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \mbox{\hyperlink{classleet_1_1Encryption}{leet::Encryption}}\ \mbox{\hyperlink{namespaceleet_acdb542395be8170f719a8a7ad0ef0ac2}{leet::createSessionInRoom}}(\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{leet::User::CredentialsResponse}}*\ resp,\ \mbox{\hyperlink{classleet_1_1Encryption}{leet::Encryption}}*\ enc,\ \mbox{\hyperlink{classleet_1_1Room_1_1Room}{leet::Room::Room}}*\ room)\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \mbox{\hyperlink{classleet_1_1Encryption}{leet::Encryption}}\ ret\ =\ *enc;}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordflow}{if}\ (!ret.\mbox{\hyperlink{classleet_1_1Encryption_a9d7f4cc589f078123749f1ee4be2f423}{hasCreatedAccount}})\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}olmAccount:\ Account\ has\ not\ been\ created."{}}\ \};}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{if}\ (ret.\mbox{\hyperlink{classleet_1_1Encryption_a11be787f5f97dfd5de5a6862f9ab349c}{Cleaned}})\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}olmAccount:\ Memory\ has\ already\ been\ cleared."{}}\ \};}
+\DoxyCodeLine{00055\ \ \ \ \ \}}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordflow}{if}\ (!ret.\mbox{\hyperlink{classleet_1_1Encryption_a1782b7f9823c06e6d105b9e86e08304e}{hasUploadedKeys}})\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}olmAccount:\ Keys\ have\ not\ been\ uploaded.\ (!ret.hasUploadedKeys)"{}}\ \};}
+\DoxyCodeLine{00058\ \ \ \ \ \}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{comment}{//\ TODO:\ Store\ megolm\ sessions}}
+\DoxyCodeLine{00061\ \ \ \ \ ret.\mbox{\hyperlink{classleet_1_1Encryption_abe9300b67a75daedf15ff2a3d08540d6}{account}}.\mbox{\hyperlink{classleet_1_1olmAccount_ac41a8db6a79cc11b67588592aa7f48cb}{createMegolmSession}}();}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ std::vector<leet::User::Profile>\ users\ =\ \mbox{\hyperlink{namespaceleet_a00a66e98469fbf8978fc3face0deb78a}{leet::returnUsersInRoom}}(resp,\ room);}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ ret.\mbox{\hyperlink{classleet_1_1Encryption_abe9300b67a75daedf15ff2a3d08540d6}{account}}.\mbox{\hyperlink{classleet_1_1olmAccount_a10d76b67a728792ee645ba904d7a3f46}{createSession}}(resp,\ room,\ users);}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{00068\ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ !LEET\_NO\_ENCRYPTION}}
+
+\end{DoxyCode}

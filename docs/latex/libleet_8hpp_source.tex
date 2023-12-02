@@ -1,0 +1,1110 @@
+\doxysection{libleet.\+hpp}
+\hypertarget{libleet_8hpp_source}{}\label{libleet_8hpp_source}\index{/home/speedie/libleet/include/libleet.hpp@{/home/speedie/libleet/include/libleet.hpp}}
+\mbox{\hyperlink{libleet_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*\ libleet}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ Matrix\ client\ library\ written\ in\ C++}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *\ Licensed\ under\ the\ GNU\ Affero\ General\ Public\ License\ version\ 3.}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ See\ included\ LICENSE\ file\ for\ more\ information.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ https://git.speedie.site/speedie/libleet}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#ifndef\ LIBLEET\_HPP}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ LIBLEET\_HPP}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <cstring>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <ctime>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <exception>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <random>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <map>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <nlohmann/json.hpp>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <cpr/cpr.h>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#ifndef\ LEET\_NO\_ENCRYPTION}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <olm/error.h>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <olm/olm.h>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <olm/sas.h>}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{comment}{/*\ Identifier\ */}}
+\DoxyCodeLine{00028\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_a06fc87d81c62e9abb8790b6e5713c55ba2afbfa490a7ce12e6de5d9d44faf3fa9}{LEET\_IDENTIFIER\_USERID}},}
+\DoxyCodeLine{00030\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_a06fc87d81c62e9abb8790b6e5713c55bad44f526e892a1d8c2b9f3abfeb6018ec}{LEET\_IDENTIFIER\_THIRDPARTYID}},\ \textcolor{comment}{/*\ Unsupported\ for\ now\ */}}
+\DoxyCodeLine{00031\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_a06fc87d81c62e9abb8790b6e5713c55ba84ee3f5fdea31c221b4068ef962bd976}{LEET\_IDENTIFIER\_PHONE}},\ \textcolor{comment}{/*\ Unsupported\ for\ now\ */}}
+\DoxyCodeLine{00032\ \};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{comment}{/*\ Type\ */}}
+\DoxyCodeLine{00035\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_adf764cbdea00d65edcd07bb9953ad2b7a5308cc411f7926af8faf08ff43a05238}{LEET\_TYPE\_PASSWORD}},}
+\DoxyCodeLine{00037\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_adf764cbdea00d65edcd07bb9953ad2b7acf9e9e1ff5162323074f7588e992b21e}{LEET\_TYPE\_TOKEN}},}
+\DoxyCodeLine{00038\ \};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{comment}{/*\ Preset\ */}}
+\DoxyCodeLine{00041\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_a99fb83031ce9923c84392b4e92f956b5aa78999be4375c94da01fe1ca4073dfbd}{LEET\_PRESET\_TRUSTED\_PRIVATE}},\ \textcolor{comment}{//\ Everyone\ becomes\ an\ administrator,\ otherwise\ same\ as\ LEET\_PRESET\_PRIVATE}}
+\DoxyCodeLine{00043\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_a99fb83031ce9923c84392b4e92f956b5a15c58dbe9e3cf5597283ce336d808378}{LEET\_PRESET\_PRIVATE}},\ \textcolor{comment}{//\ Invite\ from\ an\ existing\ member\ of\ the\ room\ required\ to\ join}}
+\DoxyCodeLine{00044\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_a99fb83031ce9923c84392b4e92f956b5afce12095afb56b5f2cc3d2f8d9cac6e0}{LEET\_PRESET\_PUBLIC}},\ \textcolor{comment}{//\ Invite\ not\ required,\ users\ can\ just\ join\ (except\ guests)}}
+\DoxyCodeLine{00045\ \};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{comment}{/*\ Errors\ */}}
+\DoxyCodeLine{00048\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_abc6126af1d45847bc59afa0aa3216b04a9e627ee37931636fb073195d19d46307}{LEET\_ERROR\_NONE}},}
+\DoxyCodeLine{00050\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_abc6126af1d45847bc59afa0aa3216b04afe40ce5844a1a9742cc8729883ef1b7b}{LEET\_ERROR\_MSG\_IS\_NOT\_AN\_ENCRYPTED\_MSG}},}
+\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_abc6126af1d45847bc59afa0aa3216b04ab00194c3ecd2a621bad9739fb95027de}{LEET\_ERROR\_SESSION\_FOR\_MSG\_WAS\_NOT\_RETRIEVED}},}
+\DoxyCodeLine{00052\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_abc6126af1d45847bc59afa0aa3216b04a747f12e41a178bf0a7cef99b12ae5f17}{LEET\_ERROR\_SESSION\_IS\_NOT\_PROPERLY\_ENCRYPTED}},}
+\DoxyCodeLine{00053\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_abc6126af1d45847bc59afa0aa3216b04a5c2dac0dac4f48ab9fc11ecec25c2b06}{LEET\_ERROR\_FAILED\_TO\_CREATE\_INBOUND\_SESSION}},}
+\DoxyCodeLine{00054\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_abc6126af1d45847bc59afa0aa3216b04a6775308c05c5f42c864d170c2bbabaf9}{LEET\_ERROR\_MESSAGE\_HAS\_NO\_SENDER}},}
+\DoxyCodeLine{00055\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_abc6126af1d45847bc59afa0aa3216b04a5b4fd2b3989e3f4ac0cda86ea4e54d1e}{LEET\_ERROR\_MESSAGE\_HAS\_WRONG\_SENDER}},}
+\DoxyCodeLine{00056\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_abc6126af1d45847bc59afa0aa3216b04a0e68337eac2c09a29f3fd005fab9cc9e}{LEET\_ERROR\_MESSAGE\_HAS\_WRONG\_USERID}},}
+\DoxyCodeLine{00057\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_abc6126af1d45847bc59afa0aa3216b04aa58b14162bbd3220d3036eb73afe895f}{LEET\_ERROR\_NOT\_OUR\_MESSAGE}},}
+\DoxyCodeLine{00058\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_abc6126af1d45847bc59afa0aa3216b04a4753b54155a4799a118018fe8dd93262}{LEET\_ERROR\_WRONG\_MESSAGE\_TYPE}},}
+\DoxyCodeLine{00059\ \ \ \ \ \mbox{\hyperlink{libleet_8hpp_abc6126af1d45847bc59afa0aa3216b04a6667636596f47693dec3cbe452c1dd70}{LEET\_ERROR\_WRONG\_MESSAGE\_ALGORITHM}},}
+\DoxyCodeLine{00060\ \};}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#ifndef\ LEET\_NO\_ENCRYPTION}}
+\DoxyCodeLine{00063\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceleetCrypto}{leetCrypto}}\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceleetCrypto_aee28cb4da0c9875bdfed3626ef1762d4}{fillWithRandomBytes}}(\textcolor{keywordtype}{void}*\ \_data,\ \textcolor{keywordtype}{size\_t}\ \_length)\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ std::random\_device\ rd;}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ std::mt19937\ gen(rd());}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ std::uniform\_int\_distribution<unsigned\ char>\ dist(0,\ 255);}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}*\ ptr\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\_data);}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ \_length;\ ++i)\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ ptr[i]\ =\ dist(gen);}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleetCrypto_1_1randomBytes}{randomBytes}}\ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ *\mbox{\hyperlink{classleetCrypto_1_1randomBytes_ae45a02fa3982ce872ad471901cc6db6c}{\_data}};}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classleetCrypto_1_1randomBytes_a0a9d8bb67604d98e7e28b38b2e138b2c}{\_length}};}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleetCrypto_1_1randomBytes_a1d01d22d64079e0d6266f05af9026d6f}{randomBytes}}(\textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classleetCrypto_1_1randomBytes_a59845f6cf135cada2c3f9b3caf7886d9}{length}}):\ \mbox{\hyperlink{classleetCrypto_1_1randomBytes_ae45a02fa3982ce872ad471901cc6db6c}{\_data}}(malloc(\mbox{\hyperlink{classleetCrypto_1_1randomBytes_a59845f6cf135cada2c3f9b3caf7886d9}{length}})),\ \mbox{\hyperlink{classleetCrypto_1_1randomBytes_a0a9d8bb67604d98e7e28b38b2e138b2c}{\_length}}(\mbox{\hyperlink{classleetCrypto_1_1randomBytes_a59845f6cf135cada2c3f9b3caf7886d9}{length}})\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceleetCrypto_aee28cb4da0c9875bdfed3626ef1762d4}{fillWithRandomBytes}}(\mbox{\hyperlink{classleetCrypto_1_1randomBytes_ae45a02fa3982ce872ad471901cc6db6c}{\_data}},\ \mbox{\hyperlink{classleetCrypto_1_1randomBytes_a0a9d8bb67604d98e7e28b38b2e138b2c}{\_length}});}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleetCrypto_1_1randomBytes_aee90fcc51606f4a10e4421959c55f3e3}{\string~randomBytes}}()\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ memset(\mbox{\hyperlink{classleetCrypto_1_1randomBytes_ae45a02fa3982ce872ad471901cc6db6c}{\_data}},\ 0,\ \mbox{\hyperlink{classleetCrypto_1_1randomBytes_a0a9d8bb67604d98e7e28b38b2e138b2c}{\_length}});}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(\mbox{\hyperlink{classleetCrypto_1_1randomBytes_ae45a02fa3982ce872ad471901cc6db6c}{\_data}});}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{classleetCrypto_1_1randomBytes_a59845f6cf135cada2c3f9b3caf7886d9}{length}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classleetCrypto_1_1randomBytes_a0a9d8bb67604d98e7e28b38b2e138b2c}{\_length}};}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ *\mbox{\hyperlink{classleetCrypto_1_1randomBytes_a56f27469d76479d47215ea9ce52171f9}{data}}()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classleetCrypto_1_1randomBytes_ae45a02fa3982ce872ad471901cc6db6c}{\_data}};}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ \};}
+\DoxyCodeLine{00102\ \}}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \textcolor{comment}{/*\ The\ main\ namespace,\ most\ functions\ and\ variables\ will\ be\ contained\ in\ this.\ */}}
+\DoxyCodeLine{00106\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceleet}{leet}}\ \{}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keyword}{namespace\ }User\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1User_1_1Credentials}{Credentials}}\ \{\ \textcolor{comment}{/*\ Only\ applies\ for\ the\ login\ account\ */}}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_ab69825910cc4796bd7992cd7cdfd6248}{Username}};\ \textcolor{comment}{//\ Username}}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_a2601635196c112cc819b48449f143457}{Password}};\ \textcolor{comment}{//\ Password}}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_a14f30a55899e724877a84623378c00c8}{displayName}};\ \textcolor{comment}{//\ Client\ side\ display\ name}}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_ad6a50d9f239f3abfb0627617e19a91e1}{deviceID}};\ \textcolor{comment}{//\ Unique\ ID}}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_af93cb0d1ad2137e1c0d54cefa3418123}{Homeserver}};}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_ae4d62ad39baa02795e11bf1daa74e12e}{refreshToken}};\ \textcolor{comment}{//\ Should\ we\ use\ a\ refresh\ token?}}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_a60e506535df8e6672ea8e8ea7dff451e}{Token}};\ \textcolor{comment}{//\ An\ actual\ token}}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_a8c29a5564ae35191afb4f63383b1ff5d}{Identifier}};\ \textcolor{comment}{//\ Identifier\ used\ to\ log\ in}}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_a319bf175ae5c1209abbb7c05199648d3}{Type}};\ \textcolor{comment}{//\ Type}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_a01b5f82e4edecb6128ffe3fb89c2275a}{clearCredentials}}()\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_ab69825910cc4796bd7992cd7cdfd6248}{Username}}\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_a2601635196c112cc819b48449f143457}{Password}}\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_a14f30a55899e724877a84623378c00c8}{displayName}}\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_ad6a50d9f239f3abfb0627617e19a91e1}{deviceID}}\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_af93cb0d1ad2137e1c0d54cefa3418123}{Homeserver}}\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_a60e506535df8e6672ea8e8ea7dff451e}{Token}}\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_ae4d62ad39baa02795e11bf1daa74e12e}{refreshToken}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_a8c29a5564ae35191afb4f63383b1ff5d}{Identifier}}\ =\ 0;}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1User_1_1Credentials_a319bf175ae5c1209abbb7c05199648d3}{Type}}\ =\ 0;}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \};\ \textcolor{comment}{/*\ https://playground.matrix.org/\#post-\//\_matrix/client/v3/login\ */}}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{CredentialsResponse}}\ \{\ \textcolor{comment}{/*\ Only\ applies\ for\ the\ login\ account\ */}}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_ae4d15192559f009ad966de4bc9cdf58a}{accessToken}};\ \textcolor{comment}{//\ Access\ token,\ which\ will\ be\ used\ to\ authenticate\ all\ future\ events\ for\ this\ session}}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_a0c193776bac32142e4b48034a45b7411}{refreshToken}};\ \textcolor{comment}{//\ Refresh\ token,\ if\ one\ is\ returned\ and\ used}}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_a2c9bc29b7c1702af9c372fccd5e14c6d}{deviceID}};\ \textcolor{comment}{//\ @<user>:<homeserver>}}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_a9233923ddc9627b08b8572b2a379ae0c}{Homeserver}};\ \textcolor{comment}{//\ Should\ correspond\ to\ leet::User::Credentials.Homeserver}}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_a7561824b6e56efae7257ac9995d43846}{userID}};\ \textcolor{comment}{//\ Should\ correspond\ to\ leet::User::Credentials.User}}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_a3373697c8735dc08e71d590da7ca6b6f}{Expiration}};\ \textcolor{comment}{//\ When\ the\ access\ token\ expires.}}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \};\ \textcolor{comment}{/*\ https://playground.matrix.org/\#post-\//\_matrix/client/v3/login\ */}}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1User_1_1Device}{Device}}\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1Device_a0fb0c5d9b1f6f9e358380c47bf8c27b6}{userID}};\ \textcolor{comment}{//\ His\ user\ ID}}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1Device_af1f19ee3d41ea38ddba0f469734ccf1f}{deviceID}};\ \textcolor{comment}{//\ His\ device\ ID}}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1Device_abae3e799bf2e2b392827ff83f9280220}{curve25519Key}};\ \textcolor{comment}{//\ His\ public\ curve25519\ key}}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1Device_a6de003ef59747f0d64f391cca9479390}{ed25519Key}};\ \textcolor{comment}{//\ His\ public\ ed25519\ key}}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1Device_a31b2b73e0920a4c8a2c31c06e8c14612}{ed25519Signature}};\ \textcolor{comment}{//\ His\ public\ ed25519\ signature}}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1Device_ae3eb4a922db791eb92264ef9656febd5}{deviceDisplayName}};\ \textcolor{comment}{//\ His\ device\ display\ name\ (not\ to\ be\ confused\ with\ device\ ID)}}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1User_1_1Device_af848c7b87bb41ab7c3d3c6f57b5fd667}{olm}};\ \textcolor{comment}{//\ Whether\ olm\ is\ supported\ or\ not}}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1User_1_1Device_acae68e9559f1baf239fa0efd2a84d35f}{megolm}};\ \textcolor{comment}{//\ Whether\ megolm\ is\ supported\ or\ not}}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \};\ \textcolor{comment}{/*\ https://spec.matrix.org/v1.1/client-\/server-\/api/\#post\_matrixclientv3keysquery\ */}}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1User_1_1Profile}{Profile}}\ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1Profile_ad9a9c118c09885e9020674b7826756f8}{userID}};\ \textcolor{comment}{//\ His\ user\ ID}}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1Profile_a682c1db4b7f50f3aad4e6b6c08c557a1}{displayName}};\ \textcolor{comment}{//\ His\ display\ name}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1User_1_1Profile_aca64ad4120289dad0d55c623ff3d0ac5}{avatarURL}};\ \textcolor{comment}{//\ His\ avatar\ mxc://\ URL}}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<User::Device>\ \mbox{\hyperlink{classleet_1_1User_1_1Profile_a2adeec50cb835a6977e971ff54064db2}{Devices}};\ \textcolor{comment}{//\ All\ of\ his\ devices}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \};\ \textcolor{comment}{/*\ https://spec.matrix.org/v1.8/client-\/server-\/api/\#profiles\ */}}
+\DoxyCodeLine{00182\ \ \ \ \ \}}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{keyword}{namespace\ }VOIP\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1VOIP_1_1Credentials}{Credentials}}\ \{}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1VOIP_1_1Credentials_aafa81db0f03f6b86a5d5c12a2a3b9140}{Username}};\ \textcolor{comment}{//\ The\ TURN\ server\ username}}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1VOIP_1_1Credentials_a9a36448f6d146a4e0170b726c8f55e02}{Password}};\ \textcolor{comment}{//\ The\ TURN\ server\ password}}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1VOIP_1_1Credentials_a98b99d454adbf4986782d6aafe241e25}{timeToLiveIn}};}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<std::string>\ \mbox{\hyperlink{classleet_1_1VOIP_1_1Credentials_a0e92088a4e9d16bfac1535abe3757730}{URI}};}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00196\ \ \ \ \ \}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room}}\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room}}\ \{}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Room_1_1Room_a845bb4727d6c821e8d69a15ad0e2eb1f}{roomID}};\ \textcolor{comment}{//\ Room\ ID}}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Room_1_1Room_aaeec2e60131518470891846c91383e99}{roomType}};\ \textcolor{comment}{//\ Room\ type}}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Room_1_1Room_a6b5746c5c53d42034dec46e2cf6189de}{Name}};\ \textcolor{comment}{//\ Room\ name}}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Room_1_1Room_ab1052fe37c147c30584aff43b4b069ff}{avatarURL}};\ \textcolor{comment}{//\ Avatar\ mxc://\ URL}}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1Room_1_1Room_ab59f5c2b57fde7afa34889351df89487}{guestCanJoin}};\ \textcolor{comment}{//\ Whether\ guest\ accounts\ can\ join\ or\ not}}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1Room_1_1Room_a298b5a68814b235f8a4b06b9c53ce037}{worldReadable}};\ \textcolor{comment}{//\ Matrix\ speak\ for\ whether\ the\ room\ is\ public\ or\ not}}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Room_1_1Room_a0538af516a75049404ec9539fe7fb840}{Alias}};\ \textcolor{comment}{//\ Room\ alias\ (i.e.\ \#speedie:matrix.org)}}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Room_1_1Room_a5c8cea2c4db4c9b61ae036cc1916bc1e}{Topic}};\ \textcolor{comment}{//\ Room\ topic}}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Room_1_1Room_ad0ab315f7274216739745338efe29f07}{joinRule}};\ \textcolor{comment}{//\ Join\ rule}}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1Room_1_1Room_af13dd9a222670785bce39a8f37781261}{memberCount}};\ \textcolor{comment}{//\ Number\ of\ members\ in\ the\ room}}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1Room_1_1RoomConfiguration}{RoomConfiguration}}\ \{}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1Room_1_1RoomConfiguration_a7e5f488e18d862f3c4655f798ed7115b}{Federate}}\{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1Room_1_1RoomConfiguration_adf72ed90c288c8c27def497cd29802be}{directMessage}}\{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1Room_1_1RoomConfiguration_a7bbba753f1a30732f9ab172d91f45eb0}{Preset}}\{\mbox{\hyperlink{libleet_8hpp_a99fb83031ce9923c84392b4e92f956b5a15c58dbe9e3cf5597283ce336d808378}{LEET\_PRESET\_PRIVATE}}\};}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Room_1_1RoomConfiguration_a8c2f5543102d07f01e208b2e60b4e11c}{Name}};}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Room_1_1RoomConfiguration_a488931db81d40d8a5a6c5171c1953bc9}{Alias}};}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Room_1_1RoomConfiguration_a6ad56cafb86bf46d037df0895766723c}{Topic}};}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00229\ \ \ \ \ \}}
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{classleet_1_1Space_1_1Space}{Space}}\ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1Space_1_1Space}{Space}}\ \{}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Space_1_1Space_a52764052510fc54888847af4db7d729a}{spaceID}};\ \textcolor{comment}{//\ Space\ ID}}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Space_1_1Space_a5fd9c978b593c770005c87af82aa5a65}{roomType}};\ \textcolor{comment}{//\ Room\ type}}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Space_1_1Space_a6129d6d781a3af69cb6e1d0eb6fa6fa6}{Name}};\ \textcolor{comment}{//\ Space\ name}}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Space_1_1Space_aff9b4f7a0caf0cc07690975bef9c01b0}{avatarURL}};\ \textcolor{comment}{//\ Avatar\ mxc://\ URL}}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1Space_1_1Space_ad239a67124112092cfc4bd7db6127de3}{guestCanJoin}};\ \textcolor{comment}{//\ Whether\ guest\ accounts\ can\ join\ or\ not}}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1Space_1_1Space_aaaa1ca02f50c37b566ef6146f87d17ce}{worldReadable}};\ \textcolor{comment}{//\ Matrix\ speak\ for\ whether\ the\ space\ is\ public\ or\ not}}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Space_1_1Space_a604b0077380d6603afe00b176795b40d}{Alias}};\ \textcolor{comment}{//\ Space\ room\ alias\ (i.e.\ \#speediegq:matrix.org)}}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Space_1_1Space_a4114754daba01833bff6e1c58c13b974}{Topic}};\ \textcolor{comment}{//\ Space\ room\ topic}}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Space_1_1Space_aa6a2dcb28ff823991d16f8c1841e70c1}{joinRule}};\ \textcolor{comment}{//\ Join\ rule}}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1Space_1_1Space_a2898d95d87f84676063aac02fdf17367}{memberCount}};\ \textcolor{comment}{//\ Number\ of\ members\ in\ the\ space}}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<Room::Room>\ \mbox{\hyperlink{classleet_1_1Space_1_1Space_a30dac192936b2a8763e36115850c2c4a}{Rooms}};\ \textcolor{comment}{//\ Rooms\ in\ the\ space}}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00256\ \ \ \ \ \}}
+\DoxyCodeLine{00257\ }
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{classleet_1_1Message_1_1Message}{Message}}\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1Message_1_1Message}{Message}}\ \{}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_a74739e3eeb0bca60a6c0285af5c642bb}{messageText}};\ \textcolor{comment}{//\ Message\ text}}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_a83fed20f25325d55a89b41169dd24280}{formattedText}};\ \textcolor{comment}{//\ Formatted\ message}}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_a8dd019876adbaa08129661604f493131}{Format}};\ \textcolor{comment}{//\ Message\ format}}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_a4671a0906f0a44c788f8e5b8c82016e6}{Type}};\ \textcolor{comment}{//\ Event\ type\ (i.e.\ m.room.message)}}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_acf6d509850c3827076a63a9fc7320a6e}{messageType}};\ \textcolor{comment}{//\ Message\ type\ (i.e.\ m.image,\ m.audio,\ m.video,\ m.file,\ m.text)}}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_a00407d68662527759fd2404d285f7b82}{eventID}};\ \textcolor{comment}{//\ Event\ ID}}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_af5b9b84cdc8ee474c5acb47b7e632bb8}{Sender}};\ \textcolor{comment}{//\ The\ sender\ user\ ID}}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_aa81bf1eca55789a987565da2497d67ab}{mimeType}};\ \textcolor{comment}{//\ Message\ mime\ type}}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_a28b5c363010fd021f2f1605522258889}{Age}};\ \textcolor{comment}{//\ Time\ since\ the\ message\ was\ posted}}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_a99366bce597aa139f1ab01420a0061bf}{attachmentWidth}};\ \textcolor{comment}{//\ Attachment\ width}}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_a80a089d0765fb792ca1472f400170c51}{attachmentHeight}};\ \textcolor{comment}{//\ Attachment\ height}}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_aa0c3f9c7ee665698987b7ad4f3b23040}{attachmentSize}};\ \textcolor{comment}{//\ Attachment\ file\ size}}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_acc12eccb366d62e626c48d707557bd15}{attachmentLength}};\ \textcolor{comment}{//\ Mainly\ applies\ for\ videos\ and\ music}}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_a89b2bfdce96b93c066b5f565c6a0074a}{attachmentURL}};\ \textcolor{comment}{//\ Attachment\ mxc://\ URL}}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_a09401ecd78d0e5b06290adf2acf11e28}{thumbnailWidth}};\ \textcolor{comment}{//\ Thumbnail\ width}}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_a9991e5daa3476527eed8b140ba99d61e}{thumbnailHeight}};\ \textcolor{comment}{//\ Thumbnail\ height}}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_aad48127d5068692876945e050d3968ed}{thumbnailSize}};\ \textcolor{comment}{//\ Thumbnail\ file\ size}}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_aac353fb22826eed5757682ea3378eb02}{thumbnailMimeType}};\ \textcolor{comment}{//\ Thumbnail\ mime\ type}}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_a5264e3e6694c7c06960a885d1c7fe49b}{thumbnailURL}};\ \textcolor{comment}{//\ Thumbnail\ mxc://\ URL}}
+\DoxyCodeLine{00287\ }
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_ab76d63f5dc59c42f6dc465cf9071f664}{Encrypted}};\ \textcolor{comment}{//\ Whether\ the\ message\ is\ encrypted\ or\ not}}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_a35e1fbf4f63b29a16f0a6bb1e9de51e8}{megolm}};}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_a9cdf1012eeeaff58c86fd1ea156a656b}{cipherText}};\ \textcolor{comment}{//\ Encrypted\ message\ text}}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_a9280e4ed8e1ec6ed3591ac75bb341531}{senderKey}};\ \textcolor{comment}{//\ Sender\ curve25519\ key}}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_adaeaa3d24938167e2ce791ea21c9c450}{sessionID}};\ \textcolor{comment}{//\ Sender\ session\ ID}}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Message_1_1Message_af257e013a8faa42727367a54873615e3}{deviceID}};\ \textcolor{comment}{//\ Sender\ device\ ID}}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00295\ \ \ \ \ \}}
+\DoxyCodeLine{00296\ }
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{classleet_1_1Attachment_1_1Attachment}{Attachment}}\ \{}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1Attachment_1_1Attachment}{Attachment}}\ \{}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Attachment_1_1Attachment_a47e3ffed35484c82cc92d6736d32de8d}{URL}};}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00306\ \ \ \ \ \}}
+\DoxyCodeLine{00307\ }
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{classleet_1_1Filter_1_1Filter}{Filter}}\ \{}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1Filter_1_1Filter}{Filter}}\ \{}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<std::string>\ \mbox{\hyperlink{classleet_1_1Filter_1_1Filter_a6a512538ce1f23a0c035e5120c392505}{notSenders}};\ \textcolor{comment}{//\ Senders\ to\ exclude}}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<std::string>\ \mbox{\hyperlink{classleet_1_1Filter_1_1Filter_a5e1ade5b1170491596260d53ed0194bb}{Senders}};\ \textcolor{comment}{//\ Senders\ to\ include}}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<std::string>\ \mbox{\hyperlink{classleet_1_1Filter_1_1Filter_ac0beebf520feb5041a0a74ec38c0aff5}{notRooms}};\ \textcolor{comment}{//\ Rooms\ to\ exclude}}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<std::string>\ \mbox{\hyperlink{classleet_1_1Filter_1_1Filter_abd1a9e177b61b8106d8ec73c5be56860}{Rooms}};\ \textcolor{comment}{//\ Rooms\ to\ include}}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<std::string>\ \mbox{\hyperlink{classleet_1_1Filter_1_1Filter_a24cf8c59760cf7fd021bf3fe8ccc641f}{Fields}}\ =\ \{\ \textcolor{stringliteral}{"{}type"{}},\ \textcolor{stringliteral}{"{}content"{}},\ \textcolor{stringliteral}{"{}sender"{}}\ \};\ \textcolor{comment}{//\ Vector\ of\ fields}}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1Filter_1_1Filter_a18347996b1227a4c7a3d328d184ba3da}{Limit}}\ =\ 0;\ \textcolor{comment}{//\ Max\ number\ of\ events\ to\ return}}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00322\ \ \ \ \ \}}
+\DoxyCodeLine{00323\ }
+\DoxyCodeLine{00324\ \ \ \ \ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{classleet_1_1Sync_1_1Sync}{Sync}}\ \{}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1Sync_1_1userEvent}{userEvent}}\ \{}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Sync_1_1userEvent_a872f5d8fb68c1f01ae5b39e82579bc43}{userID}};}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Sync_1_1userEvent_ab1a314f201a602c2d53e236cf4e254f3}{avatarURL}};}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1Sync_1_1userEvent_a73d1b76b742bcc29d4809d60833c448e}{currentlyActive}};}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1Sync_1_1userEvent_a5e033f7bafd5c206d3893ae44a868cc9}{lastActiveAgo}};}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Sync_1_1userEvent_a9db25a571fbbcf0a3284e26d5e0c8e96}{Presence}};}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Sync_1_1userEvent_a09c61940cd2b29b5874aed38446cf7ab}{statusMessage}};}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1Sync_1_1nameEvent}{nameEvent}}\ \{}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Sync_1_1nameEvent_a0c9fe5a640d795ff12ff5273266e8ef8}{roomID}};}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Sync_1_1nameEvent_a4844c8ba233c6eabb3de542c301a67a1}{roomName}};}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Sync_1_1nameEvent_a8be903f5571aadcf3409518b75a8a24c}{Inviter}};}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Sync_1_1nameEvent_a52f90666f5ea32bf972932c7ecefc656}{stateKey}};}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1Sync_1_1inviteEvent}{inviteEvent}}\ \{}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Sync_1_1inviteEvent_a440b4d38a4ca950ec6b2b8cb52158d0c}{Membership}};}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Sync_1_1inviteEvent_aaeaf606e6ff6e8358463660d8ccfa868}{Inviter}};}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Sync_1_1inviteEvent_ae62193732854c5789d1093131d68dd6a}{invitedUser}};}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1Sync_1_1megolmSession}{megolmSession}}\ \{}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Sync_1_1megolmSession_a83e4d359a3e4d40060358310b6dbcf49}{Algorithm}};}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Sync_1_1megolmSession_a79a9a7f9811e4007d23f15e8b643ecf2}{cipherText}};}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1Sync_1_1megolmSession_a7f9ca69710f886c5463994ace9bedace}{cipherType}};}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Sync_1_1megolmSession_aff7c3cbe5d689e39f1f883a3756a974c}{senderKey}};}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Sync_1_1megolmSession_a9429f9a7f131f323e99decd2a498a779}{Sender}};}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Sync_1_1megolmSession_a1f7aacb252a7f5a51cb2720b0d521732}{Type}};}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1Sync_1_1Sync}{Sync}}\ \{}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<userEvent>\ \mbox{\hyperlink{classleet_1_1Sync_1_1Sync_a0e68751f6cabefbef1582dc0e1078c91}{userEvents}};}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<nameEvent>\ \mbox{\hyperlink{classleet_1_1Sync_1_1Sync_ad758687b0021d7d040cf3b4f996f0e0d}{nameEvents}};}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<inviteEvent>\ \mbox{\hyperlink{classleet_1_1Sync_1_1Sync_af4db8436cae02aea3ef75252fe47b87b}{inviteEvents}};}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<megolmSession>\ \mbox{\hyperlink{classleet_1_1Sync_1_1Sync_a4f8c5d3ffc58b636016fe620f6f80424}{megolmSessions}};}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Sync_1_1Sync_a851a34eab73407f9860bff00c12b1d5b}{nextBatch}};}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nlohmann::json\ \mbox{\hyperlink{classleet_1_1Sync_1_1Sync_a2f7e58b985d4676bdb69cb69b6a9bbc8}{theRequest}};\ \textcolor{comment}{//\ The\ full\ request\ in\ nlohmann::json\ format,\ because\ this\ class\ is\ not\ complete}}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00384\ \ \ \ \ \}}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \ \ \ \ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{classleet_1_1Event_1_1Event}{Event}}\ \{}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1Event_1_1Event}{Event}}\ \{}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1Event_1_1Event_a44de14ebc615616045df5595c763522c}{eventID}};\ \textcolor{comment}{//\ Event\ ID\ (duh)}}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int32\_t\ \mbox{\hyperlink{classleet_1_1Event_1_1Event_a9c67e05cdae82f0c6f758cd80190133a}{Age}};\ \textcolor{comment}{//\ Time\ since\ the\ event\ occured}}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00399\ \ \ \ \ \}}
+\DoxyCodeLine{00400\ }
+\DoxyCodeLine{00401\ \ \ \ \ \textcolor{keyword}{inline}\ std::string\ \mbox{\hyperlink{namespaceleet_a047ddd8c4f4dba43c5ee0e38858485ab}{Homeserver}}\{\ \textcolor{stringliteral}{"{}https://matrix.org"{}}\ \};\ \textcolor{comment}{//\ Home\ server\ used\ to\ make\ API\ calls.\ This\ should\ be\ overridden\ once\ a\ home\ server\ has\ been\ determined.}}
+\DoxyCodeLine{00402\ \ \ \ \ \textcolor{keyword}{inline}\ std::string\ \mbox{\hyperlink{namespaceleet_ae7fadb8f554b82e37512ece5f451e345}{Error}};\ \textcolor{comment}{//\ Error\ code\ returned\ by\ the\ server\ (i.e.\ M\_UNKNOWN)}}
+\DoxyCodeLine{00403\ \ \ \ \ \textcolor{keyword}{inline}\ std::string\ \mbox{\hyperlink{namespaceleet_aca8cf23cb2471b07f1ee22a2077b5b37}{friendlyError}};\ \textcolor{comment}{//\ Human\ readable\ error\ code\ also\ returned\ by\ the\ server\ in\ most\ cases\ (i.e.\ Unknown\ error)}}
+\DoxyCodeLine{00404\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespaceleet_a264da018065f7948965b19d85bc324fe}{leetError}}\{\mbox{\hyperlink{libleet_8hpp_abc6126af1d45847bc59afa0aa3216b04a9e627ee37931636fb073195d19d46307}{LEET\_ERROR\_NONE}}\};\ \textcolor{comment}{//\ libleet\ specific\ error}}
+\DoxyCodeLine{00405\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespaceleet_aa20a9fa2de98421d60165559a8a23f76}{errorCode}}\{0\};\ \textcolor{comment}{//\ Error\ code\ returned\ by\ libleet\ functions.\ If\ not\ set\ to\ 0,\ something\ went\ wrong.}}
+\DoxyCodeLine{00406\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespaceleet_adc8712b33d096d2f8a204e7bad8ed1d4}{TransID}}\{0\};\ \textcolor{comment}{//\ Transaction\ ID.\ Should\ be\ loaded/saved\ for\ each\ session,\ and\ incremented\ for\ each\ event}}
+\DoxyCodeLine{00407\ }
+\DoxyCodeLine{00422\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespaceleet_a662e01b83ac0e6a95e723331056f03a2}{generateTransID}}();}
+\DoxyCodeLine{00434\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceleet_a411cd6c4806c680b3a928ed52c5b315b}{saveTransID}}(\textcolor{keyword}{const}\ std::string\&\ File);}
+\DoxyCodeLine{00447\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceleet_a965d0a4a07cfed895f1960eba94d989d}{loadTransID}}(\textcolor{keyword}{const}\ std::string\&\ File);}
+\DoxyCodeLine{00453\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ T\ \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{saveToFile}}(\textcolor{keyword}{const}\ std::string\&\ File,\ T\ Data);}
+\DoxyCodeLine{00459\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ T\ \mbox{\hyperlink{namespaceleet_ac00d7b6839416edbf02439773e74e85a}{loadFromFile}}(\textcolor{keyword}{const}\ std::string\&\ File);}
+\DoxyCodeLine{00460\ }
+\DoxyCodeLine{00466\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespaceleet_ab744e089b2a044a1058846540a2d45aa}{returnServerDiscovery}}(std::string\ Server);}
+\DoxyCodeLine{00472\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespaceleet_a6256f0a57469c8c0260ac3e1568da451}{returnHomeServerFromString}}(\textcolor{keyword}{const}\ std::string\&\ userID);}
+\DoxyCodeLine{00473\ }
+\DoxyCodeLine{00478\ \ \ \ \ std::vector<std::string>\ \mbox{\hyperlink{namespaceleet_aa71e9add3fe71ad537065ebc2553e2ca}{returnSupportedLoginTypes}}();}
+\DoxyCodeLine{00483\ \ \ \ \ std::vector<std::string>\ \mbox{\hyperlink{namespaceleet_a3220a8bb8242d9b3bf9694b22d4ee30b}{returnSupportedSpecs}}();}
+\DoxyCodeLine{00484\ }
+\DoxyCodeLine{00490\ \ \ \ \ User::CredentialsResponse\ \mbox{\hyperlink{namespaceleet_a944df5761e8c6e43adf5b3b6f3b8976c}{registerAccount}}(User::Credentials*\ cred);}
+\DoxyCodeLine{00496\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceleet_a5a50820297b17118e6521b5b79d84fc1}{checkRegistrationTokenValidity}}(\textcolor{keyword}{const}\ std::string\&\ Token);}
+\DoxyCodeLine{00497\ }
+\DoxyCodeLine{00503\ \ \ \ \ User::CredentialsResponse\ \mbox{\hyperlink{namespaceleet_a95cd2b8c02fc7a1ef1e2878073a14b9e}{loginAccount}}(User::Credentials*\ cred);}
+\DoxyCodeLine{00509\ \ \ \ \ User::CredentialsResponse\ \mbox{\hyperlink{namespaceleet_a6618277e9bd8b1c8dc6034a3e03135fd}{refreshAccessToken}}(User::CredentialsResponse*\ resp);}
+\DoxyCodeLine{00516\ \ \ \ \ User::Profile\ \mbox{\hyperlink{namespaceleet_a05c6e7d0d0a4ca3117c9cd7fffb0c6cd}{getUserData}}(User::CredentialsResponse*\ resp,\ \textcolor{keyword}{const}\ std::string\&\ userID);}
+\DoxyCodeLine{00517\ }
+\DoxyCodeLine{00526\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespaceleet_abf8deb3b48c9f7322aa6654885946738}{getAPI}}(\textcolor{keyword}{const}\ std::string\&\ API);}
+\DoxyCodeLine{00527\ }
+\DoxyCodeLine{00534\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespaceleet_a87681d6edf2064da9cf4df3dcb3ac67e}{invokeRequest\_Get}}(\textcolor{keyword}{const}\ std::string\&\ URL,\ \textcolor{keyword}{const}\ std::string\&\ Authentication);}
+\DoxyCodeLine{00542\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespaceleet_aa3853464d166cde6fa97f8dfb9e2398f}{invokeRequest\_Put}}(\textcolor{keyword}{const}\ std::string\&\ URL,\ \textcolor{keyword}{const}\ std::string\&\ Data,\ \textcolor{keyword}{const}\ std::string\&\ Authentication);}
+\DoxyCodeLine{00550\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespaceleet_aa88a91a144b2176d9ce3c4cad3c45bab}{invokeRequest\_Post}}(\textcolor{keyword}{const}\ std::string\&\ URL,\ \textcolor{keyword}{const}\ std::string\&\ Data,\ \textcolor{keyword}{const}\ std::string\&\ Authentication);}
+\DoxyCodeLine{00556\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespaceleet_a87681d6edf2064da9cf4df3dcb3ac67e}{invokeRequest\_Get}}(\textcolor{keyword}{const}\ std::string\&\ URL);}
+\DoxyCodeLine{00563\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespaceleet_aa3853464d166cde6fa97f8dfb9e2398f}{invokeRequest\_Put}}(\textcolor{keyword}{const}\ std::string\&\ URL,\ \textcolor{keyword}{const}\ std::string\&\ Data);}
+\DoxyCodeLine{00570\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespaceleet_aa88a91a144b2176d9ce3c4cad3c45bab}{invokeRequest\_Post}}(\textcolor{keyword}{const}\ std::string\&\ URL,\ \textcolor{keyword}{const}\ std::string\&\ Data);}
+\DoxyCodeLine{00577\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespaceleet_a19dc9056d0f77c0c7eb51f12e9f5f554}{invokeRequest\_Post\_File}}(\textcolor{keyword}{const}\ std::string\&\ URL,\ \textcolor{keyword}{const}\ std::string\&\ File);}
+\DoxyCodeLine{00585\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespaceleet_a19dc9056d0f77c0c7eb51f12e9f5f554}{invokeRequest\_Post\_File}}(\textcolor{keyword}{const}\ std::string\&\ URL,\ \textcolor{keyword}{const}\ std::string\&\ File,\ \textcolor{keyword}{const}\ std::string\&\ Authentication);}
+\DoxyCodeLine{00586\ }
+\DoxyCodeLine{00593\ \ \ \ \ Room::Room\ \mbox{\hyperlink{namespaceleet_a20ad1f62e70791be89e97ef10a2e17e8}{returnRoom}}(User::CredentialsResponse*\ resp,\ Room::Room*\ room);}
+\DoxyCodeLine{00600\ \ \ \ \ Room::Room\ \mbox{\hyperlink{namespaceleet_aeec1a06048a9cba651c0f494ab7cdb2c}{createRoom}}(User::CredentialsResponse*\ resp,\ Room::RoomConfiguration*\ conf);}
+\DoxyCodeLine{00607\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceleet_a75c8d9291eb204589c1928ea607dd95b}{inviteUserToRoom}}(User::CredentialsResponse*\ resp,\ Room::Room*\ room,\ \textcolor{keyword}{const}\ std::string\&\ Reason);}
+\DoxyCodeLine{00614\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<Room::Room>\ \mbox{\hyperlink{namespaceleet_a0becdb7d81d60ba11e9b196c2ac312f7}{returnRooms}}(User::CredentialsResponse*\ resp,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ Limit);}
+\DoxyCodeLine{00620\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<Room::Room>\ \mbox{\hyperlink{namespaceleet_ae4179f205bbcae31f1332c5daff19630}{returnRoomIDs}}(User::CredentialsResponse*\ resp);}
+\DoxyCodeLine{00626\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespaceleet_af66fefe88b0d6ee698399cbb9d5de650}{findRoomID}}(std::string\ Alias);}
+\DoxyCodeLine{00627\ }
+\DoxyCodeLine{00634\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<Space::Space>\ \mbox{\hyperlink{namespaceleet_a70a7b20cb7a7c238754013b4c422afb7}{returnSpaces}}(User::CredentialsResponse*\ resp,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ Limit);}
+\DoxyCodeLine{00641\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<Room::Room>\ \mbox{\hyperlink{namespaceleet_a9819e1abc2ed3b322de730a89936ea97}{returnRoomsInSpace}}(User::CredentialsResponse*\ resp,\ \textcolor{keyword}{const}\ std::string\&\ spaceID,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ Limit);}
+\DoxyCodeLine{00642\ }
+\DoxyCodeLine{00649\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespaceleet_a7f18808fb4942a066467af4da81de7fe}{findUserID}}(\textcolor{keyword}{const}\ std::string\&\ Alias,\ \textcolor{keyword}{const}\ std::string\&\ \mbox{\hyperlink{namespaceleet_a047ddd8c4f4dba43c5ee0e38858485ab}{Homeserver}});}
+\DoxyCodeLine{00655\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespaceleet_a9411e25fb1f3420d7b6c954926db536a}{returnUserName}}(\textcolor{keyword}{const}\ std::string\&\ userID);}
+\DoxyCodeLine{00662\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<User::Profile>\ \mbox{\hyperlink{namespaceleet_a00a66e98469fbf8978fc3face0deb78a}{returnUsersInRoom}}(User::CredentialsResponse*\ resp,\ Room::Room*\ room);}
+\DoxyCodeLine{00663\ }
+\DoxyCodeLine{00670\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<User::Device>\ \mbox{\hyperlink{namespaceleet_a196d23dcf6a4e5645af44cd94c59cb48}{returnDevicesFromUser}}(\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User::CredentialsResponse}}*\ resp,\ \textcolor{keyword}{const}\ std::vector<User::Profile>\&\ user);}
+\DoxyCodeLine{00671\ }
+\DoxyCodeLine{00677\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceleet_a4aab99007c2c99bb6231484636d71ead}{checkIfUsernameIsAvailable}}(\textcolor{keyword}{const}\ std::string\&\ Username);}
+\DoxyCodeLine{00678\ }
+\DoxyCodeLine{00686\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceleet_a97a051b8d6cbb32e4cb8e9e8562f81fd}{toggleTyping}}(\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User::CredentialsResponse}}*\ resp,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ Timeout,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ Typing,\ \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room::Room}}*\ room);}
+\DoxyCodeLine{00687\ }
+\DoxyCodeLine{00694\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceleet_a67dbc8b27a77c92ce074b2ab6ae47850}{sendMessage}}(\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User::CredentialsResponse}}*\ resp,\ \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room::Room}}*\ room,\ \mbox{\hyperlink{classleet_1_1Message_1_1Message}{Message::Message}}*\ msg);}
+\DoxyCodeLine{00702\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<Message::Message>\ \mbox{\hyperlink{namespaceleet_a877400ed8e1e79c183a8f7858d79446d}{returnMessages}}(\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User::CredentialsResponse}}*\ resp,\ \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room::Room}}*\ room,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ messageCount);}
+\DoxyCodeLine{00703\ }
+\DoxyCodeLine{00710\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{namespaceleet_a56a1a90994bbd897072fb1b902abc993}{returnFilter}}(\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User::CredentialsResponse}}*\ resp,\ \mbox{\hyperlink{classleet_1_1Filter_1_1Filter}{Filter::Filter}}\ *filter);}
+\DoxyCodeLine{00711\ }
+\DoxyCodeLine{00718\ \ \ \ \ \mbox{\hyperlink{classleet_1_1Attachment_1_1Attachment}{Attachment::Attachment}}\ \mbox{\hyperlink{namespaceleet_a319a93fd72154257674df5ef49d03beb}{uploadFile}}(\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User::CredentialsResponse}}*\ resp,\ \textcolor{keyword}{const}\ std::string\&\ File);}
+\DoxyCodeLine{00726\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespaceleet_ac26d1d02e8463569c4e7fcc4e5f08455}{downloadFile}}(\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User::CredentialsResponse}}*\ resp,\ \mbox{\hyperlink{classleet_1_1Attachment_1_1Attachment}{Attachment::Attachment}}*\ Attachment,\ \textcolor{keyword}{const}\ std::string\&\ outputFile);}
+\DoxyCodeLine{00727\ }
+\DoxyCodeLine{00732\ \ \ \ \ \textcolor{keyword}{const}\ int32\_t\ \mbox{\hyperlink{namespaceleet_a422f2f5edf4183209f96b572cd0cbf73}{returnUnixTimestamp}}();}
+\DoxyCodeLine{00741\ \ \ \ \ \mbox{\hyperlink{classleet_1_1Event_1_1Event}{Event::Event}}\ \mbox{\hyperlink{namespaceleet_a70ad6031c50aef71041c68eb5bf1c415}{returnEventFromTimestamp}}(\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User::CredentialsResponse}}*\ resp,\ \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room::Room}}*\ room,\ \textcolor{keyword}{const}\ int32\_t\ Timestamp,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ Direction);}
+\DoxyCodeLine{00749\ \ \ \ \ \mbox{\hyperlink{classleet_1_1Event_1_1Event}{Event::Event}}\ \mbox{\hyperlink{namespaceleet_ae70c0b95fc9ff27f1dfb481ee5f968c5}{returnLatestEvent}}(\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User::CredentialsResponse}}*\ resp,\ \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room::Room}}*\ room);}
+\DoxyCodeLine{00750\ }
+\DoxyCodeLine{00756\ \ \ \ \ \mbox{\hyperlink{classleet_1_1Sync_1_1Sync}{Sync::Sync}}\ \mbox{\hyperlink{namespaceleet_aed2232388d75a5b6837200d3d3009acc}{returnSync}}(\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User::CredentialsResponse}}*\ resp);}
+\DoxyCodeLine{00757\ }
+\DoxyCodeLine{00763\ \ \ \ \ \mbox{\hyperlink{classleet_1_1VOIP_1_1Credentials}{VOIP::Credentials}}\ \mbox{\hyperlink{namespaceleet_aedf0824145f0f316d71e16085b4fc0c4}{returnTurnCredentials}}(\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User::CredentialsResponse}}*\ resp);}
+\DoxyCodeLine{00764\ }
+\DoxyCodeLine{00765\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ LEET\_NO\_ENCRYPTION}}
+\DoxyCodeLine{00766\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1olmAccount}{olmAccount}}\ \{}
+\DoxyCodeLine{00767\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00768\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00769\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ =\ nlohmann::json;}
+\DoxyCodeLine{00770\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}*\ \mbox{\hyperlink{classleet_1_1olmAccount_a9e16289f1ba1ab95e85433f230df99fa}{accountMemory}};}
+\DoxyCodeLine{00771\ \ \ \ \ \ \ \ \ \ \ \ \ OlmAccount*\ \mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}};}
+\DoxyCodeLine{00772\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}*\ \mbox{\hyperlink{classleet_1_1olmAccount_a90563302e87f0772f6fc6a59d162630d}{utilityMemory}};}
+\DoxyCodeLine{00773\ \ \ \ \ \ \ \ \ \ \ \ \ OlmUtility*\ \mbox{\hyperlink{classleet_1_1olmAccount_a899cc79b680746c8fdfccd374b314d2c}{Utility}};}
+\DoxyCodeLine{00774\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}*\ \mbox{\hyperlink{classleet_1_1olmAccount_a2856582d3fbc688d27d050405ef6e064}{megolmSessionMemory}};}
+\DoxyCodeLine{00775\ \ \ \ \ \ \ \ \ \ \ \ \ OlmOutboundGroupSession*\ \mbox{\hyperlink{classleet_1_1olmAccount_ae5a74c5a2e7819f293606eb6d480a0f0}{megolmSession}};}
+\DoxyCodeLine{00776\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{classleet_1_1olmAccount_a173be267e027dda61392317996df091c}{megolmSessionID}};}
+\DoxyCodeLine{00777\ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classleet_1_1olmAccount_a39d5c59e5cdcf9f1e3c3fb6ed93a15d0}{megolmSessionIDLength}};}
+\DoxyCodeLine{00778\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{classleet_1_1olmAccount_aeb82f0d36ae773e94567d37ddb5f0e95}{megolmSessionKey}};}
+\DoxyCodeLine{00779\ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classleet_1_1olmAccount_abed42411cef1634472f6197bb82c1553}{megolmSessionKeyLength}};}
+\DoxyCodeLine{00780\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{classleet_1_1olmAccount_ac32d7240e542e5eb05f1f40f9980ebc6}{Identity}};}
+\DoxyCodeLine{00781\ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classleet_1_1olmAccount_a93d8b9aefc2be25745611e7e1bf1a799}{identityLength}};}
+\DoxyCodeLine{00782\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{classleet_1_1olmAccount_aeba3e7caea55f16f85669416daef6729}{Signature}};}
+\DoxyCodeLine{00783\ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ \mbox{\hyperlink{classleet_1_1olmAccount_ac05a5e45616deea6b4f573a0b0570883}{signatureLength}};}
+\DoxyCodeLine{00784\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classleet_1_1olmAccount_a2ce1942fb235fc664c64aa02af51e39b}{keysRemaining}}\{0\};}
+\DoxyCodeLine{00785\ }
+\DoxyCodeLine{00786\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1olmAccount_a03e7b55200d1afbeeaa9ecea4ad5b487}{curve25519}};}
+\DoxyCodeLine{00787\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classleet_1_1olmAccount_a7f92aa6bd4c492bf558bf40ba161b9a0}{ed25519}};}
+\DoxyCodeLine{00788\ }
+\DoxyCodeLine{00789\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Used\ to\ store\ established\ olm\ and\ megolm\ sessions\ */}}
+\DoxyCodeLine{00790\ \ \ \ \ \ \ \ \ \ \ \ \ std::map<std::string,\ OlmSession*>\ \mbox{\hyperlink{classleet_1_1olmAccount_a39680df039504cada271abb5d9e4899a}{olmSessions}};}
+\DoxyCodeLine{00791\ }
+\DoxyCodeLine{00792\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ These\ booleans\ essentially\ exist\ to\ prevent\ consequences\ from\ occuring\ in\ case}}
+\DoxyCodeLine{00793\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ *\ the\ caller\ tries\ to\ free\ or\ allocate\ twice.}}
+\DoxyCodeLine{00794\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00795\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1olmAccount_aadcd18456837d84069cf1695e5d8515c}{accountMemoryAllocated}}\{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{00796\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1olmAccount_add0ceec9c4c5ffa05cd2de377b5b6583}{identityMemoryAllocated}}\{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{00797\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1olmAccount_a2d2c0661f747ae25324cdef543dca71f}{signatureMemoryAllocated}}\{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{00798\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1olmAccount_ae2453a849ff9a4b3d1c9fc33da9e2c10}{olmSessionMemoryAllocated}}\{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{00799\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1olmAccount_ab4bd1e66652c36da4134febc552b8095}{megolmSessionMemoryAllocated}}\{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{00800\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1olmAccount_aba60abf43933c689ec97556c17f9e6bb}{megolmSessionIDMemoryAllocated}}\{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{00801\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1olmAccount_a98424b565dd41275786a44a487d90394}{utilityMemoryAllocated}}\{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{00802\ }
+\DoxyCodeLine{00807\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{keyword}{const}\ std::string\&\ Failure)\ \{}
+\DoxyCodeLine{00808\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}olm\ failure:\ "{}}\ +\ Failure\ \};}
+\DoxyCodeLine{00809\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00810\ }
+\DoxyCodeLine{00820\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classleet_1_1olmAccount_a630917281fbc3411146c7f2eb6266601}{createAccount}}()\ \{}
+\DoxyCodeLine{00821\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classleet_1_1olmAccount_aadcd18456837d84069cf1695e5d8515c}{accountMemoryAllocated}})\ \{}
+\DoxyCodeLine{00822\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9e16289f1ba1ab95e85433f230df99fa}{accountMemory}}\ =\ malloc(olm\_account\_size());}
+\DoxyCodeLine{00823\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}}\ =\ olm\_account(\mbox{\hyperlink{classleet_1_1olmAccount_a9e16289f1ba1ab95e85433f230df99fa}{accountMemory}});}
+\DoxyCodeLine{00824\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_aadcd18456837d84069cf1695e5d8515c}{accountMemoryAllocated}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00825\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00826\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}createAccount():\ Cannot\ allocate\ memory\ because\ it\ is\ already\ allocated."{}}\ \};}
+\DoxyCodeLine{00827\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00828\ }
+\DoxyCodeLine{00829\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleetCrypto_1_1randomBytes}{leetCrypto::randomBytes}}\ randomBytes(olm\_create\_account\_random\_length(\mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}}));}
+\DoxyCodeLine{00830\ }
+\DoxyCodeLine{00831\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olm\_create\_account(\mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}},\ randomBytes.\mbox{\hyperlink{classleetCrypto_1_1randomBytes_a56f27469d76479d47215ea9ce52171f9}{data}}(),\ randomBytes.\mbox{\hyperlink{classleetCrypto_1_1randomBytes_a59845f6cf135cada2c3f9b3caf7886d9}{length}}())\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{00832\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_create\_account()"{}});}
+\DoxyCodeLine{00833\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00834\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00835\ }
+\DoxyCodeLine{00848\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classleet_1_1olmAccount_aa87110b7a44952292e48fdb46ba30d00}{loadAccount}}(\textcolor{keyword}{const}\ std::string\&\ pickleKey,\ \textcolor{keyword}{const}\ std::string\&\ pickleData)\ \{}
+\DoxyCodeLine{00849\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classleet_1_1olmAccount_aadcd18456837d84069cf1695e5d8515c}{accountMemoryAllocated}})\ \{}
+\DoxyCodeLine{00850\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9e16289f1ba1ab95e85433f230df99fa}{accountMemory}}\ =\ malloc(olm\_account\_size());}
+\DoxyCodeLine{00851\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}}\ =\ \mbox{\hyperlink{classleet_1_1olmAccount_aa646061d451e058b6abf2f668e239e4d}{unpickle}}(pickleKey,\ pickleData,\ \mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}});}
+\DoxyCodeLine{00852\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_aadcd18456837d84069cf1695e5d8515c}{accountMemoryAllocated}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00853\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00854\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}loadAccount():\ Cannot\ allocate\ memory\ because\ it\ is\ already\ allocated."{}}\ \};}
+\DoxyCodeLine{00855\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00856\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00857\ }
+\DoxyCodeLine{00863\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classleet_1_1olmAccount_ac41a8db6a79cc11b67588592aa7f48cb}{createMegolmSession}}()\ \{}
+\DoxyCodeLine{00864\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classleet_1_1olmAccount_ab4bd1e66652c36da4134febc552b8095}{megolmSessionMemoryAllocated}})\ \{}
+\DoxyCodeLine{00865\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a2856582d3fbc688d27d050405ef6e064}{megolmSessionMemory}}\ =\ malloc(olm\_outbound\_group\_session\_size());}
+\DoxyCodeLine{00866\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_ae5a74c5a2e7819f293606eb6d480a0f0}{megolmSession}}\ =\ olm\_outbound\_group\_session(\mbox{\hyperlink{classleet_1_1olmAccount_a2856582d3fbc688d27d050405ef6e064}{megolmSessionMemory}});}
+\DoxyCodeLine{00867\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_ab4bd1e66652c36da4134febc552b8095}{megolmSessionMemoryAllocated}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00868\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00869\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}createMegolmSession():\ Cannot\ allocate\ memory\ because\ it\ is\ already\ allocated.\ (1)"{}}\ \};}
+\DoxyCodeLine{00870\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00871\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleetCrypto_1_1randomBytes}{leetCrypto::randomBytes}}\ randomBytesSession(olm\_init\_outbound\_group\_session\_random\_length(\mbox{\hyperlink{classleet_1_1olmAccount_ae5a74c5a2e7819f293606eb6d480a0f0}{megolmSession}}));}
+\DoxyCodeLine{00872\ }
+\DoxyCodeLine{00873\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olm\_init\_outbound\_group\_session(\mbox{\hyperlink{classleet_1_1olmAccount_ae5a74c5a2e7819f293606eb6d480a0f0}{megolmSession}},\ \textcolor{keyword}{static\_cast<}uint8\_t*\ \textcolor{keyword}{>}(randomBytesSession.\mbox{\hyperlink{classleetCrypto_1_1randomBytes_a56f27469d76479d47215ea9ce52171f9}{data}}()),\ randomBytesSession.\mbox{\hyperlink{classleetCrypto_1_1randomBytes_a59845f6cf135cada2c3f9b3caf7886d9}{length}}())\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{00874\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(\mbox{\hyperlink{classleet_1_1olmAccount_a2856582d3fbc688d27d050405ef6e064}{megolmSessionMemory}});}
+\DoxyCodeLine{00875\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_ab4bd1e66652c36da4134febc552b8095}{megolmSessionMemoryAllocated}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00876\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_init\_outbound\_group\_session()"{}});}
+\DoxyCodeLine{00877\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00878\ }
+\DoxyCodeLine{00879\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classleet_1_1olmAccount_aba60abf43933c689ec97556c17f9e6bb}{megolmSessionIDMemoryAllocated}})\ \{}
+\DoxyCodeLine{00880\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a39d5c59e5cdcf9f1e3c3fb6ed93a15d0}{megolmSessionIDLength}}\ =\ olm\_outbound\_group\_session\_id\_length(\mbox{\hyperlink{classleet_1_1olmAccount_ae5a74c5a2e7819f293606eb6d480a0f0}{megolmSession}});}
+\DoxyCodeLine{00881\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a173be267e027dda61392317996df091c}{megolmSessionID}}\ =\ (\textcolor{keywordtype}{char}*\ )malloc(\mbox{\hyperlink{classleet_1_1olmAccount_a39d5c59e5cdcf9f1e3c3fb6ed93a15d0}{megolmSessionIDLength}}\ +\ 1);}
+\DoxyCodeLine{00882\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_aba60abf43933c689ec97556c17f9e6bb}{megolmSessionIDMemoryAllocated}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00883\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00884\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}createMegolmSession():\ Cannot\ allocate\ memory\ because\ it\ is\ already\ allocated.\ (2)"{}}\ \};}
+\DoxyCodeLine{00885\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00886\ }
+\DoxyCodeLine{00887\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ tSize\ =\ olm\_outbound\_group\_session\_id(\mbox{\hyperlink{classleet_1_1olmAccount_ae5a74c5a2e7819f293606eb6d480a0f0}{megolmSession}},\ (uint8\_t*\ )\mbox{\hyperlink{classleet_1_1olmAccount_a173be267e027dda61392317996df091c}{megolmSessionID}},\ \mbox{\hyperlink{classleet_1_1olmAccount_a39d5c59e5cdcf9f1e3c3fb6ed93a15d0}{megolmSessionIDLength}});}
+\DoxyCodeLine{00888\ }
+\DoxyCodeLine{00889\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tSize\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{00890\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_outbound\_group\_session\_id()"{}});}
+\DoxyCodeLine{00891\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00892\ }
+\DoxyCodeLine{00893\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a173be267e027dda61392317996df091c}{megolmSessionID}}[tSize]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{00894\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00895\ }
+\DoxyCodeLine{00903\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classleet_1_1olmAccount_a2eda608498d23fbe094f4efcb9efb146}{loadMegolmSession}}(\textcolor{keyword}{const}\ std::string\&\ pickleKey,\ \textcolor{keyword}{const}\ std::string\&\ pickleData)\ \{}
+\DoxyCodeLine{00904\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classleet_1_1olmAccount_ab4bd1e66652c36da4134febc552b8095}{megolmSessionMemoryAllocated}})\ \{}
+\DoxyCodeLine{00905\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a2856582d3fbc688d27d050405ef6e064}{megolmSessionMemory}}\ =\ malloc(olm\_outbound\_group\_session\_size());}
+\DoxyCodeLine{00906\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_ae5a74c5a2e7819f293606eb6d480a0f0}{megolmSession}}\ =\ \mbox{\hyperlink{classleet_1_1olmAccount_aa646061d451e058b6abf2f668e239e4d}{unpickle}}(pickleKey,\ pickleData,\ \mbox{\hyperlink{classleet_1_1olmAccount_ae5a74c5a2e7819f293606eb6d480a0f0}{megolmSession}});}
+\DoxyCodeLine{00907\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_ab4bd1e66652c36da4134febc552b8095}{megolmSessionMemoryAllocated}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00908\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00909\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}createMegolmSession():\ Cannot\ allocate\ memory\ because\ it\ is\ already\ allocated.\ (1)"{}}\ \};}
+\DoxyCodeLine{00910\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00911\ }
+\DoxyCodeLine{00912\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classleet_1_1olmAccount_aba60abf43933c689ec97556c17f9e6bb}{megolmSessionIDMemoryAllocated}})\ \{}
+\DoxyCodeLine{00913\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a39d5c59e5cdcf9f1e3c3fb6ed93a15d0}{megolmSessionIDLength}}\ =\ olm\_outbound\_group\_session\_id\_length(\mbox{\hyperlink{classleet_1_1olmAccount_ae5a74c5a2e7819f293606eb6d480a0f0}{megolmSession}});}
+\DoxyCodeLine{00914\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a173be267e027dda61392317996df091c}{megolmSessionID}}\ =\ (\textcolor{keywordtype}{char}*\ )malloc(\mbox{\hyperlink{classleet_1_1olmAccount_a39d5c59e5cdcf9f1e3c3fb6ed93a15d0}{megolmSessionIDLength}}\ +\ 1);}
+\DoxyCodeLine{00915\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_aba60abf43933c689ec97556c17f9e6bb}{megolmSessionIDMemoryAllocated}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00916\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00917\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}createMegolmSession():\ Cannot\ allocate\ memory\ because\ it\ is\ already\ allocated.\ (2)"{}}\ \};}
+\DoxyCodeLine{00918\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00919\ }
+\DoxyCodeLine{00920\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ tSize\ =\ olm\_outbound\_group\_session\_id(\mbox{\hyperlink{classleet_1_1olmAccount_ae5a74c5a2e7819f293606eb6d480a0f0}{megolmSession}},\ (uint8\_t*\ )\mbox{\hyperlink{classleet_1_1olmAccount_a173be267e027dda61392317996df091c}{megolmSessionID}},\ \mbox{\hyperlink{classleet_1_1olmAccount_a39d5c59e5cdcf9f1e3c3fb6ed93a15d0}{megolmSessionIDLength}});}
+\DoxyCodeLine{00921\ }
+\DoxyCodeLine{00922\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tSize\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{00923\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_outbound\_group\_session\_id()"{}});}
+\DoxyCodeLine{00924\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00925\ }
+\DoxyCodeLine{00926\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a173be267e027dda61392317996df091c}{megolmSessionID}}[tSize]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{00927\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00928\ }
+\DoxyCodeLine{00932\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classleet_1_1olmAccount_af92b2a11dc88153b2ae48fdc895b2c41}{createIdentity}}()\ \{}
+\DoxyCodeLine{00933\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classleet_1_1olmAccount_add0ceec9c4c5ffa05cd2de377b5b6583}{identityMemoryAllocated}})\ \{}
+\DoxyCodeLine{00934\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a93d8b9aefc2be25745611e7e1bf1a799}{identityLength}}\ =\ olm\_account\_identity\_keys\_length(\mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}});}
+\DoxyCodeLine{00935\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_ac32d7240e542e5eb05f1f40f9980ebc6}{Identity}}\ =\ (\textcolor{keywordtype}{char}*\ )malloc(\mbox{\hyperlink{classleet_1_1olmAccount_a93d8b9aefc2be25745611e7e1bf1a799}{identityLength}}\ +\ 1);}
+\DoxyCodeLine{00936\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_add0ceec9c4c5ffa05cd2de377b5b6583}{identityMemoryAllocated}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00937\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00938\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}createIdentity():\ Cannot\ allocate\ memory\ because\ it\ is\ already\ allocated."{}}\ \};}
+\DoxyCodeLine{00939\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00940\ }
+\DoxyCodeLine{00941\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ tSize\ =\ olm\_account\_identity\_keys(\mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}},\ \mbox{\hyperlink{classleet_1_1olmAccount_ac32d7240e542e5eb05f1f40f9980ebc6}{Identity}},\ \mbox{\hyperlink{classleet_1_1olmAccount_a93d8b9aefc2be25745611e7e1bf1a799}{identityLength}});}
+\DoxyCodeLine{00942\ }
+\DoxyCodeLine{00943\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tSize\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{00944\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(\mbox{\hyperlink{classleet_1_1olmAccount_ac32d7240e542e5eb05f1f40f9980ebc6}{Identity}});\ \textcolor{comment}{//\ Identity\ was\ allocated}}
+\DoxyCodeLine{00945\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_add0ceec9c4c5ffa05cd2de377b5b6583}{identityMemoryAllocated}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00946\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_account\_identity\_keys()"{}});}
+\DoxyCodeLine{00947\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00948\ }
+\DoxyCodeLine{00949\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_ac32d7240e542e5eb05f1f40f9980ebc6}{Identity}}[tSize]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{00950\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ identityJson;}
+\DoxyCodeLine{00951\ }
+\DoxyCodeLine{00952\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{00953\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ identityJson\ =\ \{\ json::parse(\mbox{\hyperlink{classleet_1_1olmAccount_ac32d7240e542e5eb05f1f40f9980ebc6}{Identity}})\ \};}
+\DoxyCodeLine{00954\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ json::parse\_error\&\ e)\ \{}
+\DoxyCodeLine{00955\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(\mbox{\hyperlink{classleet_1_1olmAccount_ac32d7240e542e5eb05f1f40f9980ebc6}{Identity}});}
+\DoxyCodeLine{00956\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_add0ceec9c4c5ffa05cd2de377b5b6583}{identityMemoryAllocated}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00957\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00958\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00959\ }
+\DoxyCodeLine{00960\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&output\ :\ identityJson)\ \{}
+\DoxyCodeLine{00961\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceleet_aa20a9fa2de98421d60165559a8a23f76}{leet::errorCode}}\ =\ 0;}
+\DoxyCodeLine{00962\ }
+\DoxyCodeLine{00963\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (output[\textcolor{stringliteral}{"{}curve25519"{}}].is\_string())}
+\DoxyCodeLine{00964\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a03e7b55200d1afbeeaa9ecea4ad5b487}{curve25519}}\ =\ output[\textcolor{stringliteral}{"{}curve25519"{}}].get<std::string>();}
+\DoxyCodeLine{00965\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (output[\textcolor{stringliteral}{"{}ed25519"{}}].is\_string())}
+\DoxyCodeLine{00966\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a7f92aa6bd4c492bf558bf40ba161b9a0}{ed25519}}\ =\ output[\textcolor{stringliteral}{"{}ed25519"{}}].get<std::string>();}
+\DoxyCodeLine{00967\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00968\ }
+\DoxyCodeLine{00969\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Now\ we\ don't\ this\ anymore}}
+\DoxyCodeLine{00970\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(\mbox{\hyperlink{classleet_1_1olmAccount_ac32d7240e542e5eb05f1f40f9980ebc6}{Identity}});}
+\DoxyCodeLine{00971\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_add0ceec9c4c5ffa05cd2de377b5b6583}{identityMemoryAllocated}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00972\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00973\ }
+\DoxyCodeLine{00978\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classleet_1_1olmAccount_ad11b6a0848606c7ffead1ef4741772f3}{upload}}(\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{leet::User::CredentialsResponse}}*\ resp)\ \{}
+\DoxyCodeLine{00979\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classleet_1_1olmAccount_a03e7b55200d1afbeeaa9ecea4ad5b487}{curve25519}}.compare(\textcolor{stringliteral}{"{}"{}}))\ \{}
+\DoxyCodeLine{00980\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}upload():\ Identity\ not\ allocated."{}}\ \};}
+\DoxyCodeLine{00981\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00982\ }
+\DoxyCodeLine{00983\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ Body\ =\ \{}
+\DoxyCodeLine{00984\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{stringliteral}{"{}algorithms"{}},\ \{\textcolor{stringliteral}{"{}m.olm.v1.curve25519-\/aes-\/sha2"{}},\ \textcolor{stringliteral}{"{}m.megolm.v1.aes-\/sha2"{}}\ \}\},}
+\DoxyCodeLine{00985\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{stringliteral}{"{}device\_id"{}},\ resp-\/>\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_a2c9bc29b7c1702af9c372fccd5e14c6d}{deviceID}}\ \},}
+\DoxyCodeLine{00986\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{stringliteral}{"{}user\_id"{}},\ resp-\/>\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_a7561824b6e56efae7257ac9995d43846}{userID}}\ \},}
+\DoxyCodeLine{00987\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{stringliteral}{"{}keys"{}},\ \{}
+\DoxyCodeLine{00988\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ std::string(\textcolor{stringliteral}{"{}ed25519:"{}})\ +\ resp-\/>\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_a2c9bc29b7c1702af9c372fccd5e14c6d}{deviceID}},\ \mbox{\hyperlink{classleet_1_1olmAccount_a7f92aa6bd4c492bf558bf40ba161b9a0}{ed25519}}\ \},}
+\DoxyCodeLine{00989\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ std::string(\textcolor{stringliteral}{"{}curve25519:"{}})\ +\ resp-\/>\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_a2c9bc29b7c1702af9c372fccd5e14c6d}{deviceID}},\ \mbox{\hyperlink{classleet_1_1olmAccount_a03e7b55200d1afbeeaa9ecea4ad5b487}{curve25519}}\ \}}
+\DoxyCodeLine{00990\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \}}
+\DoxyCodeLine{00991\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00992\ }
+\DoxyCodeLine{00993\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ Keys\ =\ Body.dump();}
+\DoxyCodeLine{00994\ }
+\DoxyCodeLine{00995\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classleet_1_1olmAccount_a2d2c0661f747ae25324cdef543dca71f}{signatureMemoryAllocated}})\ \{}
+\DoxyCodeLine{00996\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_ac05a5e45616deea6b4f573a0b0570883}{signatureLength}}\ =\ olm\_account\_signature\_length(\mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}});}
+\DoxyCodeLine{00997\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_aeba3e7caea55f16f85669416daef6729}{Signature}}\ =\ (\textcolor{keywordtype}{char}*\ )malloc(\mbox{\hyperlink{classleet_1_1olmAccount_ac05a5e45616deea6b4f573a0b0570883}{signatureLength}}\ +\ 1);}
+\DoxyCodeLine{00998\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a2d2c0661f747ae25324cdef543dca71f}{signatureMemoryAllocated}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00999\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01000\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}upload():\ Cannot\ allocate\ memory\ because\ it\ is\ already\ allocated."{}}\ \};}
+\DoxyCodeLine{01001\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01002\ }
+\DoxyCodeLine{01003\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Sign\ using\ the\ json\ we\ constructed,\ which\ will\ provide\ us\ with\ a\ signature}}
+\DoxyCodeLine{01004\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olm\_account\_sign(\mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}},\ Keys.data(),\ Keys.length(),\ \mbox{\hyperlink{classleet_1_1olmAccount_aeba3e7caea55f16f85669416daef6729}{Signature}},\ \mbox{\hyperlink{classleet_1_1olmAccount_ac05a5e45616deea6b4f573a0b0570883}{signatureLength}})\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01005\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(\mbox{\hyperlink{classleet_1_1olmAccount_aeba3e7caea55f16f85669416daef6729}{Signature}});\ \textcolor{comment}{//\ Signature\ was\ allocated}}
+\DoxyCodeLine{01006\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a2d2c0661f747ae25324cdef543dca71f}{signatureMemoryAllocated}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01007\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_account\_sign()"{}});}
+\DoxyCodeLine{01008\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01009\ }
+\DoxyCodeLine{01010\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_aeba3e7caea55f16f85669416daef6729}{Signature}}[\mbox{\hyperlink{classleet_1_1olmAccount_ac05a5e45616deea6b4f573a0b0570883}{signatureLength}}]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{01011\ }
+\DoxyCodeLine{01012\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Body[\textcolor{stringliteral}{"{}signatures"{}}]\ =\ \{}
+\DoxyCodeLine{01013\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ resp-\/>\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_a7561824b6e56efae7257ac9995d43846}{userID}},\ \{}
+\DoxyCodeLine{01014\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ std::string(\textcolor{stringliteral}{"{}ed25519:"{}})\ +\ resp-\/>\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_a2c9bc29b7c1702af9c372fccd5e14c6d}{deviceID}},\ \mbox{\hyperlink{classleet_1_1olmAccount_aeba3e7caea55f16f85669416daef6729}{Signature}}\ \}}
+\DoxyCodeLine{01015\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \}}
+\DoxyCodeLine{01016\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{01017\ }
+\DoxyCodeLine{01018\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ keysJson\ =\ \{}
+\DoxyCodeLine{01019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{stringliteral}{"{}device\_keys"{}},\ Body\ \}}
+\DoxyCodeLine{01020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{01021\ }
+\DoxyCodeLine{01022\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(\mbox{\hyperlink{classleet_1_1olmAccount_aeba3e7caea55f16f85669416daef6729}{Signature}});}
+\DoxyCodeLine{01023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a2d2c0661f747ae25324cdef543dca71f}{signatureMemoryAllocated}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01024\ }
+\DoxyCodeLine{01025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Upload\ our\ device\ keys}}
+\DoxyCodeLine{01026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ Output\ \{}
+\DoxyCodeLine{01027\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceleet_aa88a91a144b2176d9ce3c4cad3c45bab}{leet::invokeRequest\_Post}}(\mbox{\hyperlink{namespaceleet_abf8deb3b48c9f7322aa6654885946738}{leet::getAPI}}(\textcolor{stringliteral}{"{}/\_matrix/client/v3/keys/upload"{}}),\ keysJson.dump(),\ resp-\/>\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_ae4d15192559f009ad966de4bc9cdf58a}{accessToken}})}
+\DoxyCodeLine{01028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{01029\ }
+\DoxyCodeLine{01030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ uploadedKeys;}
+\DoxyCodeLine{01031\ }
+\DoxyCodeLine{01032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{01033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uploadedKeys\ =\ json::parse(Output);}
+\DoxyCodeLine{01034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ json::parse\_error\&\ e)\ \{}
+\DoxyCodeLine{01035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01037\ }
+\DoxyCodeLine{01038\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a2ce1942fb235fc664c64aa02af51e39b}{keysRemaining}}\ =\ uploadedKeys[\textcolor{stringliteral}{"{}one\_time\_key\_counts"{}}][\textcolor{stringliteral}{"{}signed\_curve25519"{}}];}
+\DoxyCodeLine{01039\ }
+\DoxyCodeLine{01040\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Max\ /\ 2\ is\ a\ good\ amount\ of\ one\ time\ keys\ to\ keep\ available}}
+\DoxyCodeLine{01041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ keysToKeep\ =\ olm\_account\_max\_number\_of\_one\_time\_keys(\mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}})\ /\ 2;}
+\DoxyCodeLine{01042\ }
+\DoxyCodeLine{01043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ We\ might\ need\ to\ generate\ new\ keys}}
+\DoxyCodeLine{01044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classleet_1_1olmAccount_a2ce1942fb235fc664c64aa02af51e39b}{keysRemaining}}\ <\ keysToKeep)\ \{}
+\DoxyCodeLine{01045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ keysNeeded\ =\ keysToKeep\ -\/\ \mbox{\hyperlink{classleet_1_1olmAccount_a2ce1942fb235fc664c64aa02af51e39b}{keysRemaining}};}
+\DoxyCodeLine{01046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ otkLength\ =\ olm\_account\_one\_time\_keys\_length(\mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}});}
+\DoxyCodeLine{01047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ Otk\ =\ (\textcolor{keywordtype}{char}*\ )malloc(otkLength\ +\ 1);}
+\DoxyCodeLine{01048\ }
+\DoxyCodeLine{01049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ tSize\ =\ olm\_account\_one\_time\_keys(\mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}},\ Otk,\ otkLength);}
+\DoxyCodeLine{01050\ }
+\DoxyCodeLine{01051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tSize\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(Otk);\ \textcolor{comment}{//\ Otk\ was\ allocated}}
+\DoxyCodeLine{01053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_account\_one\_time\_keys()\ (1)"{}});}
+\DoxyCodeLine{01054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01055\ }
+\DoxyCodeLine{01056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Otk[tSize]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{01057\ }
+\DoxyCodeLine{01058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ Otks;}
+\DoxyCodeLine{01059\ }
+\DoxyCodeLine{01060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{01061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Otks\ =\ json::parse(Otk);}
+\DoxyCodeLine{01062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ json::parse\_error\&\ e)\ \{}
+\DoxyCodeLine{01063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01065\ }
+\DoxyCodeLine{01066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(Otk);}
+\DoxyCodeLine{01067\ }
+\DoxyCodeLine{01068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ keysAvailable\ =\ Otks[\textcolor{stringliteral}{"{}ed25519"{}}].size();}
+\DoxyCodeLine{01069\ }
+\DoxyCodeLine{01070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ We\ do\ need\ to\ generate\ new\ keys}}
+\DoxyCodeLine{01071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (keysNeeded\ >\ keysAvailable)\ \{}
+\DoxyCodeLine{01072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ keysToGenerate\ =\ keysNeeded\ -\/\ keysAvailable;}
+\DoxyCodeLine{01073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ otkRandomLength\ =\ olm\_account\_generate\_one\_time\_keys\_random\_length(\mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}},\ keysToGenerate);}
+\DoxyCodeLine{01074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleetCrypto_1_1randomBytes}{leetCrypto::randomBytes}}\ randomBytes(otkRandomLength);}
+\DoxyCodeLine{01075\ }
+\DoxyCodeLine{01076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olm\_account\_generate\_one\_time\_keys(\mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}},\ keysToGenerate,\ randomBytes.\mbox{\hyperlink{classleetCrypto_1_1randomBytes_a56f27469d76479d47215ea9ce52171f9}{data}}(),\ randomBytes.\mbox{\hyperlink{classleetCrypto_1_1randomBytes_a59845f6cf135cada2c3f9b3caf7886d9}{length}}())\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_account\_generate\_one\_time\_keys()"{}});}
+\DoxyCodeLine{01078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01079\ }
+\DoxyCodeLine{01080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Now\ let's\ get\ all\ the\ keys\ we\ have}}
+\DoxyCodeLine{01081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ otkLength\ =\ olm\_account\_one\_time\_keys\_length(\mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}});}
+\DoxyCodeLine{01082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Otk\ =\ (\textcolor{keywordtype}{char}*\ )malloc(otkLength\ +\ 1);}
+\DoxyCodeLine{01083\ }
+\DoxyCodeLine{01084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tSize\ =\ olm\_account\_one\_time\_keys(\mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}},\ Otk,\ otkLength);}
+\DoxyCodeLine{01085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tSize\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_account\_one\_time\_keys()\ (2)"{}});}
+\DoxyCodeLine{01087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01088\ }
+\DoxyCodeLine{01089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Otk[tSize]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{01090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Otks\ =\ json::parse(Otk);}
+\DoxyCodeLine{01091\ }
+\DoxyCodeLine{01092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(Otk);}
+\DoxyCodeLine{01093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01094\ }
+\DoxyCodeLine{01095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ signedOtks;}
+\DoxyCodeLine{01096\ }
+\DoxyCodeLine{01097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Now\ let's\ sign\ all\ of\ them}}
+\DoxyCodeLine{01098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ output\ :\ Otks[\textcolor{stringliteral}{"{}curve25519"{}}].items())\ \{}
+\DoxyCodeLine{01099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ Keys\ =\ \{}
+\DoxyCodeLine{01100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{stringliteral}{"{}key"{}},\ output.value()\ \}}
+\DoxyCodeLine{01101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{01102\ }
+\DoxyCodeLine{01103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classleet_1_1olmAccount_a2d2c0661f747ae25324cdef543dca71f}{signatureMemoryAllocated}})\ \{}
+\DoxyCodeLine{01104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_ac05a5e45616deea6b4f573a0b0570883}{signatureLength}}\ =\ olm\_account\_signature\_length(\mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}});}
+\DoxyCodeLine{01105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_aeba3e7caea55f16f85669416daef6729}{Signature}}\ =\ (\textcolor{keywordtype}{char}*\ )malloc(\mbox{\hyperlink{classleet_1_1olmAccount_ac05a5e45616deea6b4f573a0b0570883}{signatureLength}}\ +\ 1);}
+\DoxyCodeLine{01106\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a2d2c0661f747ae25324cdef543dca71f}{signatureMemoryAllocated}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}upload():\ Cannot\ allocate\ memory\ because\ it\ is\ already\ allocated."{}}\ \};}
+\DoxyCodeLine{01109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01110\ }
+\DoxyCodeLine{01111\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ theKeys\ =\ Keys.dump();}
+\DoxyCodeLine{01112\ }
+\DoxyCodeLine{01113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olm\_account\_sign(\mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}},\ theKeys.data(),\ theKeys.length(),\ \mbox{\hyperlink{classleet_1_1olmAccount_aeba3e7caea55f16f85669416daef6729}{Signature}},\ \mbox{\hyperlink{classleet_1_1olmAccount_ac05a5e45616deea6b4f573a0b0570883}{signatureLength}})\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(\mbox{\hyperlink{classleet_1_1olmAccount_aeba3e7caea55f16f85669416daef6729}{Signature}});}
+\DoxyCodeLine{01115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a2d2c0661f747ae25324cdef543dca71f}{signatureMemoryAllocated}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_account\_sign()"{}});}
+\DoxyCodeLine{01117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01118\ }
+\DoxyCodeLine{01119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_aeba3e7caea55f16f85669416daef6729}{Signature}}[\mbox{\hyperlink{classleet_1_1olmAccount_ac05a5e45616deea6b4f573a0b0570883}{signatureLength}}]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{01120\ }
+\DoxyCodeLine{01121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Keys[\textcolor{stringliteral}{"{}signatures"{}}]\ =\ \{}
+\DoxyCodeLine{01122\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ resp-\/>\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_a7561824b6e56efae7257ac9995d43846}{userID}},\ \{}
+\DoxyCodeLine{01123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ std::string(\textcolor{stringliteral}{"{}ed25519:"{}})\ +\ resp-\/>\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_a2c9bc29b7c1702af9c372fccd5e14c6d}{deviceID}},\ \mbox{\hyperlink{classleet_1_1olmAccount_aeba3e7caea55f16f85669416daef6729}{Signature}}\ \}}
+\DoxyCodeLine{01124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \}}
+\DoxyCodeLine{01125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{01126\ }
+\DoxyCodeLine{01127\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Increase\ the\ number\ of\ keys}}
+\DoxyCodeLine{01128\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ signedOtks[std::string(\textcolor{stringliteral}{"{}signed\_curve25519:"{}})\ +\ output.key()]\ =\ Keys;}
+\DoxyCodeLine{01129\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(\mbox{\hyperlink{classleet_1_1olmAccount_aeba3e7caea55f16f85669416daef6729}{Signature}});}
+\DoxyCodeLine{01130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a2d2c0661f747ae25324cdef543dca71f}{signatureMemoryAllocated}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01131\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01132\ }
+\DoxyCodeLine{01133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Upload\ it\ all}}
+\DoxyCodeLine{01134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ Body\ =\ \{\ \{\ \textcolor{stringliteral}{"{}one\_time\_keys"{}},\ signedOtks\ \}\ \};}
+\DoxyCodeLine{01135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ outputReq\ \{}
+\DoxyCodeLine{01136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceleet_aa88a91a144b2176d9ce3c4cad3c45bab}{leet::invokeRequest\_Post}}(\mbox{\hyperlink{namespaceleet_abf8deb3b48c9f7322aa6654885946738}{leet::getAPI}}(\textcolor{stringliteral}{"{}/\_matrix/client/v3/keys/upload"{}}),\ Body.dump(),\ resp-\/>\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_ae4d15192559f009ad966de4bc9cdf58a}{accessToken}})}
+\DoxyCodeLine{01137\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{01138\ }
+\DoxyCodeLine{01139\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ olm\_account\_mark\_keys\_as\_published(\mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}});}
+\DoxyCodeLine{01140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01141\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01142\ }
+\DoxyCodeLine{01149\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classleet_1_1olmAccount_a10d76b67a728792ee645ba904d7a3f46}{createSession}}(\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{leet::User::CredentialsResponse}}*\ resp,\ \mbox{\hyperlink{classleet_1_1Room_1_1Room}{leet::Room::Room}}*\ room,\ \textcolor{keyword}{const}\ std::vector<leet::User::Profile>\&\ users)\ \{}
+\DoxyCodeLine{01150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classleet_1_1olmAccount_ab4bd1e66652c36da4134febc552b8095}{megolmSessionMemoryAllocated}})\ \{}
+\DoxyCodeLine{01151\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}createSession():\ Megolm\ session\ not\ allocated."{}}\ \};}
+\DoxyCodeLine{01152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01153\ }
+\DoxyCodeLine{01154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classleet_1_1olmAccount_a98424b565dd41275786a44a487d90394}{utilityMemoryAllocated}})\ \{}
+\DoxyCodeLine{01155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a90563302e87f0772f6fc6a59d162630d}{utilityMemory}}\ =\ malloc(olm\_utility\_size());}
+\DoxyCodeLine{01156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a899cc79b680746c8fdfccd374b314d2c}{Utility}}\ =\ olm\_utility(\mbox{\hyperlink{classleet_1_1olmAccount_a90563302e87f0772f6fc6a59d162630d}{utilityMemory}});}
+\DoxyCodeLine{01157\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a98424b565dd41275786a44a487d90394}{utilityMemoryAllocated}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01158\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01159\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}createSession():\ Cannot\ allocate\ memory\ because\ it\ is\ already\ allocated.\ (0)"{}}\ \};}
+\DoxyCodeLine{01160\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01161\ }
+\DoxyCodeLine{01162\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Loop\ through\ all\ devices\ that\ this\ user\ has}}
+\DoxyCodeLine{01163\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ Body;}
+\DoxyCodeLine{01164\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ deviceKeys;}
+\DoxyCodeLine{01165\ }
+\DoxyCodeLine{01166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ user\ :\ users)\ \{}
+\DoxyCodeLine{01167\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ output\ :\ user.Devices)\ \{\ \textcolor{comment}{//\ each\ user\ and\ each\ of\ his\ devices}}
+\DoxyCodeLine{01168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ deviceKeys\ should\ look\ like\ the\ json\ returned\ from\ keys/query}}
+\DoxyCodeLine{01169\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (output.olm\ \&\&\ output.megolm)\ \{}
+\DoxyCodeLine{01170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ deviceKeys[\textcolor{stringliteral}{"{}device\_keys"{}}][output.userID][output.deviceID][\textcolor{stringliteral}{"{}algorithms"{}}]\ =\ json::array(\{\textcolor{stringliteral}{"{}m.olm.v1.curve25519-\/aes-\/sha2"{}},\ \textcolor{stringliteral}{"{}m.megolm.v1.aes-\/sha2"{}}\});}
+\DoxyCodeLine{01171\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (output.olm)\ \{}
+\DoxyCodeLine{01172\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ deviceKeys[\textcolor{stringliteral}{"{}device\_keys"{}}][output.userID][output.deviceID][\textcolor{stringliteral}{"{}algorithms"{}}]\ =\ json::array(\{\textcolor{stringliteral}{"{}m.olm.v1.curve25519-\/aes-\/sha2"{}}\});}
+\DoxyCodeLine{01173\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (output.megolm)\ \{}
+\DoxyCodeLine{01174\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ deviceKeys[\textcolor{stringliteral}{"{}device\_keys"{}}][output.userID][output.deviceID][\textcolor{stringliteral}{"{}algorithms"{}}]\ =\ json::array(\{\textcolor{stringliteral}{"{}m.megolm.v1.aes-\/sha2"{}}\});}
+\DoxyCodeLine{01175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01176\ }
+\DoxyCodeLine{01177\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ deviceKeys[\textcolor{stringliteral}{"{}device\_keys"{}}][output.userID][output.deviceID][\textcolor{stringliteral}{"{}device\_id"{}}]\ =\ output.deviceID;}
+\DoxyCodeLine{01178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ deviceKeys[\textcolor{stringliteral}{"{}device\_keys"{}}][output.userID][output.deviceID][\textcolor{stringliteral}{"{}keys"{}}][\textcolor{stringliteral}{"{}curve25519:"{}}\ +\ output.deviceID]\ =\ output.curve25519Key;}
+\DoxyCodeLine{01179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ deviceKeys[\textcolor{stringliteral}{"{}device\_keys"{}}][output.userID][output.deviceID][\textcolor{stringliteral}{"{}keys"{}}][\textcolor{stringliteral}{"{}ed25519:"{}}\ +\ output.deviceID]\ =\ output.ed25519Key;}
+\DoxyCodeLine{01180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ deviceKeys[\textcolor{stringliteral}{"{}device\_keys"{}}][output.userID][output.deviceID][\textcolor{stringliteral}{"{}user\_id"{}}]\ =\ output.userID;}
+\DoxyCodeLine{01181\ }
+\DoxyCodeLine{01182\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Body[\textcolor{stringliteral}{"{}one\_time\_keys"{}}][output.userID][output.deviceID]\ =\ \textcolor{stringliteral}{"{}signed\_curve25519"{}};}
+\DoxyCodeLine{01183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01185\ }
+\DoxyCodeLine{01186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ Output\ \{}
+\DoxyCodeLine{01187\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceleet_aa88a91a144b2176d9ce3c4cad3c45bab}{leet::invokeRequest\_Post}}(\mbox{\hyperlink{namespaceleet_abf8deb3b48c9f7322aa6654885946738}{leet::getAPI}}(\textcolor{stringliteral}{"{}/\_matrix/client/v3/keys/claim"{}}),\ Body.dump(),\ resp-\/>\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_ae4d15192559f009ad966de4bc9cdf58a}{accessToken}})}
+\DoxyCodeLine{01188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{01189\ }
+\DoxyCodeLine{01190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ claimedKeys;}
+\DoxyCodeLine{01191\ }
+\DoxyCodeLine{01192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{01193\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ claimedKeys\ =\ json::parse(Output);}
+\DoxyCodeLine{01194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (\textcolor{keyword}{const}\ json::parse\_error\&\ e)\ \{}
+\DoxyCodeLine{01195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01197\ }
+\DoxyCodeLine{01198\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ tSize;}
+\DoxyCodeLine{01199\ }
+\DoxyCodeLine{01200\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ eventToSend;}
+\DoxyCodeLine{01201\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ user\ :\ users)\ \{}
+\DoxyCodeLine{01202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ output\ :\ user.Devices)\ \{}
+\DoxyCodeLine{01203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ deviceKey\ =\ deviceKeys[\textcolor{stringliteral}{"{}device\_keys"{}}][output.userID][output.deviceID];}
+\DoxyCodeLine{01204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ keysToSign\ =\ deviceKey.dump();}
+\DoxyCodeLine{01205\ }
+\DoxyCodeLine{01206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ signatureCopy\ =\ (\textcolor{keywordtype}{char}*\ )malloc(output.ed25519Signature.length()\ +\ 1);}
+\DoxyCodeLine{01207\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ output.ed25519Signature.copy(signatureCopy,\ output.ed25519Signature.length());}
+\DoxyCodeLine{01208\ }
+\DoxyCodeLine{01209\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olm\_ed25519\_verify(\mbox{\hyperlink{classleet_1_1olmAccount_a899cc79b680746c8fdfccd374b314d2c}{Utility}},\ output.ed25519Key.data(),\ output.ed25519Key.length(),}
+\DoxyCodeLine{01210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ keysToSign.data(),\ keysToSign.length(),\ signatureCopy,\ output.ed25519Signature.length())\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01211\ }
+\DoxyCodeLine{01212\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(signatureCopy);}
+\DoxyCodeLine{01213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};\ \textcolor{comment}{//\ Invalid\ device}}
+\DoxyCodeLine{01214\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01215\ }
+\DoxyCodeLine{01216\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(signatureCopy);}
+\DoxyCodeLine{01217\ }
+\DoxyCodeLine{01218\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ fetch\ megolm\ session\ key}}
+\DoxyCodeLine{01219\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_abed42411cef1634472f6197bb82c1553}{megolmSessionKeyLength}}\ =\ olm\_outbound\_group\_session\_key\_length(\mbox{\hyperlink{classleet_1_1olmAccount_ae5a74c5a2e7819f293606eb6d480a0f0}{megolmSession}});}
+\DoxyCodeLine{01220\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_aeb82f0d36ae773e94567d37ddb5f0e95}{megolmSessionKey}}\ =\ (\textcolor{keywordtype}{char}*\ )malloc(\mbox{\hyperlink{classleet_1_1olmAccount_abed42411cef1634472f6197bb82c1553}{megolmSessionKeyLength}}\ +\ 1);}
+\DoxyCodeLine{01221\ }
+\DoxyCodeLine{01222\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tSize\ =\ olm\_outbound\_group\_session\_key(\mbox{\hyperlink{classleet_1_1olmAccount_ae5a74c5a2e7819f293606eb6d480a0f0}{megolmSession}},\ (uint8\_t*\ )\mbox{\hyperlink{classleet_1_1olmAccount_aeb82f0d36ae773e94567d37ddb5f0e95}{megolmSessionKey}},\ \mbox{\hyperlink{classleet_1_1olmAccount_abed42411cef1634472f6197bb82c1553}{megolmSessionKeyLength}});}
+\DoxyCodeLine{01223\ }
+\DoxyCodeLine{01224\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tSize\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_outbound\_group\_session\_key()"{}});}
+\DoxyCodeLine{01226\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01227\ }
+\DoxyCodeLine{01228\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_aeb82f0d36ae773e94567d37ddb5f0e95}{megolmSessionKey}}[tSize]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{01229\ }
+\DoxyCodeLine{01230\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ Otk\{\textcolor{stringliteral}{"{}"{}}\};}
+\DoxyCodeLine{01231\ }
+\DoxyCodeLine{01232\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ Signed\ =\ claimedKeys[\textcolor{stringliteral}{"{}one\_time\_keys"{}}][output.userID][output.deviceID];}
+\DoxyCodeLine{01233\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ signedOtk\ :\ Signed.items())\ \{}
+\DoxyCodeLine{01234\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (signedOtk.value().contains(\textcolor{stringliteral}{"{}key"{}}))\ \{}
+\DoxyCodeLine{01235\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Otk\ =\ signedOtk.value()[\textcolor{stringliteral}{"{}key"{}}];}
+\DoxyCodeLine{01236\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{01237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01239\ }
+\DoxyCodeLine{01240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!Otk.compare(\textcolor{stringliteral}{"{}"{}}))\ \{}
+\DoxyCodeLine{01241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{01242\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01243\ }
+\DoxyCodeLine{01244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ an\ olm\ session}}
+\DoxyCodeLine{01245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ OlmSession*\ Session;}
+\DoxyCodeLine{01246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}*\ sessionMemory;}
+\DoxyCodeLine{01247\ }
+\DoxyCodeLine{01248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classleet_1_1olmAccount_ae2453a849ff9a4b3d1c9fc33da9e2c10}{olmSessionMemoryAllocated}})\ \{}
+\DoxyCodeLine{01249\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sessionMemory\ =\ malloc(olm\_session\_size());}
+\DoxyCodeLine{01250\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Session\ =\ olm\_session(sessionMemory);}
+\DoxyCodeLine{01251\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_ae2453a849ff9a4b3d1c9fc33da9e2c10}{olmSessionMemoryAllocated}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01252\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}createSession():\ Cannot\ allocate\ memory\ because\ it\ is\ already\ allocated.\ (4)"{}}\ \};}
+\DoxyCodeLine{01254\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01255\ }
+\DoxyCodeLine{01256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Store\ the\ session}}
+\DoxyCodeLine{01257\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a39680df039504cada271abb5d9e4899a}{olmSessions}}[output.userID+output.curve25519Key+output.deviceID]\ =\ Session;}
+\DoxyCodeLine{01258\ }
+\DoxyCodeLine{01259\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleetCrypto_1_1randomBytes}{leetCrypto::randomBytes}}\ randomBytes(olm\_create\_outbound\_session\_random\_length(Session));}
+\DoxyCodeLine{01260\ }
+\DoxyCodeLine{01261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olm\_create\_outbound\_session(Session,\ \mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}},\ output.curve25519Key.data(),\ output.curve25519Key.length(),\ Otk.data(),\ Otk.length(),\ randomBytes.\mbox{\hyperlink{classleetCrypto_1_1randomBytes_a56f27469d76479d47215ea9ce52171f9}{data}}(),\ randomBytes.\mbox{\hyperlink{classleetCrypto_1_1randomBytes_a59845f6cf135cada2c3f9b3caf7886d9}{length}}())\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01262\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_create\_outbound\_session()"{}});}
+\DoxyCodeLine{01263\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01264\ }
+\DoxyCodeLine{01265\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ roomKeyMessage;}
+\DoxyCodeLine{01266\ }
+\DoxyCodeLine{01267\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ roomKeyMessage[\textcolor{stringliteral}{"{}algorithm"{}}]\ =\ \textcolor{stringliteral}{"{}m.megolm.v1.aes-\/sha2"{}};}
+\DoxyCodeLine{01268\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ roomKeyMessage[\textcolor{stringliteral}{"{}room\_id"{}}]\ =\ room-\/>\mbox{\hyperlink{classleet_1_1Room_1_1Room_a845bb4727d6c821e8d69a15ad0e2eb1f}{roomID}};}
+\DoxyCodeLine{01269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ roomKeyMessage[\textcolor{stringliteral}{"{}session\_id"{}}]\ =\ \mbox{\hyperlink{classleet_1_1olmAccount_a173be267e027dda61392317996df091c}{megolmSessionID}};}
+\DoxyCodeLine{01270\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ roomKeyMessage[\textcolor{stringliteral}{"{}session\_key"{}}]\ =\ \mbox{\hyperlink{classleet_1_1olmAccount_aeb82f0d36ae773e94567d37ddb5f0e95}{megolmSessionKey}};}
+\DoxyCodeLine{01271\ }
+\DoxyCodeLine{01272\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ roomKey;}
+\DoxyCodeLine{01273\ }
+\DoxyCodeLine{01274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ roomKey[\textcolor{stringliteral}{"{}type"{}}]\ =\ \textcolor{stringliteral}{"{}m.room\_key"{}};}
+\DoxyCodeLine{01275\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ roomKey[\textcolor{stringliteral}{"{}content"{}}]\ =\ roomKeyMessage;}
+\DoxyCodeLine{01276\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ roomKey[\textcolor{stringliteral}{"{}sender"{}}]\ =\ resp-\/>\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_a7561824b6e56efae7257ac9995d43846}{userID}};}
+\DoxyCodeLine{01277\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ roomKey[\textcolor{stringliteral}{"{}sender\_device"{}}]\ =\ resp-\/>\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_a2c9bc29b7c1702af9c372fccd5e14c6d}{deviceID}};}
+\DoxyCodeLine{01278\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ roomKey[\textcolor{stringliteral}{"{}recipient"{}}]\ =\ output.userID;}
+\DoxyCodeLine{01279\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ roomKey[\textcolor{stringliteral}{"{}recipient\_keys"{}}][\textcolor{stringliteral}{"{}ed25519"{}}]\ =\ output.ed25519Key;}
+\DoxyCodeLine{01280\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ roomKey[\textcolor{stringliteral}{"{}keys"{}}][\textcolor{stringliteral}{"{}ed25519"{}}]\ =\ \mbox{\hyperlink{classleet_1_1olmAccount_a7f92aa6bd4c492bf558bf40ba161b9a0}{ed25519}};}
+\DoxyCodeLine{01281\ }
+\DoxyCodeLine{01282\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ roomKeyMsg\ =\ roomKey.dump();}
+\DoxyCodeLine{01283\ }
+\DoxyCodeLine{01284\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleetCrypto_1_1randomBytes}{leetCrypto::randomBytes}}\ randomBytesEncrypt(olm\_encrypt\_random\_length(Session));}
+\DoxyCodeLine{01285\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ cipherTextLength\ =\ olm\_encrypt\_message\_length(Session,\ roomKeyMsg.length());}
+\DoxyCodeLine{01286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ cipherText\ =\ (\textcolor{keywordtype}{char}*\ )malloc(cipherTextLength\ +\ 1);}
+\DoxyCodeLine{01287\ }
+\DoxyCodeLine{01288\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tSize\ =\ olm\_encrypt(Session,\ roomKeyMsg.data(),\ roomKeyMsg.length(),\ randomBytesEncrypt.\mbox{\hyperlink{classleetCrypto_1_1randomBytes_a56f27469d76479d47215ea9ce52171f9}{data}}(),\ randomBytesEncrypt.\mbox{\hyperlink{classleetCrypto_1_1randomBytes_a59845f6cf135cada2c3f9b3caf7886d9}{length}}(),\ cipherText,\ cipherTextLength);}
+\DoxyCodeLine{01289\ }
+\DoxyCodeLine{01290\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tSize\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01291\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(cipherText);}
+\DoxyCodeLine{01292\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_encrypt()"{}});}
+\DoxyCodeLine{01293\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01294\ }
+\DoxyCodeLine{01295\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cipherText[tSize]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{01296\ }
+\DoxyCodeLine{01297\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ encryptedMessage;}
+\DoxyCodeLine{01298\ }
+\DoxyCodeLine{01299\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ encryptedMessage[\textcolor{stringliteral}{"{}algorithm"{}}]\ =\ \textcolor{stringliteral}{"{}m.olm.v1.curve25519-\/aes-\/sha2"{}};}
+\DoxyCodeLine{01300\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ encryptedMessage[\textcolor{stringliteral}{"{}sender\_key"{}}]\ =\ \mbox{\hyperlink{classleet_1_1olmAccount_a03e7b55200d1afbeeaa9ecea4ad5b487}{curve25519}};}
+\DoxyCodeLine{01301\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ encryptedMessage[\textcolor{stringliteral}{"{}ciphertext"{}}][output.curve25519Key][\textcolor{stringliteral}{"{}type"{}}]\ =\ olm\_encrypt\_message\_type(Session);}
+\DoxyCodeLine{01302\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ encryptedMessage[\textcolor{stringliteral}{"{}ciphertext"{}}][output.curve25519Key][\textcolor{stringliteral}{"{}body"{}}]\ =\ cipherText;}
+\DoxyCodeLine{01303\ }
+\DoxyCodeLine{01304\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ eventToSend[\textcolor{stringliteral}{"{}messages"{}}][output.userID][output.deviceID]\ =\ encryptedMessage;}
+\DoxyCodeLine{01305\ }
+\DoxyCodeLine{01306\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(cipherText);}
+\DoxyCodeLine{01307\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(\mbox{\hyperlink{classleet_1_1olmAccount_aeb82f0d36ae773e94567d37ddb5f0e95}{megolmSessionKey}});}
+\DoxyCodeLine{01308\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(sessionMemory);}
+\DoxyCodeLine{01309\ }
+\DoxyCodeLine{01310\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_ae2453a849ff9a4b3d1c9fc33da9e2c10}{olmSessionMemoryAllocated}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01311\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01312\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01313\ }
+\DoxyCodeLine{01314\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespaceleet_adc8712b33d096d2f8a204e7bad8ed1d4}{TransID}}\ \{\ \mbox{\hyperlink{namespaceleet_a662e01b83ac0e6a95e723331056f03a2}{leet::generateTransID}}()\ \};}
+\DoxyCodeLine{01315\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ putOutput\ \{}
+\DoxyCodeLine{01316\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceleet_aa3853464d166cde6fa97f8dfb9e2398f}{leet::invokeRequest\_Put}}(\mbox{\hyperlink{namespaceleet_abf8deb3b48c9f7322aa6654885946738}{leet::getAPI}}(\textcolor{stringliteral}{"{}/\_matrix/client/v3/sendToDevice/m.room.encrypted/"{}}\ +\ std::to\_string(\mbox{\hyperlink{namespaceleet_adc8712b33d096d2f8a204e7bad8ed1d4}{TransID}})),\ eventToSend.dump(),\ resp-\/>\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_ae4d15192559f009ad966de4bc9cdf58a}{accessToken}})}
+\DoxyCodeLine{01317\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{01318\ }
+\DoxyCodeLine{01319\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(\mbox{\hyperlink{classleet_1_1olmAccount_a90563302e87f0772f6fc6a59d162630d}{utilityMemory}});}
+\DoxyCodeLine{01320\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a98424b565dd41275786a44a487d90394}{utilityMemoryAllocated}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01321\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01322\ }
+\DoxyCodeLine{01331\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{classleet_1_1olmAccount_ab5422499f6fcef344d157f7d74cfffb8}{encryptMessage}}(\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{leet::User::CredentialsResponse}}*\ resp,\ \textcolor{keyword}{const}\ std::string\&\ message)\ \{}
+\DoxyCodeLine{01332\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ cipherTextLength\ =\ olm\_group\_encrypt\_message\_length(\mbox{\hyperlink{classleet_1_1olmAccount_ae5a74c5a2e7819f293606eb6d480a0f0}{megolmSession}},\ message.length());}
+\DoxyCodeLine{01333\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ cipherText\ =\ (\textcolor{keywordtype}{char}*\ )malloc(cipherTextLength\ +\ 1);}
+\DoxyCodeLine{01334\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ tSize\ =\ olm\_group\_encrypt(\mbox{\hyperlink{classleet_1_1olmAccount_ae5a74c5a2e7819f293606eb6d480a0f0}{megolmSession}},\ (uint8\_t*\ )message.data(),\ message.length(),\ (uint8\_t*\ )cipherText,\ cipherTextLength);}
+\DoxyCodeLine{01335\ }
+\DoxyCodeLine{01336\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tSize\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01337\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_group\_encrypt()"{}});}
+\DoxyCodeLine{01338\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01339\ }
+\DoxyCodeLine{01340\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cipherText[tSize]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{01341\ }
+\DoxyCodeLine{01342\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a9f1d6ebdd74a6f0fd568eca162eb6352}{json}}\ retMessage\ =\ \{}
+\DoxyCodeLine{01343\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{stringliteral}{"{}algorithm"{}},\ \textcolor{stringliteral}{"{}m.megolm.v1.aes-\/sha2"{}}\ \},}
+\DoxyCodeLine{01344\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{stringliteral}{"{}sender\_key"{}},\ \mbox{\hyperlink{classleet_1_1olmAccount_a03e7b55200d1afbeeaa9ecea4ad5b487}{curve25519}}\ \},}
+\DoxyCodeLine{01345\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{stringliteral}{"{}ciphertext"{}},\ cipherText\ \},}
+\DoxyCodeLine{01346\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{stringliteral}{"{}session\_id"{}},\ \mbox{\hyperlink{classleet_1_1olmAccount_a173be267e027dda61392317996df091c}{megolmSessionID}}\ \},}
+\DoxyCodeLine{01347\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \textcolor{stringliteral}{"{}device\_id"{}},\ resp-\/>\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse_a2c9bc29b7c1702af9c372fccd5e14c6d}{deviceID}}\ \}}
+\DoxyCodeLine{01348\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{01349\ }
+\DoxyCodeLine{01350\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(cipherText);}
+\DoxyCodeLine{01351\ }
+\DoxyCodeLine{01352\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ retMessage.dump();}
+\DoxyCodeLine{01353\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01354\ }
+\DoxyCodeLine{01362\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{classleet_1_1olmAccount_a84125cb85744db3979abae4da3dc8892}{pickle}}(\textcolor{keyword}{const}\ std::string\&\ pickleKey,\ OlmAccount*\ acc)\ \{}
+\DoxyCodeLine{01363\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ pickleLength\ =\ olm\_pickle\_account\_length(acc);}
+\DoxyCodeLine{01364\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ Pickle\ =\ (\textcolor{keywordtype}{char}*\ )malloc(pickleLength\ +\ 1);}
+\DoxyCodeLine{01365\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ pKey\ =\ pickleKey.c\_str();}
+\DoxyCodeLine{01366\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ pKeyLength\ =\ pickleKey.length();}
+\DoxyCodeLine{01367\ }
+\DoxyCodeLine{01368\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olm\_pickle\_account(acc,\ pKey,\ pKeyLength,\ Pickle,\ pickleLength)\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01369\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_pickle\_account()"{}});}
+\DoxyCodeLine{01370\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01371\ }
+\DoxyCodeLine{01372\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ ret\ =\ Pickle;}
+\DoxyCodeLine{01373\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(Pickle);}
+\DoxyCodeLine{01374\ }
+\DoxyCodeLine{01375\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{01376\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01377\ }
+\DoxyCodeLine{01386\ \ \ \ \ \ \ \ \ \ \ \ \ OlmAccount*\ \mbox{\hyperlink{classleet_1_1olmAccount_aa646061d451e058b6abf2f668e239e4d}{unpickle}}(\textcolor{keyword}{const}\ std::string\&\ pickleKey,\ \textcolor{keyword}{const}\ std::string\&\ pickleData,\ OlmAccount*\ acc)\ \{}
+\DoxyCodeLine{01387\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ pKey\ =\ pickleKey.c\_str();}
+\DoxyCodeLine{01388\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ pKeyLength\ =\ pickleKey.length();}
+\DoxyCodeLine{01389\ }
+\DoxyCodeLine{01390\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ pickleLength\ =\ olm\_pickle\_account\_length(acc);}
+\DoxyCodeLine{01391\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ Pickle\ =\ \textcolor{keyword}{const\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(pickleData.c\_str());}
+\DoxyCodeLine{01392\ }
+\DoxyCodeLine{01393\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olm\_unpickle\_account(acc,\ pKey,\ pKeyLength,\ Pickle,\ pickleLength)\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01394\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_unpickle\_account()"{}});}
+\DoxyCodeLine{01395\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01396\ }
+\DoxyCodeLine{01397\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ acc;}
+\DoxyCodeLine{01398\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01399\ }
+\DoxyCodeLine{01407\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{classleet_1_1olmAccount_af8ba7cff11f6191f03cafd6165a88e6e}{pickle}}(\textcolor{keyword}{const}\ std::string\&\ pickleKey,\ OlmInboundGroupSession*\ session)\ \{}
+\DoxyCodeLine{01408\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ pickleLength\ =\ olm\_pickle\_inbound\_group\_session\_length(session);}
+\DoxyCodeLine{01409\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ Pickle\ =\ (\textcolor{keywordtype}{char}*\ )malloc(pickleLength\ +\ 1);}
+\DoxyCodeLine{01410\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ pKey\ =\ pickleKey.c\_str();}
+\DoxyCodeLine{01411\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ pKeyLength\ =\ pickleKey.length();}
+\DoxyCodeLine{01412\ }
+\DoxyCodeLine{01413\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olm\_pickle\_inbound\_group\_session(session,\ pKey,\ pKeyLength,\ Pickle,\ pickleLength)\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01414\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_pickle\_account()"{}});}
+\DoxyCodeLine{01415\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01416\ }
+\DoxyCodeLine{01417\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ ret\ =\ Pickle;}
+\DoxyCodeLine{01418\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(Pickle);}
+\DoxyCodeLine{01419\ }
+\DoxyCodeLine{01420\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{01421\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01422\ }
+\DoxyCodeLine{01431\ \ \ \ \ \ \ \ \ \ \ \ \ OlmInboundGroupSession*\ \mbox{\hyperlink{classleet_1_1olmAccount_a5e8d5432106c3e671d04efa6f988f536}{unpickle}}(\textcolor{keyword}{const}\ std::string\&\ pickleKey,\ \textcolor{keyword}{const}\ std::string\&\ pickleData,\ OlmInboundGroupSession*\ session)\ \{}
+\DoxyCodeLine{01432\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ pKey\ =\ pickleKey.c\_str();}
+\DoxyCodeLine{01433\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ pKeyLength\ =\ pickleKey.length();}
+\DoxyCodeLine{01434\ }
+\DoxyCodeLine{01435\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ pickleLength\ =\ olm\_pickle\_inbound\_group\_session\_length(session);}
+\DoxyCodeLine{01436\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ Pickle\ =\ \textcolor{keyword}{const\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(pickleData.c\_str());}
+\DoxyCodeLine{01437\ }
+\DoxyCodeLine{01438\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olm\_unpickle\_inbound\_group\_session(session,\ pKey,\ pKeyLength,\ Pickle,\ pickleLength)\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01439\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_unpickle\_account()"{}});}
+\DoxyCodeLine{01440\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01441\ }
+\DoxyCodeLine{01442\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ session;}
+\DoxyCodeLine{01443\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01444\ }
+\DoxyCodeLine{01452\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{classleet_1_1olmAccount_a9509fa1fe0a4bafe9b7f71643ff2712f}{pickle}}(\textcolor{keyword}{const}\ std::string\&\ pickleKey,\ OlmOutboundGroupSession*\ session)\ \{}
+\DoxyCodeLine{01453\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ pickleLength\ =\ olm\_pickle\_outbound\_group\_session\_length(session);}
+\DoxyCodeLine{01454\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ Pickle\ =\ (\textcolor{keywordtype}{char}*\ )malloc(pickleLength\ +\ 1);}
+\DoxyCodeLine{01455\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ pKey\ =\ pickleKey.c\_str();}
+\DoxyCodeLine{01456\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ pKeyLength\ =\ pickleKey.length();}
+\DoxyCodeLine{01457\ }
+\DoxyCodeLine{01458\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olm\_pickle\_outbound\_group\_session(session,\ pKey,\ pKeyLength,\ Pickle,\ pickleLength)\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01459\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_pickle\_account()"{}});}
+\DoxyCodeLine{01460\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01461\ }
+\DoxyCodeLine{01462\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ ret\ =\ Pickle;}
+\DoxyCodeLine{01463\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(Pickle);}
+\DoxyCodeLine{01464\ }
+\DoxyCodeLine{01465\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{01466\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01467\ }
+\DoxyCodeLine{01476\ \ \ \ \ \ \ \ \ \ \ \ \ OlmOutboundGroupSession*\ \mbox{\hyperlink{classleet_1_1olmAccount_a6748ed0dba727be369c0d45f84a32ea5}{unpickle}}(\textcolor{keyword}{const}\ std::string\&\ pickleKey,\ \textcolor{keyword}{const}\ std::string\&\ pickleData,\ OlmOutboundGroupSession*\ session)\ \{}
+\DoxyCodeLine{01477\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ pKey\ =\ pickleKey.c\_str();}
+\DoxyCodeLine{01478\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ pKeyLength\ =\ pickleKey.length();}
+\DoxyCodeLine{01479\ }
+\DoxyCodeLine{01480\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ pickleLength\ =\ olm\_pickle\_outbound\_group\_session\_length(session);}
+\DoxyCodeLine{01481\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ Pickle\ =\ \textcolor{keyword}{const\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(pickleData.c\_str());}
+\DoxyCodeLine{01482\ }
+\DoxyCodeLine{01483\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olm\_unpickle\_outbound\_group\_session(session,\ pKey,\ pKeyLength,\ Pickle,\ pickleLength)\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01484\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_unpickle\_account()"{}});}
+\DoxyCodeLine{01485\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01486\ }
+\DoxyCodeLine{01487\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ session;}
+\DoxyCodeLine{01488\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01489\ }
+\DoxyCodeLine{01497\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \mbox{\hyperlink{classleet_1_1olmAccount_a0c20c97df0c7806c621b329f102e5975}{pickle}}(\textcolor{keyword}{const}\ std::string\&\ pickleKey,\ OlmSession*\ session)\ \{}
+\DoxyCodeLine{01498\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ pickleLength\ =\ olm\_pickle\_session\_length(session);}
+\DoxyCodeLine{01499\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ Pickle\ =\ (\textcolor{keywordtype}{char}*\ )malloc(pickleLength\ +\ 1);}
+\DoxyCodeLine{01500\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ pKey\ =\ pickleKey.c\_str();}
+\DoxyCodeLine{01501\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ pKeyLength\ =\ pickleKey.length();}
+\DoxyCodeLine{01502\ }
+\DoxyCodeLine{01503\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olm\_pickle\_session(session,\ pKey,\ pKeyLength,\ Pickle,\ pickleLength)\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01504\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_pickle\_account()"{}});}
+\DoxyCodeLine{01505\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01506\ }
+\DoxyCodeLine{01507\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ ret\ =\ Pickle;}
+\DoxyCodeLine{01508\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(Pickle);}
+\DoxyCodeLine{01509\ }
+\DoxyCodeLine{01510\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{01511\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01512\ }
+\DoxyCodeLine{01521\ \ \ \ \ \ \ \ \ \ \ \ \ OlmSession*\ \mbox{\hyperlink{classleet_1_1olmAccount_af2426a3cf09da3b2636e82c1b72e6c59}{unpickle}}(\textcolor{keyword}{const}\ std::string\&\ pickleKey,\ \textcolor{keyword}{const}\ std::string\&\ pickleData,\ OlmSession*\ session)\ \{}
+\DoxyCodeLine{01522\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ pKey\ =\ pickleKey.c\_str();}
+\DoxyCodeLine{01523\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ pKeyLength\ =\ pickleKey.length();}
+\DoxyCodeLine{01524\ }
+\DoxyCodeLine{01525\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ pickleLength\ =\ olm\_pickle\_session\_length(session);}
+\DoxyCodeLine{01526\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}*\ Pickle\ =\ \textcolor{keyword}{const\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(pickleData.c\_str());}
+\DoxyCodeLine{01527\ }
+\DoxyCodeLine{01528\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (olm\_unpickle\_session(session,\ pKey,\ pKeyLength,\ Pickle,\ pickleLength)\ ==\ olm\_error())\ \{}
+\DoxyCodeLine{01529\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_a413254224d9c62c5da115fc7d8f1345b}{handleError}}(\textcolor{stringliteral}{"{}olm\_unpickle\_account()"{}});}
+\DoxyCodeLine{01530\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01531\ }
+\DoxyCodeLine{01532\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ session;}
+\DoxyCodeLine{01533\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01534\ }
+\DoxyCodeLine{01538\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classleet_1_1olmAccount_aa19c65418db88ced5be3761d52526dde}{clear}}()\ \{}
+\DoxyCodeLine{01539\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classleet_1_1olmAccount_aadcd18456837d84069cf1695e5d8515c}{accountMemoryAllocated}})\ \{}
+\DoxyCodeLine{01540\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ olm\_clear\_account(\mbox{\hyperlink{classleet_1_1olmAccount_afff87a57045cb7128bf6f6721ed844dd}{Account}});}
+\DoxyCodeLine{01541\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01542\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}clear():\ Cannot\ clear\ account\ because\ memory\ is\ not\ allocated\ for\ the\ account."{}}\ \};}
+\DoxyCodeLine{01543\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01544\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01545\ }
+\DoxyCodeLine{01549\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classleet_1_1olmAccount_a380e1fef56330b3924de08f671ec0246}{destroy}}()\ \{}
+\DoxyCodeLine{01550\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classleet_1_1olmAccount_aba60abf43933c689ec97556c17f9e6bb}{megolmSessionIDMemoryAllocated}})\ \{}
+\DoxyCodeLine{01551\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(\mbox{\hyperlink{classleet_1_1olmAccount_a173be267e027dda61392317996df091c}{megolmSessionID}});}
+\DoxyCodeLine{01552\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_aba60abf43933c689ec97556c17f9e6bb}{megolmSessionIDMemoryAllocated}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01553\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01554\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classleet_1_1olmAccount_ab4bd1e66652c36da4134febc552b8095}{megolmSessionMemoryAllocated}})\ \{}
+\DoxyCodeLine{01555\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(\mbox{\hyperlink{classleet_1_1olmAccount_a2856582d3fbc688d27d050405ef6e064}{megolmSessionMemory}});}
+\DoxyCodeLine{01556\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_ab4bd1e66652c36da4134febc552b8095}{megolmSessionMemoryAllocated}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01557\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01558\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classleet_1_1olmAccount_aadcd18456837d84069cf1695e5d8515c}{accountMemoryAllocated}})\ \{}
+\DoxyCodeLine{01559\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ free(\mbox{\hyperlink{classleet_1_1olmAccount_a9e16289f1ba1ab95e85433f230df99fa}{accountMemory}});}
+\DoxyCodeLine{01560\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount_aadcd18456837d84069cf1695e5d8515c}{accountMemoryAllocated}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01561\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01562\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01563\ \ \ \ \ \};}
+\DoxyCodeLine{01564\ }
+\DoxyCodeLine{01568\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classleet_1_1Encryption}{Encryption}}\ \{}
+\DoxyCodeLine{01569\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{01570\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{01571\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1olmAccount}{leet::olmAccount}}\ \mbox{\hyperlink{classleet_1_1Encryption_abe9300b67a75daedf15ff2a3d08540d6}{account}};}
+\DoxyCodeLine{01572\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1Encryption_a1782b7f9823c06e6d105b9e86e08304e}{hasUploadedKeys}}\{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{01573\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1Encryption_a9d7f4cc589f078123749f1ee4be2f423}{hasCreatedAccount}}\{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{01574\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classleet_1_1Encryption_a11be787f5f97dfd5de5a6862f9ab349c}{Cleaned}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01575\ }
+\DoxyCodeLine{01576\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classleet_1_1Encryption_a4630e401cc2fb0aeb87f7bd1b996c486}{destroy}}()\ \{}
+\DoxyCodeLine{01577\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classleet_1_1Encryption_a11be787f5f97dfd5de5a6862f9ab349c}{Cleaned}})\ \{}
+\DoxyCodeLine{01578\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1Encryption_abe9300b67a75daedf15ff2a3d08540d6}{account}}.\mbox{\hyperlink{classleet_1_1olmAccount_aa19c65418db88ced5be3761d52526dde}{clear}}();}
+\DoxyCodeLine{01579\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1Encryption_abe9300b67a75daedf15ff2a3d08540d6}{account}}.\mbox{\hyperlink{classleet_1_1olmAccount_a380e1fef56330b3924de08f671ec0246}{destroy}}();}
+\DoxyCodeLine{01580\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classleet_1_1Encryption_a11be787f5f97dfd5de5a6862f9ab349c}{Cleaned}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01581\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01582\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::runtime\_error\{\ \textcolor{stringliteral}{"{}olmAccount:\ Already\ destroyed."{}}\ \};}
+\DoxyCodeLine{01583\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01584\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01585\ \ \ \ \ \};}
+\DoxyCodeLine{01586\ }
+\DoxyCodeLine{01591\ \ \ \ \ Encryption\ \mbox{\hyperlink{namespaceleet_a90817bf0adfacb8ac0c3d147b4e91383}{initEncryption}}();}
+\DoxyCodeLine{01598\ \ \ \ \ Encryption\ \mbox{\hyperlink{namespaceleet_abe4fc964ac712876ba14d6d584c74201}{initEncryptionFromPickle}}(\textcolor{keyword}{const}\ std::string\&\ pickleKey,\ \textcolor{keyword}{const}\ std::string\&\ pickleData);}
+\DoxyCodeLine{01605\ \ \ \ \ Encryption\ \mbox{\hyperlink{namespaceleet_a9fcad94c6a7ae5a4c4f054dec8e0eee5}{uploadKeys}}(User::CredentialsResponse*\ resp,\ Encryption*\ enc);}
+\DoxyCodeLine{01613\ \ \ \ \ Encryption\ \mbox{\hyperlink{namespaceleet_acdb542395be8170f719a8a7ad0ef0ac2}{createSessionInRoom}}(User::CredentialsResponse*\ resp,\ Encryption*\ enc,\ Room::Room*\ room);}
+\DoxyCodeLine{01621\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespaceleet_a40c1e3b3d1988d56aaa389607d10fe57}{sendEncryptedMessage}}(User::CredentialsResponse*\ resp,\ Encryption*\ enc,\ Room::Room*\ room,\ Message::Message*\ msg);}
+\DoxyCodeLine{01622\ }
+\DoxyCodeLine{01623\ \textcolor{preprocessor}{\ \ \ \ \#endif\ }\textcolor{comment}{//\ \#ifndef\ LEET\_NO\_ENCRYPTION}}
+\DoxyCodeLine{01624\ \}}
+\DoxyCodeLine{01625\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

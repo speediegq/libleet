@@ -1,0 +1,227 @@
+\doxysection{leet\+::Message\+::Message Class Reference}
+\hypertarget{classleet_1_1Message_1_1Message}{}\label{classleet_1_1Message_1_1Message}\index{leet::Message::Message@{leet::Message::Message}}
+
+
+Class which represents a single message, along with its properties.  
+
+
+
+
+{\ttfamily \#include $<$libleet.\+hpp$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{classleet_1_1Message_1_1Message_a74739e3eeb0bca60a6c0285af5c642bb}{message\+Text}}
+\item 
+std\+::string \mbox{\hyperlink{classleet_1_1Message_1_1Message_a83fed20f25325d55a89b41169dd24280}{formatted\+Text}}
+\item 
+std\+::string \mbox{\hyperlink{classleet_1_1Message_1_1Message_a8dd019876adbaa08129661604f493131}{Format}}
+\item 
+std\+::string \mbox{\hyperlink{classleet_1_1Message_1_1Message_a4671a0906f0a44c788f8e5b8c82016e6}{Type}}
+\item 
+std\+::string \mbox{\hyperlink{classleet_1_1Message_1_1Message_acf6d509850c3827076a63a9fc7320a6e}{message\+Type}}
+\item 
+std\+::string \mbox{\hyperlink{classleet_1_1Message_1_1Message_a00407d68662527759fd2404d285f7b82}{event\+ID}}
+\item 
+std\+::string \mbox{\hyperlink{classleet_1_1Message_1_1Message_af5b9b84cdc8ee474c5acb47b7e632bb8}{Sender}}
+\item 
+std\+::string \mbox{\hyperlink{classleet_1_1Message_1_1Message_aa81bf1eca55789a987565da2497d67ab}{mime\+Type}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int32\+\_\+t}} \mbox{\hyperlink{classleet_1_1Message_1_1Message_a28b5c363010fd021f2f1605522258889}{Age}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} \mbox{\hyperlink{classleet_1_1Message_1_1Message_a99366bce597aa139f1ab01420a0061bf}{attachment\+Width}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} \mbox{\hyperlink{classleet_1_1Message_1_1Message_a80a089d0765fb792ca1472f400170c51}{attachment\+Height}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} \mbox{\hyperlink{classleet_1_1Message_1_1Message_aa0c3f9c7ee665698987b7ad4f3b23040}{attachment\+Size}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} \mbox{\hyperlink{classleet_1_1Message_1_1Message_acc12eccb366d62e626c48d707557bd15}{attachment\+Length}}
+\item 
+std\+::string \mbox{\hyperlink{classleet_1_1Message_1_1Message_a89b2bfdce96b93c066b5f565c6a0074a}{attachment\+URL}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} \mbox{\hyperlink{classleet_1_1Message_1_1Message_a09401ecd78d0e5b06290adf2acf11e28}{thumbnail\+Width}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} \mbox{\hyperlink{classleet_1_1Message_1_1Message_a9991e5daa3476527eed8b140ba99d61e}{thumbnail\+Height}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} \mbox{\hyperlink{classleet_1_1Message_1_1Message_aad48127d5068692876945e050d3968ed}{thumbnail\+Size}}
+\item 
+std\+::string \mbox{\hyperlink{classleet_1_1Message_1_1Message_aac353fb22826eed5757682ea3378eb02}{thumbnail\+Mime\+Type}}
+\item 
+std\+::string \mbox{\hyperlink{classleet_1_1Message_1_1Message_a5264e3e6694c7c06960a885d1c7fe49b}{thumbnail\+URL}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} \mbox{\hyperlink{classleet_1_1Message_1_1Message_ab76d63f5dc59c42f6dc465cf9071f664}{Encrypted}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} \mbox{\hyperlink{classleet_1_1Message_1_1Message_a35e1fbf4f63b29a16f0a6bb1e9de51e8}{megolm}}
+\item 
+std\+::string \mbox{\hyperlink{classleet_1_1Message_1_1Message_a9cdf1012eeeaff58c86fd1ea156a656b}{cipher\+Text}}
+\item 
+std\+::string \mbox{\hyperlink{classleet_1_1Message_1_1Message_a9280e4ed8e1ec6ed3591ac75bb341531}{sender\+Key}}
+\item 
+std\+::string \mbox{\hyperlink{classleet_1_1Message_1_1Message_adaeaa3d24938167e2ce791ea21c9c450}{session\+ID}}
+\item 
+std\+::string \mbox{\hyperlink{classleet_1_1Message_1_1Message_af257e013a8faa42727367a54873615e3}{device\+ID}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class which represents a single message, along with its properties. 
+
+This class represents a single message To represent several messages, one might consider using std\+::vector 
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classleet_1_1Message_1_1Message_a28b5c363010fd021f2f1605522258889}\label{classleet_1_1Message_1_1Message_a28b5c363010fd021f2f1605522258889} 
+\index{leet::Message::Message@{leet::Message::Message}!Age@{Age}}
+\index{Age@{Age}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{Age}{Age}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int32\+\_\+t}} leet\+::\+Message\+::\+Message\+::\+Age}
+
+\Hypertarget{classleet_1_1Message_1_1Message_a80a089d0765fb792ca1472f400170c51}\label{classleet_1_1Message_1_1Message_a80a089d0765fb792ca1472f400170c51} 
+\index{leet::Message::Message@{leet::Message::Message}!attachmentHeight@{attachmentHeight}}
+\index{attachmentHeight@{attachmentHeight}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{attachmentHeight}{attachmentHeight}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} leet\+::\+Message\+::\+Message\+::attachment\+Height}
+
+\Hypertarget{classleet_1_1Message_1_1Message_acc12eccb366d62e626c48d707557bd15}\label{classleet_1_1Message_1_1Message_acc12eccb366d62e626c48d707557bd15} 
+\index{leet::Message::Message@{leet::Message::Message}!attachmentLength@{attachmentLength}}
+\index{attachmentLength@{attachmentLength}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{attachmentLength}{attachmentLength}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} leet\+::\+Message\+::\+Message\+::attachment\+Length}
+
+\Hypertarget{classleet_1_1Message_1_1Message_aa0c3f9c7ee665698987b7ad4f3b23040}\label{classleet_1_1Message_1_1Message_aa0c3f9c7ee665698987b7ad4f3b23040} 
+\index{leet::Message::Message@{leet::Message::Message}!attachmentSize@{attachmentSize}}
+\index{attachmentSize@{attachmentSize}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{attachmentSize}{attachmentSize}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} leet\+::\+Message\+::\+Message\+::attachment\+Size}
+
+\Hypertarget{classleet_1_1Message_1_1Message_a89b2bfdce96b93c066b5f565c6a0074a}\label{classleet_1_1Message_1_1Message_a89b2bfdce96b93c066b5f565c6a0074a} 
+\index{leet::Message::Message@{leet::Message::Message}!attachmentURL@{attachmentURL}}
+\index{attachmentURL@{attachmentURL}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{attachmentURL}{attachmentURL}}
+{\footnotesize\ttfamily std\+::string leet\+::\+Message\+::\+Message\+::attachment\+URL}
+
+\Hypertarget{classleet_1_1Message_1_1Message_a99366bce597aa139f1ab01420a0061bf}\label{classleet_1_1Message_1_1Message_a99366bce597aa139f1ab01420a0061bf} 
+\index{leet::Message::Message@{leet::Message::Message}!attachmentWidth@{attachmentWidth}}
+\index{attachmentWidth@{attachmentWidth}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{attachmentWidth}{attachmentWidth}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} leet\+::\+Message\+::\+Message\+::attachment\+Width}
+
+\Hypertarget{classleet_1_1Message_1_1Message_a9cdf1012eeeaff58c86fd1ea156a656b}\label{classleet_1_1Message_1_1Message_a9cdf1012eeeaff58c86fd1ea156a656b} 
+\index{leet::Message::Message@{leet::Message::Message}!cipherText@{cipherText}}
+\index{cipherText@{cipherText}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{cipherText}{cipherText}}
+{\footnotesize\ttfamily std\+::string leet\+::\+Message\+::\+Message\+::cipher\+Text}
+
+\Hypertarget{classleet_1_1Message_1_1Message_af257e013a8faa42727367a54873615e3}\label{classleet_1_1Message_1_1Message_af257e013a8faa42727367a54873615e3} 
+\index{leet::Message::Message@{leet::Message::Message}!deviceID@{deviceID}}
+\index{deviceID@{deviceID}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{deviceID}{deviceID}}
+{\footnotesize\ttfamily std\+::string leet\+::\+Message\+::\+Message\+::device\+ID}
+
+\Hypertarget{classleet_1_1Message_1_1Message_ab76d63f5dc59c42f6dc465cf9071f664}\label{classleet_1_1Message_1_1Message_ab76d63f5dc59c42f6dc465cf9071f664} 
+\index{leet::Message::Message@{leet::Message::Message}!Encrypted@{Encrypted}}
+\index{Encrypted@{Encrypted}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{Encrypted}{Encrypted}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} leet\+::\+Message\+::\+Message\+::\+Encrypted}
+
+\Hypertarget{classleet_1_1Message_1_1Message_a00407d68662527759fd2404d285f7b82}\label{classleet_1_1Message_1_1Message_a00407d68662527759fd2404d285f7b82} 
+\index{leet::Message::Message@{leet::Message::Message}!eventID@{eventID}}
+\index{eventID@{eventID}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{eventID}{eventID}}
+{\footnotesize\ttfamily std\+::string leet\+::\+Message\+::\+Message\+::event\+ID}
+
+\Hypertarget{classleet_1_1Message_1_1Message_a8dd019876adbaa08129661604f493131}\label{classleet_1_1Message_1_1Message_a8dd019876adbaa08129661604f493131} 
+\index{leet::Message::Message@{leet::Message::Message}!Format@{Format}}
+\index{Format@{Format}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{Format}{Format}}
+{\footnotesize\ttfamily std\+::string leet\+::\+Message\+::\+Message\+::\+Format}
+
+\Hypertarget{classleet_1_1Message_1_1Message_a83fed20f25325d55a89b41169dd24280}\label{classleet_1_1Message_1_1Message_a83fed20f25325d55a89b41169dd24280} 
+\index{leet::Message::Message@{leet::Message::Message}!formattedText@{formattedText}}
+\index{formattedText@{formattedText}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{formattedText}{formattedText}}
+{\footnotesize\ttfamily std\+::string leet\+::\+Message\+::\+Message\+::formatted\+Text}
+
+\Hypertarget{classleet_1_1Message_1_1Message_a35e1fbf4f63b29a16f0a6bb1e9de51e8}\label{classleet_1_1Message_1_1Message_a35e1fbf4f63b29a16f0a6bb1e9de51e8} 
+\index{leet::Message::Message@{leet::Message::Message}!megolm@{megolm}}
+\index{megolm@{megolm}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{megolm}{megolm}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} leet\+::\+Message\+::\+Message\+::megolm}
+
+\Hypertarget{classleet_1_1Message_1_1Message_a74739e3eeb0bca60a6c0285af5c642bb}\label{classleet_1_1Message_1_1Message_a74739e3eeb0bca60a6c0285af5c642bb} 
+\index{leet::Message::Message@{leet::Message::Message}!messageText@{messageText}}
+\index{messageText@{messageText}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{messageText}{messageText}}
+{\footnotesize\ttfamily std\+::string leet\+::\+Message\+::\+Message\+::message\+Text}
+
+\Hypertarget{classleet_1_1Message_1_1Message_acf6d509850c3827076a63a9fc7320a6e}\label{classleet_1_1Message_1_1Message_acf6d509850c3827076a63a9fc7320a6e} 
+\index{leet::Message::Message@{leet::Message::Message}!messageType@{messageType}}
+\index{messageType@{messageType}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{messageType}{messageType}}
+{\footnotesize\ttfamily std\+::string leet\+::\+Message\+::\+Message\+::message\+Type}
+
+\Hypertarget{classleet_1_1Message_1_1Message_aa81bf1eca55789a987565da2497d67ab}\label{classleet_1_1Message_1_1Message_aa81bf1eca55789a987565da2497d67ab} 
+\index{leet::Message::Message@{leet::Message::Message}!mimeType@{mimeType}}
+\index{mimeType@{mimeType}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{mimeType}{mimeType}}
+{\footnotesize\ttfamily std\+::string leet\+::\+Message\+::\+Message\+::mime\+Type}
+
+\Hypertarget{classleet_1_1Message_1_1Message_af5b9b84cdc8ee474c5acb47b7e632bb8}\label{classleet_1_1Message_1_1Message_af5b9b84cdc8ee474c5acb47b7e632bb8} 
+\index{leet::Message::Message@{leet::Message::Message}!Sender@{Sender}}
+\index{Sender@{Sender}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{Sender}{Sender}}
+{\footnotesize\ttfamily std\+::string leet\+::\+Message\+::\+Message\+::\+Sender}
+
+\Hypertarget{classleet_1_1Message_1_1Message_a9280e4ed8e1ec6ed3591ac75bb341531}\label{classleet_1_1Message_1_1Message_a9280e4ed8e1ec6ed3591ac75bb341531} 
+\index{leet::Message::Message@{leet::Message::Message}!senderKey@{senderKey}}
+\index{senderKey@{senderKey}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{senderKey}{senderKey}}
+{\footnotesize\ttfamily std\+::string leet\+::\+Message\+::\+Message\+::sender\+Key}
+
+\Hypertarget{classleet_1_1Message_1_1Message_adaeaa3d24938167e2ce791ea21c9c450}\label{classleet_1_1Message_1_1Message_adaeaa3d24938167e2ce791ea21c9c450} 
+\index{leet::Message::Message@{leet::Message::Message}!sessionID@{sessionID}}
+\index{sessionID@{sessionID}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{sessionID}{sessionID}}
+{\footnotesize\ttfamily std\+::string leet\+::\+Message\+::\+Message\+::session\+ID}
+
+\Hypertarget{classleet_1_1Message_1_1Message_a9991e5daa3476527eed8b140ba99d61e}\label{classleet_1_1Message_1_1Message_a9991e5daa3476527eed8b140ba99d61e} 
+\index{leet::Message::Message@{leet::Message::Message}!thumbnailHeight@{thumbnailHeight}}
+\index{thumbnailHeight@{thumbnailHeight}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{thumbnailHeight}{thumbnailHeight}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} leet\+::\+Message\+::\+Message\+::thumbnail\+Height}
+
+\Hypertarget{classleet_1_1Message_1_1Message_aac353fb22826eed5757682ea3378eb02}\label{classleet_1_1Message_1_1Message_aac353fb22826eed5757682ea3378eb02} 
+\index{leet::Message::Message@{leet::Message::Message}!thumbnailMimeType@{thumbnailMimeType}}
+\index{thumbnailMimeType@{thumbnailMimeType}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{thumbnailMimeType}{thumbnailMimeType}}
+{\footnotesize\ttfamily std\+::string leet\+::\+Message\+::\+Message\+::thumbnail\+Mime\+Type}
+
+\Hypertarget{classleet_1_1Message_1_1Message_aad48127d5068692876945e050d3968ed}\label{classleet_1_1Message_1_1Message_aad48127d5068692876945e050d3968ed} 
+\index{leet::Message::Message@{leet::Message::Message}!thumbnailSize@{thumbnailSize}}
+\index{thumbnailSize@{thumbnailSize}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{thumbnailSize}{thumbnailSize}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} leet\+::\+Message\+::\+Message\+::thumbnail\+Size}
+
+\Hypertarget{classleet_1_1Message_1_1Message_a5264e3e6694c7c06960a885d1c7fe49b}\label{classleet_1_1Message_1_1Message_a5264e3e6694c7c06960a885d1c7fe49b} 
+\index{leet::Message::Message@{leet::Message::Message}!thumbnailURL@{thumbnailURL}}
+\index{thumbnailURL@{thumbnailURL}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{thumbnailURL}{thumbnailURL}}
+{\footnotesize\ttfamily std\+::string leet\+::\+Message\+::\+Message\+::thumbnail\+URL}
+
+\Hypertarget{classleet_1_1Message_1_1Message_a09401ecd78d0e5b06290adf2acf11e28}\label{classleet_1_1Message_1_1Message_a09401ecd78d0e5b06290adf2acf11e28} 
+\index{leet::Message::Message@{leet::Message::Message}!thumbnailWidth@{thumbnailWidth}}
+\index{thumbnailWidth@{thumbnailWidth}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{thumbnailWidth}{thumbnailWidth}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} leet\+::\+Message\+::\+Message\+::thumbnail\+Width}
+
+\Hypertarget{classleet_1_1Message_1_1Message_a4671a0906f0a44c788f8e5b8c82016e6}\label{classleet_1_1Message_1_1Message_a4671a0906f0a44c788f8e5b8c82016e6} 
+\index{leet::Message::Message@{leet::Message::Message}!Type@{Type}}
+\index{Type@{Type}!leet::Message::Message@{leet::Message::Message}}
+\doxysubsubsection{\texorpdfstring{Type}{Type}}
+{\footnotesize\ttfamily std\+::string leet\+::\+Message\+::\+Message\+::\+Type}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/speedie/libleet/include/\mbox{\hyperlink{libleet_8hpp}{libleet.\+hpp}}\end{DoxyCompactItemize}

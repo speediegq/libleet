@@ -1,0 +1,1174 @@
+.TH "leet" 3 "Version 0.1" "libleet" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+leet
+.SH SYNOPSIS
+.br
+.PP
+.SS "Namespaces"
+
+.in +1c
+.ti -1c
+.RI "namespace \fBAttachment\fP"
+.br
+.ti -1c
+.RI "namespace \fBEvent\fP"
+.br
+.ti -1c
+.RI "namespace \fBFilter\fP"
+.br
+.ti -1c
+.RI "namespace \fBMessage\fP"
+.br
+.ti -1c
+.RI "namespace \fBRoom\fP"
+.br
+.ti -1c
+.RI "namespace \fBSpace\fP"
+.br
+.ti -1c
+.RI "namespace \fBSync\fP"
+.br
+.ti -1c
+.RI "namespace \fBUser\fP"
+.br
+.ti -1c
+.RI "namespace \fBVOIP\fP"
+.br
+.in -1c
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "class \fBEncryption\fP"
+.br
+.RI "Class which hopefully allows you to safely handle encryption and Olm memory\&. "
+.ti -1c
+.RI "class \fBolmAccount\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBconst\fP \fBint\fP \fBgenerateTransID\fP ()"
+.br
+.RI "Generate a new transaction ID by simply incrementing the existing ID by 1\&. "
+.ti -1c
+.RI "\fBconst\fP \fBbool\fP \fBsaveTransID\fP (\fBconst\fP std::string &\fBFile\fP)"
+.br
+.RI "Saves the stored transaction ID to a file\&. "
+.ti -1c
+.RI "\fBconst\fP \fBbool\fP \fBloadTransID\fP (\fBconst\fP std::string &\fBFile\fP)"
+.br
+.RI "Loads the stored transaction ID from a file\&. "
+.ti -1c
+.RI "template<typename T > T \fBsaveToFile\fP (const std::string &File, T Data)"
+.br
+.RI "Saves data to a file\&. "
+.ti -1c
+.RI "template<\fBtypename\fP \fBT\fP > \fBT\fP \fBloadFromFile\fP (\fBconst\fP std::string &\fBFile\fP)"
+.br
+.RI "Loads data from a file\&. "
+.ti -1c
+.RI "\fBconst\fP std::string \fBreturnServerDiscovery\fP (std::string \fBServer\fP)"
+.br
+.RI "Performs server discovery (\&.well-known/matrix/client) to find the proper Matrix home server URL\&. "
+.ti -1c
+.RI "\fBconst\fP std::string \fBreturnHomeServerFromString\fP (\fBconst\fP std::string &userID)"
+.br
+.RI "Returns a home server (matrix\&.org) from a user ID (@speedie:matrix\&.org) "
+.ti -1c
+.RI "std::vector< std::string > \fBreturnSupportedLoginTypes\fP ()"
+.br
+.RI "Get login types supported by the Matrix home server\&. "
+.ti -1c
+.RI "std::vector< std::string > \fBreturnSupportedSpecs\fP ()"
+.br
+.RI "Get supported Matrix specification versions\&. "
+.ti -1c
+.RI "\fBUser::CredentialsResponse\fP \fBregisterAccount\fP (\fBUser::Credentials\fP *\fBcred\fP)"
+.br
+.RI "Attempts to create an account on the home server\&. "
+.ti -1c
+.RI "\fBbool\fP \fBcheckRegistrationTokenValidity\fP (\fBconst\fP std::string &Token)"
+.br
+.RI "Check if a registration token is still valid or not\&. "
+.ti -1c
+.RI "\fBUser::CredentialsResponse\fP \fBloginAccount\fP (\fBUser::Credentials\fP *\fBcred\fP)"
+.br
+.RI "Attempts to log in to the home server\&. "
+.ti -1c
+.RI "\fBUser::CredentialsResponse\fP \fBrefreshAccessToken\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP)"
+.br
+.RI "Refresh an old access token (if a refresh token is available in the object) "
+.ti -1c
+.RI "\fBUser::Profile\fP \fBgetUserData\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBconst\fP std::string &userID)"
+.br
+.RI "Returns user data in the form of a \fBUser::Profile\fP object\&. "
+.ti -1c
+.RI "\fBconst\fP std::string \fBgetAPI\fP (\fBconst\fP std::string &\fBAPI\fP)"
+.br
+.RI "Returns a full API URL from a Matrix endpoint\&. "
+.ti -1c
+.RI "\fBconst\fP std::string \fBinvokeRequest_Get\fP (\fBconst\fP std::string &URL, \fBconst\fP std::string &\fBAuthentication\fP)"
+.br
+.RI "Invokes a Get request\&. "
+.ti -1c
+.RI "\fBconst\fP std::string \fBinvokeRequest_Put\fP (\fBconst\fP std::string &URL, \fBconst\fP std::string &\fBData\fP, \fBconst\fP std::string &\fBAuthentication\fP)"
+.br
+.RI "Invokes a Put request\&. "
+.ti -1c
+.RI "\fBconst\fP std::string \fBinvokeRequest_Post\fP (\fBconst\fP std::string &URL, \fBconst\fP std::string &\fBData\fP, \fBconst\fP std::string &\fBAuthentication\fP)"
+.br
+.RI "Invokes a Post request\&. "
+.ti -1c
+.RI "\fBconst\fP std::string \fBinvokeRequest_Get\fP (\fBconst\fP std::string &URL)"
+.br
+.RI "Invokes a Get request\&. "
+.ti -1c
+.RI "\fBconst\fP std::string \fBinvokeRequest_Put\fP (\fBconst\fP std::string &URL, \fBconst\fP std::string &\fBData\fP)"
+.br
+.RI "Invokes a Put request\&. "
+.ti -1c
+.RI "\fBconst\fP std::string \fBinvokeRequest_Post\fP (\fBconst\fP std::string &URL, \fBconst\fP std::string &\fBData\fP)"
+.br
+.RI "Invokes a Post request\&. "
+.ti -1c
+.RI "\fBconst\fP std::string \fBinvokeRequest_Post_File\fP (\fBconst\fP std::string &URL, \fBconst\fP std::string &\fBFile\fP)"
+.br
+.RI "Invokes a Post request\&. "
+.ti -1c
+.RI "\fBconst\fP std::string \fBinvokeRequest_Post_File\fP (\fBconst\fP std::string &URL, \fBconst\fP std::string &\fBFile\fP, \fBconst\fP std::string &\fBAuthentication\fP)"
+.br
+.RI "Invokes a Post request\&. "
+.ti -1c
+.RI "\fBRoom::Room\fP \fBreturnRoom\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBRoom::Room\fP *\fBroom\fP)"
+.br
+.RI "Gets information about a room based on a room ID\&. "
+.ti -1c
+.RI "\fBRoom::Room\fP \fBcreateRoom\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBRoom::RoomConfiguration\fP *\fBconf\fP)"
+.br
+.RI "Create a room from a \fBRoom::RoomConfiguration\fP object\&. "
+.ti -1c
+.RI "\fBvoid\fP \fBinviteUserToRoom\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBRoom::Room\fP *\fBroom\fP, \fBconst\fP std::string &\fBReason\fP)"
+.br
+.RI "Invite a user to a room,\&. "
+.ti -1c
+.RI "\fBconst\fP std::vector< \fBRoom::Room\fP > \fBreturnRooms\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBconst\fP \fBint\fP Limit)"
+.br
+.RI "Returns a vector of all rooms your user has joined\&. "
+.ti -1c
+.RI "\fBconst\fP std::vector< \fBRoom::Room\fP > \fBreturnRoomIDs\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP)"
+.br
+.RI "Returns room IDs for all the rooms your user has joined\&. "
+.ti -1c
+.RI "\fBconst\fP std::string \fBfindRoomID\fP (std::string Alias)"
+.br
+.RI "Resolves a room alias and returns the room ID\&. "
+.ti -1c
+.RI "\fBconst\fP std::vector< \fBSpace::Space\fP > \fBreturnSpaces\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBconst\fP \fBint\fP Limit)"
+.br
+.RI "Returns a vector of all spaces your user has joined\&. "
+.ti -1c
+.RI "\fBconst\fP std::vector< \fBRoom::Room\fP > \fBreturnRoomsInSpace\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBconst\fP std::string &spaceID, \fBconst\fP \fBint\fP Limit)"
+.br
+.RI "Returns a vector of all rooms in a space\&. "
+.ti -1c
+.RI "\fBconst\fP std::string \fBfindUserID\fP (\fBconst\fP std::string &Alias, \fBconst\fP std::string &\fBHomeserver\fP)"
+.br
+.RI "Converts an incomplete user ID to a full user ID\&. (i\&.e\&. speedie is converted to @speedie:matrix\&.org) "
+.ti -1c
+.RI "\fBconst\fP std::string \fBreturnUserName\fP (\fBconst\fP std::string &userID)"
+.br
+.RI "Returns <name> from <name>:<home server> "
+.ti -1c
+.RI "\fBconst\fP std::vector< \fBUser::Profile\fP > \fBreturnUsersInRoom\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBRoom::Room\fP *\fBroom\fP)"
+.br
+.RI "Returns a vector of all users in a room\&. "
+.ti -1c
+.RI "\fBconst\fP std::vector< \fBUser::Device\fP > \fBreturnDevicesFromUser\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBconst\fP std::vector< \fBUser::Profile\fP > &\fBuser\fP)"
+.br
+.RI "Returns a vector of all devices for a specific user\&. "
+.ti -1c
+.RI "\fBconst\fP \fBbool\fP \fBcheckIfUsernameIsAvailable\fP (\fBconst\fP std::string &Username)"
+.br
+.RI "Returns a boolean for whether a username is available on the home server or not\&. "
+.ti -1c
+.RI "\fBvoid\fP \fBtoggleTyping\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBconst\fP \fBint\fP \fBTimeout\fP, \fBconst\fP \fBbool\fP \fBTyping\fP, \fBRoom::Room\fP *\fBroom\fP)"
+.br
+.RI "Toggles typing in a room\&. "
+.ti -1c
+.RI "\fBvoid\fP \fBsendMessage\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBRoom::Room\fP *\fBroom\fP, \fBMessage::Message\fP *\fBmsg\fP)"
+.br
+.RI "Sends a plain text message to the specified room\&. "
+.ti -1c
+.RI "\fBconst\fP std::vector< \fBMessage::Message\fP > \fBreturnMessages\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBRoom::Room\fP *\fBroom\fP, \fBconst\fP \fBint\fP \fBmessageCount\fP)"
+.br
+.RI "Returns a \fBMessage::Message\fP vector from a room\&. "
+.ti -1c
+.RI "\fBconst\fP std::string \fBreturnFilter\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBFilter::Filter\fP *\fBfilter\fP)"
+.br
+.RI "Returns a filter ID which can be used when requesting data\&. "
+.ti -1c
+.RI "\fBAttachment::Attachment\fP \fBuploadFile\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBconst\fP std::string &\fBFile\fP)"
+.br
+.RI "Uploads a file to the Matrix server(s)\&. "
+.ti -1c
+.RI "\fBconst\fP \fBbool\fP \fBdownloadFile\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBAttachment::Attachment\fP *Attachment, \fBconst\fP std::string &\fBoutputFile\fP)"
+.br
+.RI "Downloads a file from the Matrix server\&. "
+.ti -1c
+.RI "\fBconst\fP \fBint32_t\fP \fBreturnUnixTimestamp\fP ()"
+.br
+.RI "Gets the Unix timestamp\&. "
+.ti -1c
+.RI "\fBEvent::Event\fP \fBreturnEventFromTimestamp\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBRoom::Room\fP *\fBroom\fP, \fBconst\fP \fBint32_t\fP \fBTimestamp\fP, \fBconst\fP \fBbool\fP \fBDirection\fP)"
+.br
+.RI "Get an event from a Unix timestamp\&. "
+.ti -1c
+.RI "\fBEvent::Event\fP \fBreturnLatestEvent\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBRoom::Room\fP *\fBroom\fP)"
+.br
+.RI "Gets the latest event sent in the room\&. "
+.ti -1c
+.RI "\fBSync::Sync\fP \fBreturnSync\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP)"
+.br
+.RI "Get sync information from the server\&. "
+.ti -1c
+.RI "\fBVOIP::Credentials\fP \fBreturnTurnCredentials\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP)"
+.br
+.RI "Get TURN server credentials\&. "
+.ti -1c
+.RI "\fBEncryption\fP \fBinitEncryption\fP ()"
+.br
+.RI "Function that initializes an \fBEncryption\fP object properly\&. "
+.ti -1c
+.RI "\fBEncryption\fP \fBinitEncryptionFromPickle\fP (\fBconst\fP std::string &\fBpickleKey\fP, \fBconst\fP std::string &\fBpickleData\fP)"
+.br
+.RI "Function that initializes an \fBEncryption\fP object from a pickle key and pickle data\&. "
+.ti -1c
+.RI "\fBEncryption\fP \fBuploadKeys\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBEncryption\fP *\fBenc\fP)"
+.br
+.RI "Function that uploads encryption keys for your account to the Matrix home server\&. "
+.ti -1c
+.RI "\fBEncryption\fP \fBcreateSessionInRoom\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBEncryption\fP *\fBenc\fP, \fBRoom::Room\fP *\fBroom\fP)"
+.br
+.RI "Creates a session in a room\&. "
+.ti -1c
+.RI "\fBvoid\fP \fBsendEncryptedMessage\fP (\fBUser::CredentialsResponse\fP *\fBresp\fP, \fBEncryption\fP *\fBenc\fP, \fBRoom::Room\fP *\fBroom\fP, \fBMessage::Message\fP *\fBmsg\fP)"
+.br
+.RI "Sends an encrypted message to a room\&. "
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "std::string \fBHomeserver\fP { 'https://matrix\&.org' }"
+.br
+.ti -1c
+.RI "std::string \fBError\fP"
+.br
+.ti -1c
+.RI "std::string \fBfriendlyError\fP"
+.br
+.ti -1c
+.RI "\fBint\fP \fBleetError\fP {\fBLEET_ERROR_NONE\fP}"
+.br
+.ti -1c
+.RI "\fBint\fP \fBerrorCode\fP {0}"
+.br
+.ti -1c
+.RI "\fBint\fP \fBTransID\fP {0}"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "\fBconst\fP \fBbool\fP leet::checkIfUsernameIsAvailable (\fBconst\fP std::string & Username)"
+
+.PP
+Returns a boolean for whether a username is available on the home server or not\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIUsername\fP String to check for\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if the username is available, returns false otherwise\&. 
+.RE
+.PP
+
+.SS "\fBbool\fP leet::checkRegistrationTokenValidity (\fBconst\fP std::string & Token)"
+
+.PP
+Check if a registration token is still valid or not\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIToken\fP The token that should be validated\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if it's valid, otherwise returns false\&. 
+.RE
+.PP
+
+.SS "\fBleet::Room::Room\fP leet::createRoom (\fBUser::CredentialsResponse\fP * resp, \fBRoom::RoomConfiguration\fP * conf)"
+
+.PP
+Create a room from a \fBRoom::RoomConfiguration\fP object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. @parma conf \fBRoom\fP configuration object, this object should contain room information\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a \fBRoom\fP object containing room data\&. 
+.RE
+.PP
+
+.SS "\fBleet::Encryption\fP leet::createSessionInRoom (\fBUser::CredentialsResponse\fP * resp, \fBleet::Encryption\fP * enc, \fBRoom::Room\fP * room)"
+
+.PP
+Creates a session in a room\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fIenc\fP \fBEncryption\fP object\&. 
+.br
+\fIroom\fP \fBRoom\fP to create a session in\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns an \fBEncryption\fP object\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP \fBbool\fP leet::downloadFile (\fBUser::CredentialsResponse\fP * resp, \fBAttachment::Attachment\fP * Attachment, \fBconst\fP std::string & outputFile)"
+
+.PP
+Downloads a file from the Matrix server\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fIFile\fP \fBAttachment\fP object containing an mxc:// URL to download from\&. 
+.br
+\fIoutputFile\fP Output file path\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns true if it was downloaded successfully, otherwise false is returned\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP std::string leet::findRoomID (std::string Alias)"
+
+.PP
+Resolves a room alias and returns the room ID\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIAlias\fP \fBRoom\fP alias to find the room ID from\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a room ID 
+.RE
+.PP
+
+.SS "\fBconst\fP std::string leet::findUserID (\fBconst\fP std::string & Alias, \fBconst\fP std::string & Homeserver)"
+
+.PP
+Converts an incomplete user ID to a full user ID\&. (i\&.e\&. speedie is converted to @speedie:matrix\&.org) 
+.PP
+\fBParameters\fP
+.RS 4
+\fIAlias\fP The alias to get the user ID from\&. 
+.br
+\fIHomeserver\fP Home server to use\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a full user ID\&. You should make sure the home server is actually correct and validate the return value of this function\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP \fBint\fP leet::generateTransID ()"
+
+.PP
+Generate a new transaction ID by simply incrementing the existing ID by 1\&. 
+.PP
+\fBReturns\fP
+.RS 4
+New transaction ID\&.
+.RE
+.PP
+This function generates a new transaction ID this session by simply incrementing by 1\&.
+.PP
+If your program finishes execution, you must preserve the value of \fBleet::TransID\fP until the next session and restore it (i\&.e\&. \fBleet::TransID\fP = <old value>;) before calling any functions that use a transaction ID\&. (such as sendMessage)
+.PP
+If you use an ID that has been used before, the action will be considered a duplicate by the server, and most likely ignored\&. 
+.SS "\fBconst\fP std::string leet::getAPI (\fBconst\fP std::string & API)"
+
+.PP
+Returns a full API URL from a Matrix endpoint\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIAPI\fP The Matrix endpoint to call\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The full API URL string\&.
+.RE
+.PP
+Returns a full API URL from a Matrix endpoint\&. This uses the \fBleet::Homeserver\fP variable and the passed API\&. In other words, it returns https://example.com/_matrix/..\&. from the passed API (_matrix/\&.\&.\&.) 
+.SS "\fBleet::User::Profile\fP leet::getUserData (\fBUser::CredentialsResponse\fP * resp, \fBconst\fP std::string & userID)"
+
+.PP
+Returns user data in the form of a \fBUser::Profile\fP object\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fIuserID\fP \fBUser\fP to get data for\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a \fBUser::Profile\fP object containing the user data\&. 
+.RE
+.PP
+
+.SS "\fBleet::Encryption\fP leet::initEncryption ()"
+
+.PP
+Function that initializes an \fBEncryption\fP object properly\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Returns an \fBEncryption\fP object\&. 
+.RE
+.PP
+
+.SS "\fBleet::Encryption\fP leet::initEncryptionFromPickle (\fBconst\fP std::string & pickleKey, \fBconst\fP std::string & pickleData)"
+
+.PP
+Function that initializes an \fBEncryption\fP object from a pickle key and pickle data\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIpickleKey\fP Pickle key to use when unpickling the data\&. 
+.br
+\fIpickleData\fP Pickle data to unpickle\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns an \fBEncryption\fP object\&. 
+.RE
+.PP
+
+.SS "\fBvoid\fP leet::inviteUserToRoom (\fBUser::CredentialsResponse\fP * resp, \fBRoom::Room\fP * room, \fBconst\fP std::string & Reason)"
+
+.PP
+Invite a user to a room,\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fIroom\fP \fBRoom\fP object, this object should contain a room ID\&. 
+.br
+\fIReason\fP Reason for the invite being sent\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP std::string leet::invokeRequest_Get (\fBconst\fP std::string & URL)"
+
+.PP
+Invokes a Get request\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIURL\fP URL to request\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns the output from the request\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP std::string leet::invokeRequest_Get (\fBconst\fP std::string & URL, \fBconst\fP std::string & Authentication)"
+
+.PP
+Invokes a Get request\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIURL\fP URL to request\&. 
+.br
+\fIAuthentication\fP Authentication that should be used\&. Often this is the access token\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns the output from the request\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP std::string leet::invokeRequest_Post (\fBconst\fP std::string & URL, \fBconst\fP std::string & Data)"
+
+.PP
+Invokes a Post request\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIURL\fP URL to request\&. 
+.br
+\fIData\fP Data to Post\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns the output from the request\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP std::string leet::invokeRequest_Post (\fBconst\fP std::string & URL, \fBconst\fP std::string & Data, \fBconst\fP std::string & Authentication)"
+
+.PP
+Invokes a Post request\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIURL\fP URL to request\&. 
+.br
+\fIData\fP Data to Post\&. 
+.br
+\fIAuthentication\fP Authentication that should be used\&. Often this is the access token\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns the output from the request\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP std::string leet::invokeRequest_Post_File (\fBconst\fP std::string & URL, \fBconst\fP std::string & File)"
+
+.PP
+Invokes a Post request\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIURL\fP URL to request\&. 
+.br
+\fIFile\fP Path to a file which should be uploaded\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns the output from the request\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP std::string leet::invokeRequest_Post_File (\fBconst\fP std::string & URL, \fBconst\fP std::string & File, \fBconst\fP std::string & Authentication)"
+
+.PP
+Invokes a Post request\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIURL\fP URL to request\&. 
+.br
+\fIFile\fP Path to a file which should be uploaded\&. 
+.br
+\fIAuthentication\fP Authentication that should be used\&. Often this is the access token\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns the output from the request\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP std::string leet::invokeRequest_Put (\fBconst\fP std::string & URL, \fBconst\fP std::string & Data)"
+
+.PP
+Invokes a Put request\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIURL\fP URL to request\&. 
+.br
+\fIData\fP Data to Put\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns the output from the request\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP std::string leet::invokeRequest_Put (\fBconst\fP std::string & URL, \fBconst\fP std::string & Data, \fBconst\fP std::string & Authentication)"
+
+.PP
+Invokes a Put request\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIURL\fP URL to request\&. 
+.br
+\fIData\fP Data to Put\&. 
+.br
+\fIAuthentication\fP Authentication that should be used\&. Often this is the access token\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns the output from the request\&. 
+.RE
+.PP
+
+.SS "template<\fBtypename\fP \fBT\fP > \fBT\fP leet::loadFromFile (\fBconst\fP std::string & File)"
+
+.PP
+Loads data from a file\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIFile\fP String path to the file\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns the data from the file\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP \fBbool\fP leet::loadTransID (\fBconst\fP std::string & File)"
+
+.PP
+Loads the stored transaction ID from a file\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIFile\fP String path to the file\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Boolean, true if it was successfully loaded, otherwise false is returned\&.
+.RE
+.PP
+Loads the stored transaction ID from a file, overriding the TransID integer\&. This should be done if a transaction ID file exists, and it should be done each time the client is restarted provided a new session is NOT used, and a transaction ID has previously been stored in a file\&.
+.PP
+NOTE: The transaction ID does not need to be encrypted, because it is not sensitive data\&. 
+.SS "\fBleet::User::CredentialsResponse\fP leet::loginAccount (\fBUser::Credentials\fP * cred)"
+
+.PP
+Attempts to log in to the home server\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIcred\fP Credentials object to use for login 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+CredentialsResponse object, containing the access token among other variables\&. 
+.RE
+.PP
+
+.SS "\fBleet::User::CredentialsResponse\fP leet::refreshAccessToken (\fBUser::CredentialsResponse\fP * resp)"
+
+.PP
+Refresh an old access token (if a refresh token is available in the object) 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a new \fBUser::CredentialsResponse\fP object based on the parameter\&. 
+.RE
+.PP
+
+.SS "\fBleet::User::CredentialsResponse\fP leet::registerAccount (\fBUser::Credentials\fP * cred)"
+
+.PP
+Attempts to create an account on the home server\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIcred\fP Credentials object to use for registering 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+CredentialsResponse object, containing the access token among other variables\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP std::vector< \fBUser::Device\fP > leet::returnDevicesFromUser (\fBUser::CredentialsResponse\fP * resp, \fBconst\fP std::vector< \fBUser::Profile\fP > & user)"
+
+.PP
+Returns a vector of all devices for a specific user\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fIuser\fP \fBUser\fP vector, each \fBUser\fP must have the user ID set\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a vector of all devices for a specific user\&. 
+.RE
+.PP
+
+.SS "\fBleet::Event::Event\fP leet::returnEventFromTimestamp (\fBUser::CredentialsResponse\fP * resp, \fBRoom::Room\fP * room, \fBconst\fP \fBint32_t\fP Timestamp, \fBconst\fP \fBbool\fP Direction)"
+
+.PP
+Get an event from a Unix timestamp\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fIroom\fP \fBRoom\fP object to get event(s) from\&. 
+.br
+\fITimestamp\fP Unix timestamp for the event\&. 
+.br
+\fIDirection\fP Boolean which specifies which direction to search for events in\&. true means forward while false means backwards\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns the event\&. If none could be found, an empty object is simply returned instead\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP std::string leet::returnFilter (\fBUser::CredentialsResponse\fP * resp, \fBFilter::Filter\fP * filter)"
+
+.PP
+Returns a filter ID which can be used when requesting data\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fIfilter\fP \fBFilter\fP object\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a filter ID which can be used when requesting data\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP std::string leet::returnHomeServerFromString (\fBconst\fP std::string & userID)"
+
+.PP
+Returns a home server (matrix\&.org) from a user ID (@speedie:matrix\&.org) 
+.PP
+\fBParameters\fP
+.RS 4
+\fIuserID\fP The user ID to extract the home server from\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Home server string 
+.RE
+.PP
+
+.SS "\fBEvent::Event\fP leet::returnLatestEvent (\fBUser::CredentialsResponse\fP * resp, \fBRoom::Room\fP * room)"
+
+.PP
+Gets the latest event sent in the room\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fIroom\fP \fBRoom\fP object to get an event from\&.
+.RE
+.PP
+Note that this function is just a convenient wrapper for \fBreturnEventFromTimestamp()\fP 
+.SS "\fBconst\fP std::vector< \fBleet::Message::Message\fP > leet::returnMessages (\fBUser::CredentialsResponse\fP * resp, \fBRoom::Room\fP * room, \fBconst\fP \fBint\fP messageCount)"
+
+.PP
+Returns a \fBMessage::Message\fP vector from a room\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fIroom\fP \fBRoom\fP object, room that the messages should be retrieved from\&. 
+.br
+\fImessageCount\fP Number of messages to retrieve from the room\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a \fBMessage::Message\fP vector which represents the retrieved messages\&. 
+.RE
+.PP
+
+.SS "\fBleet::Room::Room\fP leet::returnRoom (\fBUser::CredentialsResponse\fP * resp, \fBRoom::Room\fP * room)"
+
+.PP
+Gets information about a room based on a room ID\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fIroom\fP \fBRoom\fP object, this object should contain a room ID\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a \fBRoom\fP object containing room data\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP std::vector< \fBleet::Room::Room\fP > leet::returnRoomIDs (\fBUser::CredentialsResponse\fP * resp)"
+
+.PP
+Returns room IDs for all the rooms your user has joined\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns room IDs for all the rooms your user has joined\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP std::vector< \fBleet::Room::Room\fP > leet::returnRooms (\fBUser::CredentialsResponse\fP * resp, \fBconst\fP \fBint\fP Limit)"
+
+.PP
+Returns a vector of all rooms your user has joined\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fILimit\fP Max number of rooms to return\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a vector of all rooms your user has joined\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP std::vector< \fBleet::Room::Room\fP > leet::returnRoomsInSpace (\fBUser::CredentialsResponse\fP * resp, \fBconst\fP std::string & spaceID, \fBconst\fP \fBint\fP Limit)"
+
+.PP
+Returns a vector of all rooms in a space\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fIspaceID\fP \fBSpace\fP ID to get rooms from\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a vector of all rooms in the space\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP std::string leet::returnServerDiscovery (std::string Server)"
+
+.PP
+Performs server discovery (\&.well-known/matrix/client) to find the proper Matrix home server URL\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIServer\fP URL to check for discovery at\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns the home server if it can be found\&. If there's no \&.well-known/matrix/client file on the server, the server URL passed will be returned\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP std::vector< \fBleet::Space::Space\fP > leet::returnSpaces (\fBUser::CredentialsResponse\fP * resp, \fBconst\fP \fBint\fP Limit)"
+
+.PP
+Returns a vector of all spaces your user has joined\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fILimit\fP Max number of spaces to return\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a vector of all spaces, along with all child rooms your user has joined\&. 
+.RE
+.PP
+
+.SS "std::vector< std::string > leet::returnSupportedLoginTypes ()"
+
+.PP
+Get login types supported by the Matrix home server\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Returns login types supported by the Matrix home server in the form of an std::vector<std::string>\&. 
+.RE
+.PP
+
+.SS "std::vector< std::string > leet::returnSupportedSpecs ()"
+
+.PP
+Get supported Matrix specification versions\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Returns supported Matrix specification versions in the form of an std::vector<std::string>\&. 
+.RE
+.PP
+
+.SS "\fBleet::Sync::Sync\fP leet::returnSync (\fBUser::CredentialsResponse\fP * resp)"
+
+.PP
+Get sync information from the server\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a \fBSync\fP object with the fields\&. 
+.RE
+.PP
+
+.SS "\fBleet::VOIP::Credentials\fP leet::returnTurnCredentials (\fBUser::CredentialsResponse\fP * resp)"
+
+.PP
+Get TURN server credentials\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a \fBVOIP::Credentials\fP object\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP \fBint32_t\fP leet::returnUnixTimestamp ()"
+
+.PP
+Gets the Unix timestamp\&. 
+.PP
+\fBReturns\fP
+.RS 4
+Returns a Unix timestamp (i\&.e\&. time since epoch) 
+.RE
+.PP
+
+.SS "\fBconst\fP std::string leet::returnUserName (\fBconst\fP std::string & userID)"
+
+.PP
+Returns <name> from <name>:<home server> 
+.PP
+\fBParameters\fP
+.RS 4
+\fIuserID\fP Full user ID 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a string 
+.RE
+.PP
+
+.SS "\fBconst\fP std::vector< \fBleet::User::Profile\fP > leet::returnUsersInRoom (\fBUser::CredentialsResponse\fP * resp, \fBRoom::Room\fP * room)"
+
+.PP
+Returns a vector of all users in a room\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fIroom\fP \fBRoom\fP object, the function uses the room ID, which must be set\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns a vector of all users in a room\&. 
+.RE
+.PP
+
+.SS "template<typename T > T leet::saveToFile (const std::string & File, T Data)"
+
+.PP
+Saves data to a file\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIFile\fP String path to the file\&. 
+.br
+\fIData\fP The data that should be saved to the file\&. 
+.RE
+.PP
+
+.SS "\fBconst\fP \fBbool\fP leet::saveTransID (\fBconst\fP std::string & File)"
+
+.PP
+Saves the stored transaction ID to a file\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIFile\fP String path to the file\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Boolean, true if it was successfully saved, otherwise false is returned\&.
+.RE
+.PP
+Saves the stored transaction ID to a file\&. It should be saved each time the client is restarted, and should then be loaded again using loadTransID\&. This is because the Matrix server will ignore duplicate requests\&.
+.PP
+NOTE: The transaction ID does not need to be encrypted, because it is not sensitive data\&. 
+.SS "\fBvoid\fP leet::sendEncryptedMessage (\fBUser::CredentialsResponse\fP * resp, \fBleet::Encryption\fP * enc, \fBRoom::Room\fP * room, \fBMessage::Message\fP * msg)"
+
+.PP
+Sends an encrypted message to a room\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fIenc\fP \fBEncryption\fP object\&. 
+.br
+\fIroom\fP \fBRoom\fP to create a session in\&. 
+.br
+\fImsg\fP \fBMessage\fP to send\&. 
+.RE
+.PP
+
+.SS "\fBvoid\fP leet::sendMessage (\fBUser::CredentialsResponse\fP * resp, \fBRoom::Room\fP * room, \fBMessage::Message\fP * msg)"
+
+.PP
+Sends a plain text message to the specified room\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fIroom\fP \fBRoom\fP object, room that the message should be sent in\&. 
+.br
+\fImsg\fP \fBMessage::Message\fP object, the message that should be sent\&. 
+.RE
+.PP
+
+.SS "\fBvoid\fP leet::toggleTyping (\fBUser::CredentialsResponse\fP * resp, \fBconst\fP \fBint\fP Timeout, \fBconst\fP \fBbool\fP Typing, \fBRoom::Room\fP * room)"
+
+.PP
+Toggles typing in a room\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fITimeout\fP How long to type for\&. 
+.br
+\fITyping\fP Boolean, whether or not we should be typing or not\&. 
+.br
+\fIroom\fP \fBRoom\fP to send the event in\&. 
+.RE
+.PP
+
+.SS "\fBleet::Attachment::Attachment\fP leet::uploadFile (\fBUser::CredentialsResponse\fP * resp, \fBconst\fP std::string & File)"
+
+.PP
+Uploads a file to the Matrix server(s)\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fIFile\fP Path to the file which should be uploaded\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns an \fBAttachment::Attachment\fP object containing an mxc:// Matrix URL\&. 
+.RE
+.PP
+
+.SS "\fBleet::Encryption\fP leet::uploadKeys (\fBUser::CredentialsResponse\fP * resp, \fBleet::Encryption\fP * enc)"
+
+.PP
+Function that uploads encryption keys for your account to the Matrix home server\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIresp\fP CredentialsResponse object, required for authentication\&. 
+.br
+\fIenc\fP \fBEncryption\fP object\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Returns an \fBEncryption\fP object\&. 
+.RE
+.PP
+
+.SH "Variable Documentation"
+.PP 
+.SS "std::string leet::Error\fC [inline]\fP"
+
+.SS "\fBint\fP leet::errorCode {0}\fC [inline]\fP"
+
+.SS "std::string leet::friendlyError\fC [inline]\fP"
+
+.SS "std::string leet::Homeserver { 'https://matrix\&.org' }\fC [inline]\fP"
+
+.SS "\fBint\fP leet::leetError {\fBLEET_ERROR_NONE\fP}\fC [inline]\fP"
+
+.SS "\fBint\fP leet::TransID {0}\fC [inline]\fP"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for libleet from the source code\&.

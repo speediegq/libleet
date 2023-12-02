@@ -1,0 +1,1183 @@
+\doxysection{leet Namespace Reference}
+\hypertarget{namespaceleet}{}\label{namespaceleet}\index{leet@{leet}}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespaceleet_1_1Attachment}{Attachment}}
+\item 
+namespace \mbox{\hyperlink{namespaceleet_1_1Event}{Event}}
+\item 
+namespace \mbox{\hyperlink{namespaceleet_1_1Filter}{Filter}}
+\item 
+namespace \mbox{\hyperlink{namespaceleet_1_1Message}{Message}}
+\item 
+namespace \mbox{\hyperlink{namespaceleet_1_1Room}{Room}}
+\item 
+namespace \mbox{\hyperlink{namespaceleet_1_1Space}{Space}}
+\item 
+namespace \mbox{\hyperlink{namespaceleet_1_1Sync}{Sync}}
+\item 
+namespace \mbox{\hyperlink{namespaceleet_1_1User}{User}}
+\item 
+namespace \mbox{\hyperlink{namespaceleet_1_1VOIP}{VOIP}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classleet_1_1Encryption}{Encryption}}
+\begin{DoxyCompactList}\small\item\em Class which hopefully allows you to safely handle encryption and Olm memory. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classleet_1_1olmAccount}{olm\+Account}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} \mbox{\hyperlink{namespaceleet_a662e01b83ac0e6a95e723331056f03a2}{generate\+Trans\+ID}} ()
+\begin{DoxyCompactList}\small\item\em Generate a new transaction ID by simply incrementing the existing ID by 1. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} \mbox{\hyperlink{namespaceleet_a411cd6c4806c680b3a928ed52c5b315b}{save\+Trans\+ID}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{File}})
+\begin{DoxyCompactList}\small\item\em Saves the stored transaction ID to a file. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} \mbox{\hyperlink{namespaceleet_a965d0a4a07cfed895f1960eba94d989d}{load\+Trans\+ID}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{File}})
+\begin{DoxyCompactList}\small\item\em Loads the stored transaction ID from a file. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\T \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{save\+To\+File}} (const std\+::string \&File, T Data)
+\begin{DoxyCompactList}\small\item\em Saves data to a file. \end{DoxyCompactList}\item 
+{\footnotesize template$<$\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{typename}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{T}} $>$ }\\\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{T}} \mbox{\hyperlink{namespaceleet_ac00d7b6839416edbf02439773e74e85a}{load\+From\+File}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{File}})
+\begin{DoxyCompactList}\small\item\em Loads data from a file. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{namespaceleet_ab744e089b2a044a1058846540a2d45aa}{return\+Server\+Discovery}} (std\+::string \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Server}})
+\begin{DoxyCompactList}\small\item\em Performs server discovery (.well-\/known/matrix/client) to find the proper Matrix home server URL. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{namespaceleet_a6256f0a57469c8c0260ac3e1568da451}{return\+Home\+Server\+From\+String}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&user\+ID)
+\begin{DoxyCompactList}\small\item\em Returns a home server (matrix.\+org) from a user ID (@speedie\+:matrix.\+org) \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceleet_aa71e9add3fe71ad537065ebc2553e2ca}{return\+Supported\+Login\+Types}} ()
+\begin{DoxyCompactList}\small\item\em Get login types supported by the Matrix home server. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{namespaceleet_a3220a8bb8242d9b3bf9694b22d4ee30b}{return\+Supported\+Specs}} ()
+\begin{DoxyCompactList}\small\item\em Get supported Matrix specification versions. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \mbox{\hyperlink{namespaceleet_a944df5761e8c6e43adf5b3b6f3b8976c}{register\+Account}} (\mbox{\hyperlink{classleet_1_1User_1_1Credentials}{User\+::\+Credentials}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{cred}})
+\begin{DoxyCompactList}\small\item\em Attempts to create an account on the home server. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} \mbox{\hyperlink{namespaceleet_a5a50820297b17118e6521b5b79d84fc1}{check\+Registration\+Token\+Validity}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&Token)
+\begin{DoxyCompactList}\small\item\em Check if a registration token is still valid or not. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \mbox{\hyperlink{namespaceleet_a95cd2b8c02fc7a1ef1e2878073a14b9e}{login\+Account}} (\mbox{\hyperlink{classleet_1_1User_1_1Credentials}{User\+::\+Credentials}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{cred}})
+\begin{DoxyCompactList}\small\item\em Attempts to log in to the home server. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \mbox{\hyperlink{namespaceleet_a6618277e9bd8b1c8dc6034a3e03135fd}{refresh\+Access\+Token}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}})
+\begin{DoxyCompactList}\small\item\em Refresh an old access token (if a refresh token is available in the object) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classleet_1_1User_1_1Profile}{User\+::\+Profile}} \mbox{\hyperlink{namespaceleet_a05c6e7d0d0a4ca3117c9cd7fffb0c6cd}{get\+User\+Data}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&user\+ID)
+\begin{DoxyCompactList}\small\item\em Returns user data in the form of a \doxylink{classleet_1_1User_1_1Profile}{User\+::\+Profile} object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{namespaceleet_abf8deb3b48c9f7322aa6654885946738}{get\+API}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{API}})
+\begin{DoxyCompactList}\small\item\em Returns a full API URL from a Matrix endpoint. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{namespaceleet_a87681d6edf2064da9cf4df3dcb3ac67e}{invoke\+Request\+\_\+\+Get}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&URL, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Authentication}})
+\begin{DoxyCompactList}\small\item\em Invokes a Get request. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{namespaceleet_aa3853464d166cde6fa97f8dfb9e2398f}{invoke\+Request\+\_\+\+Put}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&URL, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Data}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Authentication}})
+\begin{DoxyCompactList}\small\item\em Invokes a Put request. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{namespaceleet_aa88a91a144b2176d9ce3c4cad3c45bab}{invoke\+Request\+\_\+\+Post}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&URL, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Data}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Authentication}})
+\begin{DoxyCompactList}\small\item\em Invokes a Post request. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{namespaceleet_ab0f7d7f196a3143c8692d5a3ced13328}{invoke\+Request\+\_\+\+Get}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&URL)
+\begin{DoxyCompactList}\small\item\em Invokes a Get request. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{namespaceleet_a254ed0ea560dd99cfd0060811b9dd289}{invoke\+Request\+\_\+\+Put}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&URL, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Data}})
+\begin{DoxyCompactList}\small\item\em Invokes a Put request. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{namespaceleet_aa7470c3461e8ea6f5829560ce8fb5fc1}{invoke\+Request\+\_\+\+Post}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&URL, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Data}})
+\begin{DoxyCompactList}\small\item\em Invokes a Post request. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{namespaceleet_a19dc9056d0f77c0c7eb51f12e9f5f554}{invoke\+Request\+\_\+\+Post\+\_\+\+File}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&URL, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{File}})
+\begin{DoxyCompactList}\small\item\em Invokes a Post request. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{namespaceleet_aa1ece7314d86bbf90688ae10441cea3e}{invoke\+Request\+\_\+\+Post\+\_\+\+File}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&URL, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{File}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Authentication}})
+\begin{DoxyCompactList}\small\item\em Invokes a Post request. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \mbox{\hyperlink{namespaceleet_a20ad1f62e70791be89e97ef10a2e17e8}{return\+Room}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{room}})
+\begin{DoxyCompactList}\small\item\em Gets information about a room based on a room ID. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \mbox{\hyperlink{namespaceleet_aeec1a06048a9cba651c0f494ab7cdb2c}{create\+Room}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{classleet_1_1Room_1_1RoomConfiguration}{Room\+::\+Room\+Configuration}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{conf}})
+\begin{DoxyCompactList}\small\item\em Create a room from a \doxylink{classleet_1_1Room_1_1RoomConfiguration}{Room\+::\+Room\+Configuration} object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} \mbox{\hyperlink{namespaceleet_a75c8d9291eb204589c1928ea607dd95b}{invite\+User\+To\+Room}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{room}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Reason}})
+\begin{DoxyCompactList}\small\item\em Invite a user to a room,. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} $>$ \mbox{\hyperlink{namespaceleet_a0becdb7d81d60ba11e9b196c2ac312f7}{return\+Rooms}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} Limit)
+\begin{DoxyCompactList}\small\item\em Returns a vector of all rooms your user has joined. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} $>$ \mbox{\hyperlink{namespaceleet_ae4179f205bbcae31f1332c5daff19630}{return\+Room\+IDs}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}})
+\begin{DoxyCompactList}\small\item\em Returns room IDs for all the rooms your user has joined. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{namespaceleet_af66fefe88b0d6ee698399cbb9d5de650}{find\+Room\+ID}} (std\+::string Alias)
+\begin{DoxyCompactList}\small\item\em Resolves a room alias and returns the room ID. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1Space_1_1Space}{Space\+::\+Space}} $>$ \mbox{\hyperlink{namespaceleet_a70a7b20cb7a7c238754013b4c422afb7}{return\+Spaces}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} Limit)
+\begin{DoxyCompactList}\small\item\em Returns a vector of all spaces your user has joined. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} $>$ \mbox{\hyperlink{namespaceleet_a9819e1abc2ed3b322de730a89936ea97}{return\+Rooms\+In\+Space}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&space\+ID, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} Limit)
+\begin{DoxyCompactList}\small\item\em Returns a vector of all rooms in a space. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{namespaceleet_a7f18808fb4942a066467af4da81de7fe}{find\+User\+ID}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&Alias, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a047ddd8c4f4dba43c5ee0e38858485ab}{Homeserver}})
+\begin{DoxyCompactList}\small\item\em Converts an incomplete user ID to a full user ID. (i.\+e. speedie is converted to @speedie\+:matrix.\+org) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{namespaceleet_a9411e25fb1f3420d7b6c954926db536a}{return\+User\+Name}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&user\+ID)
+\begin{DoxyCompactList}\small\item\em Returns $<$name$>$ from \texorpdfstring{$<$}{<}name\texorpdfstring{$>$}{>}\+:$<$home server$>$ \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1User_1_1Profile}{User\+::\+Profile}} $>$ \mbox{\hyperlink{namespaceleet_a00a66e98469fbf8978fc3face0deb78a}{return\+Users\+In\+Room}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{room}})
+\begin{DoxyCompactList}\small\item\em Returns a vector of all users in a room. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1User_1_1Device}{User\+::\+Device}} $>$ \mbox{\hyperlink{namespaceleet_a196d23dcf6a4e5645af44cd94c59cb48}{return\+Devices\+From\+User}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1User_1_1Profile}{User\+::\+Profile}} $>$ \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{user}})
+\begin{DoxyCompactList}\small\item\em Returns a vector of all devices for a specific user. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} \mbox{\hyperlink{namespaceleet_a4aab99007c2c99bb6231484636d71ead}{check\+If\+Username\+Is\+Available}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&Username)
+\begin{DoxyCompactList}\small\item\em Returns a boolean for whether a username is available on the home server or not. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} \mbox{\hyperlink{namespaceleet_a97a051b8d6cbb32e4cb8e9e8562f81fd}{toggle\+Typing}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Timeout}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Typing}}, \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{room}})
+\begin{DoxyCompactList}\small\item\em Toggles typing in a room. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} \mbox{\hyperlink{namespaceleet_a67dbc8b27a77c92ce074b2ab6ae47850}{send\+Message}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{room}}, \mbox{\hyperlink{classleet_1_1Message_1_1Message}{Message\+::\+Message}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{msg}})
+\begin{DoxyCompactList}\small\item\em Sends a plain text message to the specified room. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1Message_1_1Message}{Message\+::\+Message}} $>$ \mbox{\hyperlink{namespaceleet_a877400ed8e1e79c183a8f7858d79446d}{return\+Messages}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{room}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{message\+Count}})
+\begin{DoxyCompactList}\small\item\em Returns a \doxylink{classleet_1_1Message_1_1Message}{Message\+::\+Message} vector from a room. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \mbox{\hyperlink{namespaceleet_a56a1a90994bbd897072fb1b902abc993}{return\+Filter}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{classleet_1_1Filter_1_1Filter}{Filter\+::\+Filter}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{filter}})
+\begin{DoxyCompactList}\small\item\em Returns a filter ID which can be used when requesting data. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classleet_1_1Attachment_1_1Attachment}{Attachment\+::\+Attachment}} \mbox{\hyperlink{namespaceleet_a319a93fd72154257674df5ef49d03beb}{upload\+File}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{File}})
+\begin{DoxyCompactList}\small\item\em Uploads a file to the Matrix server(s). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} \mbox{\hyperlink{namespaceleet_ac26d1d02e8463569c4e7fcc4e5f08455}{download\+File}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{classleet_1_1Attachment_1_1Attachment}{Attachment\+::\+Attachment}} \texorpdfstring{$\ast$}{*}Attachment, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{output\+File}})
+\begin{DoxyCompactList}\small\item\em Downloads a file from the Matrix server. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int32\+\_\+t}} \mbox{\hyperlink{namespaceleet_a422f2f5edf4183209f96b572cd0cbf73}{return\+Unix\+Timestamp}} ()
+\begin{DoxyCompactList}\small\item\em Gets the Unix timestamp. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classleet_1_1Event_1_1Event}{Event\+::\+Event}} \mbox{\hyperlink{namespaceleet_a70ad6031c50aef71041c68eb5bf1c415}{return\+Event\+From\+Timestamp}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{room}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int32\+\_\+t}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Timestamp}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{Direction}})
+\begin{DoxyCompactList}\small\item\em Get an event from a Unix timestamp. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classleet_1_1Event_1_1Event}{Event\+::\+Event}} \mbox{\hyperlink{namespaceleet_ae70c0b95fc9ff27f1dfb481ee5f968c5}{return\+Latest\+Event}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{room}})
+\begin{DoxyCompactList}\small\item\em Gets the latest event sent in the room. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classleet_1_1Sync_1_1Sync}{Sync\+::\+Sync}} \mbox{\hyperlink{namespaceleet_aed2232388d75a5b6837200d3d3009acc}{return\+Sync}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}})
+\begin{DoxyCompactList}\small\item\em Get sync information from the server. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classleet_1_1VOIP_1_1Credentials}{VOIP\+::\+Credentials}} \mbox{\hyperlink{namespaceleet_aedf0824145f0f316d71e16085b4fc0c4}{return\+Turn\+Credentials}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}})
+\begin{DoxyCompactList}\small\item\em Get TURN server credentials. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classleet_1_1Encryption}{Encryption}} \mbox{\hyperlink{namespaceleet_a90817bf0adfacb8ac0c3d147b4e91383}{init\+Encryption}} ()
+\begin{DoxyCompactList}\small\item\em Function that initializes an \doxylink{classleet_1_1Encryption}{Encryption} object properly. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classleet_1_1Encryption}{Encryption}} \mbox{\hyperlink{namespaceleet_abe4fc964ac712876ba14d6d584c74201}{init\+Encryption\+From\+Pickle}} (\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Key}}, \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{pickle\+Data}})
+\begin{DoxyCompactList}\small\item\em Function that initializes an \doxylink{classleet_1_1Encryption}{Encryption} object from a pickle key and pickle data. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classleet_1_1Encryption}{Encryption}} \mbox{\hyperlink{namespaceleet_a9fcad94c6a7ae5a4c4f054dec8e0eee5}{upload\+Keys}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{classleet_1_1Encryption}{Encryption}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{enc}})
+\begin{DoxyCompactList}\small\item\em Function that uploads encryption keys for your account to the Matrix home server. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classleet_1_1Encryption}{Encryption}} \mbox{\hyperlink{namespaceleet_acdb542395be8170f719a8a7ad0ef0ac2}{create\+Session\+In\+Room}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{classleet_1_1Encryption}{Encryption}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{enc}}, \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{room}})
+\begin{DoxyCompactList}\small\item\em Creates a session in a room. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} \mbox{\hyperlink{namespaceleet_a40c1e3b3d1988d56aaa389607d10fe57}{send\+Encrypted\+Message}} (\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{resp}}, \mbox{\hyperlink{classleet_1_1Encryption}{Encryption}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{enc}}, \mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{room}}, \mbox{\hyperlink{classleet_1_1Message_1_1Message}{Message\+::\+Message}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{msg}})
+\begin{DoxyCompactList}\small\item\em Sends an encrypted message to a room. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{namespaceleet_a047ddd8c4f4dba43c5ee0e38858485ab}{Homeserver}} \{ "{}https\+://matrix.\+org"{} \}
+\item 
+std\+::string \mbox{\hyperlink{namespaceleet_ae7fadb8f554b82e37512ece5f451e345}{Error}}
+\item 
+std\+::string \mbox{\hyperlink{namespaceleet_aca8cf23cb2471b07f1ee22a2077b5b37}{friendly\+Error}}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} \mbox{\hyperlink{namespaceleet_a264da018065f7948965b19d85bc324fe}{leet\+Error}} \{\mbox{\hyperlink{libleet_8hpp_abc6126af1d45847bc59afa0aa3216b04a9e627ee37931636fb073195d19d46307}{LEET\+\_\+\+ERROR\+\_\+\+NONE}}\}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} \mbox{\hyperlink{namespaceleet_aa20a9fa2de98421d60165559a8a23f76}{error\+Code}} \{0\}
+\item 
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} \mbox{\hyperlink{namespaceleet_adc8712b33d096d2f8a204e7bad8ed1d4}{Trans\+ID}} \{0\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespaceleet_a4aab99007c2c99bb6231484636d71ead}\label{namespaceleet_a4aab99007c2c99bb6231484636d71ead} 
+\index{leet@{leet}!checkIfUsernameIsAvailable@{checkIfUsernameIsAvailable}}
+\index{checkIfUsernameIsAvailable@{checkIfUsernameIsAvailable}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{checkIfUsernameIsAvailable()}{checkIfUsernameIsAvailable()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} leet\+::check\+If\+Username\+Is\+Available (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{Username }\end{DoxyParamCaption})}
+
+
+
+Returns a boolean for whether a username is available on the home server or not. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Username} & String to check for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if the username is available, returns false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a5a50820297b17118e6521b5b79d84fc1}\label{namespaceleet_a5a50820297b17118e6521b5b79d84fc1} 
+\index{leet@{leet}!checkRegistrationTokenValidity@{checkRegistrationTokenValidity}}
+\index{checkRegistrationTokenValidity@{checkRegistrationTokenValidity}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{checkRegistrationTokenValidity()}{checkRegistrationTokenValidity()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} leet\+::check\+Registration\+Token\+Validity (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{Token }\end{DoxyParamCaption})}
+
+
+
+Check if a registration token is still valid or not. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Token} & The token that should be validated. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if it\textquotesingle{}s valid, otherwise returns false. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_aeec1a06048a9cba651c0f494ab7cdb2c}\label{namespaceleet_aeec1a06048a9cba651c0f494ab7cdb2c} 
+\index{leet@{leet}!createRoom@{createRoom}}
+\index{createRoom@{createRoom}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{createRoom()}{createRoom()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classleet_1_1Room_1_1Room}{leet\+::\+Room\+::\+Room}} leet\+::create\+Room (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{classleet_1_1Room_1_1RoomConfiguration}{Room\+::\+Room\+Configuration}} \texorpdfstring{$\ast$}{*}}]{conf }\end{DoxyParamCaption})}
+
+
+
+Create a room from a \doxylink{classleet_1_1Room_1_1RoomConfiguration}{Room\+::\+Room\+Configuration} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. @parma conf \doxylink{namespaceleet_1_1Room}{Room} configuration object, this object should contain room information. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a \doxylink{namespaceleet_1_1Room}{Room} object containing room data. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_acdb542395be8170f719a8a7ad0ef0ac2}\label{namespaceleet_acdb542395be8170f719a8a7ad0ef0ac2} 
+\index{leet@{leet}!createSessionInRoom@{createSessionInRoom}}
+\index{createSessionInRoom@{createSessionInRoom}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{createSessionInRoom()}{createSessionInRoom()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classleet_1_1Encryption}{leet\+::\+Encryption}} leet\+::create\+Session\+In\+Room (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{classleet_1_1Encryption}{leet\+::\+Encryption}} \texorpdfstring{$\ast$}{*}}]{enc,  }\item[{\mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}}]{room }\end{DoxyParamCaption})}
+
+
+
+Creates a session in a room. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em enc} & \doxylink{classleet_1_1Encryption}{Encryption} object. \\
+\hline
+{\em room} & \doxylink{namespaceleet_1_1Room}{Room} to create a session in. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns an \doxylink{classleet_1_1Encryption}{Encryption} object. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_ac26d1d02e8463569c4e7fcc4e5f08455}\label{namespaceleet_ac26d1d02e8463569c4e7fcc4e5f08455} 
+\index{leet@{leet}!downloadFile@{downloadFile}}
+\index{downloadFile@{downloadFile}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{downloadFile()}{downloadFile()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} leet\+::download\+File (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{classleet_1_1Attachment_1_1Attachment}{Attachment\+::\+Attachment}} \texorpdfstring{$\ast$}{*}}]{Attachment,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{output\+File }\end{DoxyParamCaption})}
+
+
+
+Downloads a file from the Matrix server. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em File} & \doxylink{namespaceleet_1_1Attachment}{Attachment} object containing an mxc\+:// URL to download from. \\
+\hline
+{\em output\+File} & Output file path. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if it was downloaded successfully, otherwise false is returned. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_af66fefe88b0d6ee698399cbb9d5de650}\label{namespaceleet_af66fefe88b0d6ee698399cbb9d5de650} 
+\index{leet@{leet}!findRoomID@{findRoomID}}
+\index{findRoomID@{findRoomID}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{findRoomID()}{findRoomID()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::find\+Room\+ID (\begin{DoxyParamCaption}\item[{std\+::string}]{Alias }\end{DoxyParamCaption})}
+
+
+
+Resolves a room alias and returns the room ID. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Alias} & \doxylink{namespaceleet_1_1Room}{Room} alias to find the room ID from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a room ID 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a7f18808fb4942a066467af4da81de7fe}\label{namespaceleet_a7f18808fb4942a066467af4da81de7fe} 
+\index{leet@{leet}!findUserID@{findUserID}}
+\index{findUserID@{findUserID}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{findUserID()}{findUserID()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::find\+User\+ID (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{Alias,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{Homeserver }\end{DoxyParamCaption})}
+
+
+
+Converts an incomplete user ID to a full user ID. (i.\+e. speedie is converted to @speedie\+:matrix.\+org) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Alias} & The alias to get the user ID from. \\
+\hline
+{\em Homeserver} & Home server to use. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a full user ID. You should make sure the home server is actually correct and validate the return value of this function. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a662e01b83ac0e6a95e723331056f03a2}\label{namespaceleet_a662e01b83ac0e6a95e723331056f03a2} 
+\index{leet@{leet}!generateTransID@{generateTransID}}
+\index{generateTransID@{generateTransID}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{generateTransID()}{generateTransID()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} leet\+::generate\+Trans\+ID (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Generate a new transaction ID by simply incrementing the existing ID by 1. 
+
+\begin{DoxyReturn}{Returns}
+New transaction ID.
+\end{DoxyReturn}
+This function generates a new transaction ID this session by simply incrementing by 1.
+
+If your program finishes execution, you must preserve the value of \doxylink{namespaceleet_adc8712b33d096d2f8a204e7bad8ed1d4}{leet\+::\+Trans\+ID} until the next session and restore it (i.\+e. \doxylink{namespaceleet_adc8712b33d096d2f8a204e7bad8ed1d4}{leet\+::\+Trans\+ID} = $<$old value$>$;) before calling any functions that use a transaction ID. (such as send\+Message)
+
+If you use an ID that has been used before, the action will be considered a duplicate by the server, and most likely ignored. \Hypertarget{namespaceleet_abf8deb3b48c9f7322aa6654885946738}\label{namespaceleet_abf8deb3b48c9f7322aa6654885946738} 
+\index{leet@{leet}!getAPI@{getAPI}}
+\index{getAPI@{getAPI}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{getAPI()}{getAPI()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::get\+API (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{API }\end{DoxyParamCaption})}
+
+
+
+Returns a full API URL from a Matrix endpoint. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em API} & The Matrix endpoint to call. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The full API URL string.
+\end{DoxyReturn}
+Returns a full API URL from a Matrix endpoint. This uses the \doxylink{namespaceleet_a047ddd8c4f4dba43c5ee0e38858485ab}{leet\+::\+Homeserver} variable and the passed API. In other words, it returns \href{https://example.com/_matrix/..}{\texttt{ https\+://example.\+com/\+\_\+matrix/..}}. from the passed API (\+\_\+matrix/...) \Hypertarget{namespaceleet_a05c6e7d0d0a4ca3117c9cd7fffb0c6cd}\label{namespaceleet_a05c6e7d0d0a4ca3117c9cd7fffb0c6cd} 
+\index{leet@{leet}!getUserData@{getUserData}}
+\index{getUserData@{getUserData}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{getUserData()}{getUserData()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classleet_1_1User_1_1Profile}{leet\+::\+User\+::\+Profile}} leet\+::get\+User\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{user\+ID }\end{DoxyParamCaption})}
+
+
+
+Returns user data in the form of a \doxylink{classleet_1_1User_1_1Profile}{User\+::\+Profile} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em user\+ID} & \doxylink{namespaceleet_1_1User}{User} to get data for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a \doxylink{classleet_1_1User_1_1Profile}{User\+::\+Profile} object containing the user data. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a90817bf0adfacb8ac0c3d147b4e91383}\label{namespaceleet_a90817bf0adfacb8ac0c3d147b4e91383} 
+\index{leet@{leet}!initEncryption@{initEncryption}}
+\index{initEncryption@{initEncryption}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{initEncryption()}{initEncryption()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classleet_1_1Encryption}{leet\+::\+Encryption}} leet\+::init\+Encryption (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function that initializes an \doxylink{classleet_1_1Encryption}{Encryption} object properly. 
+
+\begin{DoxyReturn}{Returns}
+Returns an \doxylink{classleet_1_1Encryption}{Encryption} object. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_abe4fc964ac712876ba14d6d584c74201}\label{namespaceleet_abe4fc964ac712876ba14d6d584c74201} 
+\index{leet@{leet}!initEncryptionFromPickle@{initEncryptionFromPickle}}
+\index{initEncryptionFromPickle@{initEncryptionFromPickle}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{initEncryptionFromPickle()}{initEncryptionFromPickle()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classleet_1_1Encryption}{leet\+::\+Encryption}} leet\+::init\+Encryption\+From\+Pickle (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Key,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{pickle\+Data }\end{DoxyParamCaption})}
+
+
+
+Function that initializes an \doxylink{classleet_1_1Encryption}{Encryption} object from a pickle key and pickle data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pickle\+Key} & Pickle key to use when unpickling the data. \\
+\hline
+{\em pickle\+Data} & Pickle data to unpickle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns an \doxylink{classleet_1_1Encryption}{Encryption} object. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a75c8d9291eb204589c1928ea607dd95b}\label{namespaceleet_a75c8d9291eb204589c1928ea607dd95b} 
+\index{leet@{leet}!inviteUserToRoom@{inviteUserToRoom}}
+\index{inviteUserToRoom@{inviteUserToRoom}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{inviteUserToRoom()}{inviteUserToRoom()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} leet\+::invite\+User\+To\+Room (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}}]{room,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{Reason }\end{DoxyParamCaption})}
+
+
+
+Invite a user to a room,. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em room} & \doxylink{namespaceleet_1_1Room}{Room} object, this object should contain a room ID. \\
+\hline
+{\em Reason} & Reason for the invite being sent. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespaceleet_ab0f7d7f196a3143c8692d5a3ced13328}\label{namespaceleet_ab0f7d7f196a3143c8692d5a3ced13328} 
+\index{leet@{leet}!invokeRequest\_Get@{invokeRequest\_Get}}
+\index{invokeRequest\_Get@{invokeRequest\_Get}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{invokeRequest\_Get()}{invokeRequest\_Get()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::invoke\+Request\+\_\+\+Get (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{URL }\end{DoxyParamCaption})}
+
+
+
+Invokes a Get request. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em URL} & URL to request. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the output from the request. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a87681d6edf2064da9cf4df3dcb3ac67e}\label{namespaceleet_a87681d6edf2064da9cf4df3dcb3ac67e} 
+\index{leet@{leet}!invokeRequest\_Get@{invokeRequest\_Get}}
+\index{invokeRequest\_Get@{invokeRequest\_Get}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{invokeRequest\_Get()}{invokeRequest\_Get()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::invoke\+Request\+\_\+\+Get (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{URL,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{Authentication }\end{DoxyParamCaption})}
+
+
+
+Invokes a Get request. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em URL} & URL to request. \\
+\hline
+{\em Authentication} & Authentication that should be used. Often this is the access token. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the output from the request. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_aa7470c3461e8ea6f5829560ce8fb5fc1}\label{namespaceleet_aa7470c3461e8ea6f5829560ce8fb5fc1} 
+\index{leet@{leet}!invokeRequest\_Post@{invokeRequest\_Post}}
+\index{invokeRequest\_Post@{invokeRequest\_Post}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{invokeRequest\_Post()}{invokeRequest\_Post()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::invoke\+Request\+\_\+\+Post (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{URL,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{Data }\end{DoxyParamCaption})}
+
+
+
+Invokes a Post request. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em URL} & URL to request. \\
+\hline
+{\em Data} & Data to Post. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the output from the request. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_aa88a91a144b2176d9ce3c4cad3c45bab}\label{namespaceleet_aa88a91a144b2176d9ce3c4cad3c45bab} 
+\index{leet@{leet}!invokeRequest\_Post@{invokeRequest\_Post}}
+\index{invokeRequest\_Post@{invokeRequest\_Post}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{invokeRequest\_Post()}{invokeRequest\_Post()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::invoke\+Request\+\_\+\+Post (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{URL,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{Data,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{Authentication }\end{DoxyParamCaption})}
+
+
+
+Invokes a Post request. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em URL} & URL to request. \\
+\hline
+{\em Data} & Data to Post. \\
+\hline
+{\em Authentication} & Authentication that should be used. Often this is the access token. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the output from the request. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a19dc9056d0f77c0c7eb51f12e9f5f554}\label{namespaceleet_a19dc9056d0f77c0c7eb51f12e9f5f554} 
+\index{leet@{leet}!invokeRequest\_Post\_File@{invokeRequest\_Post\_File}}
+\index{invokeRequest\_Post\_File@{invokeRequest\_Post\_File}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{invokeRequest\_Post\_File()}{invokeRequest\_Post\_File()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::invoke\+Request\+\_\+\+Post\+\_\+\+File (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{URL,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{File }\end{DoxyParamCaption})}
+
+
+
+Invokes a Post request. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em URL} & URL to request. \\
+\hline
+{\em File} & Path to a file which should be uploaded. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the output from the request. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_aa1ece7314d86bbf90688ae10441cea3e}\label{namespaceleet_aa1ece7314d86bbf90688ae10441cea3e} 
+\index{leet@{leet}!invokeRequest\_Post\_File@{invokeRequest\_Post\_File}}
+\index{invokeRequest\_Post\_File@{invokeRequest\_Post\_File}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{invokeRequest\_Post\_File()}{invokeRequest\_Post\_File()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::invoke\+Request\+\_\+\+Post\+\_\+\+File (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{URL,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{File,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{Authentication }\end{DoxyParamCaption})}
+
+
+
+Invokes a Post request. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em URL} & URL to request. \\
+\hline
+{\em File} & Path to a file which should be uploaded. \\
+\hline
+{\em Authentication} & Authentication that should be used. Often this is the access token. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the output from the request. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a254ed0ea560dd99cfd0060811b9dd289}\label{namespaceleet_a254ed0ea560dd99cfd0060811b9dd289} 
+\index{leet@{leet}!invokeRequest\_Put@{invokeRequest\_Put}}
+\index{invokeRequest\_Put@{invokeRequest\_Put}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{invokeRequest\_Put()}{invokeRequest\_Put()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::invoke\+Request\+\_\+\+Put (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{URL,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{Data }\end{DoxyParamCaption})}
+
+
+
+Invokes a Put request. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em URL} & URL to request. \\
+\hline
+{\em Data} & Data to Put. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the output from the request. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_aa3853464d166cde6fa97f8dfb9e2398f}\label{namespaceleet_aa3853464d166cde6fa97f8dfb9e2398f} 
+\index{leet@{leet}!invokeRequest\_Put@{invokeRequest\_Put}}
+\index{invokeRequest\_Put@{invokeRequest\_Put}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{invokeRequest\_Put()}{invokeRequest\_Put()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::invoke\+Request\+\_\+\+Put (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{URL,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{Data,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{Authentication }\end{DoxyParamCaption})}
+
+
+
+Invokes a Put request. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em URL} & URL to request. \\
+\hline
+{\em Data} & Data to Put. \\
+\hline
+{\em Authentication} & Authentication that should be used. Often this is the access token. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the output from the request. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_ac00d7b6839416edbf02439773e74e85a}\label{namespaceleet_ac00d7b6839416edbf02439773e74e85a} 
+\index{leet@{leet}!loadFromFile@{loadFromFile}}
+\index{loadFromFile@{loadFromFile}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{loadFromFile()}{loadFromFile()}}
+{\footnotesize\ttfamily template$<$\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{typename}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{T}} $>$ \\
+\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{T}} leet\+::load\+From\+File (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{File }\end{DoxyParamCaption})}
+
+
+
+Loads data from a file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em File} & String path to the file. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the data from the file. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a965d0a4a07cfed895f1960eba94d989d}\label{namespaceleet_a965d0a4a07cfed895f1960eba94d989d} 
+\index{leet@{leet}!loadTransID@{loadTransID}}
+\index{loadTransID@{loadTransID}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{loadTransID()}{loadTransID()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} leet\+::load\+Trans\+ID (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{File }\end{DoxyParamCaption})}
+
+
+
+Loads the stored transaction ID from a file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em File} & String path to the file. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Boolean, true if it was successfully loaded, otherwise false is returned.
+\end{DoxyReturn}
+Loads the stored transaction ID from a file, overriding the Trans\+ID integer. This should be done if a transaction ID file exists, and it should be done each time the client is restarted provided a new session is NOT used, and a transaction ID has previously been stored in a file.
+
+NOTE\+: The transaction ID does not need to be encrypted, because it is not sensitive data. \Hypertarget{namespaceleet_a95cd2b8c02fc7a1ef1e2878073a14b9e}\label{namespaceleet_a95cd2b8c02fc7a1ef1e2878073a14b9e} 
+\index{leet@{leet}!loginAccount@{loginAccount}}
+\index{loginAccount@{loginAccount}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{loginAccount()}{loginAccount()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{leet\+::\+User\+::\+Credentials\+Response}} leet\+::login\+Account (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1Credentials}{User\+::\+Credentials}} \texorpdfstring{$\ast$}{*}}]{cred }\end{DoxyParamCaption})}
+
+
+
+Attempts to log in to the home server. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cred} & Credentials object to use for login \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Credentials\+Response object, containing the access token among other variables. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a6618277e9bd8b1c8dc6034a3e03135fd}\label{namespaceleet_a6618277e9bd8b1c8dc6034a3e03135fd} 
+\index{leet@{leet}!refreshAccessToken@{refreshAccessToken}}
+\index{refreshAccessToken@{refreshAccessToken}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{refreshAccessToken()}{refreshAccessToken()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{leet\+::\+User\+::\+Credentials\+Response}} leet\+::refresh\+Access\+Token (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp }\end{DoxyParamCaption})}
+
+
+
+Refresh an old access token (if a refresh token is available in the object) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a new \doxylink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response} object based on the parameter. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a944df5761e8c6e43adf5b3b6f3b8976c}\label{namespaceleet_a944df5761e8c6e43adf5b3b6f3b8976c} 
+\index{leet@{leet}!registerAccount@{registerAccount}}
+\index{registerAccount@{registerAccount}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{registerAccount()}{registerAccount()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{leet\+::\+User\+::\+Credentials\+Response}} leet\+::register\+Account (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1Credentials}{User\+::\+Credentials}} \texorpdfstring{$\ast$}{*}}]{cred }\end{DoxyParamCaption})}
+
+
+
+Attempts to create an account on the home server. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cred} & Credentials object to use for registering \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Credentials\+Response object, containing the access token among other variables. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a196d23dcf6a4e5645af44cd94c59cb48}\label{namespaceleet_a196d23dcf6a4e5645af44cd94c59cb48} 
+\index{leet@{leet}!returnDevicesFromUser@{returnDevicesFromUser}}
+\index{returnDevicesFromUser@{returnDevicesFromUser}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnDevicesFromUser()}{returnDevicesFromUser()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1User_1_1Device}{User\+::\+Device}} $>$ leet\+::return\+Devices\+From\+User (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1User_1_1Profile}{User\+::\+Profile}} $>$ \&}]{user }\end{DoxyParamCaption})}
+
+
+
+Returns a vector of all devices for a specific user. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em user} & \doxylink{namespaceleet_1_1User}{User} vector, each \doxylink{namespaceleet_1_1User}{User} must have the user ID set. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a vector of all devices for a specific user. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a70ad6031c50aef71041c68eb5bf1c415}\label{namespaceleet_a70ad6031c50aef71041c68eb5bf1c415} 
+\index{leet@{leet}!returnEventFromTimestamp@{returnEventFromTimestamp}}
+\index{returnEventFromTimestamp@{returnEventFromTimestamp}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnEventFromTimestamp()}{returnEventFromTimestamp()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classleet_1_1Event_1_1Event}{leet\+::\+Event\+::\+Event}} leet\+::return\+Event\+From\+Timestamp (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}}]{room,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int32\+\_\+t}}}]{Timestamp,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}}}]{Direction }\end{DoxyParamCaption})}
+
+
+
+Get an event from a Unix timestamp. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em room} & \doxylink{namespaceleet_1_1Room}{Room} object to get event(s) from. \\
+\hline
+{\em Timestamp} & Unix timestamp for the event. \\
+\hline
+{\em Direction} & Boolean which specifies which direction to search for events in. true means forward while false means backwards. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the event. If none could be found, an empty object is simply returned instead. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a56a1a90994bbd897072fb1b902abc993}\label{namespaceleet_a56a1a90994bbd897072fb1b902abc993} 
+\index{leet@{leet}!returnFilter@{returnFilter}}
+\index{returnFilter@{returnFilter}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnFilter()}{returnFilter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::return\+Filter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{classleet_1_1Filter_1_1Filter}{Filter\+::\+Filter}} \texorpdfstring{$\ast$}{*}}]{filter }\end{DoxyParamCaption})}
+
+
+
+Returns a filter ID which can be used when requesting data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em filter} & \doxylink{namespaceleet_1_1Filter}{Filter} object. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a filter ID which can be used when requesting data. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a6256f0a57469c8c0260ac3e1568da451}\label{namespaceleet_a6256f0a57469c8c0260ac3e1568da451} 
+\index{leet@{leet}!returnHomeServerFromString@{returnHomeServerFromString}}
+\index{returnHomeServerFromString@{returnHomeServerFromString}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnHomeServerFromString()}{returnHomeServerFromString()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::return\+Home\+Server\+From\+String (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{user\+ID }\end{DoxyParamCaption})}
+
+
+
+Returns a home server (matrix.\+org) from a user ID (@speedie\+:matrix.\+org) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em user\+ID} & The user ID to extract the home server from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Home server string 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_ae70c0b95fc9ff27f1dfb481ee5f968c5}\label{namespaceleet_ae70c0b95fc9ff27f1dfb481ee5f968c5} 
+\index{leet@{leet}!returnLatestEvent@{returnLatestEvent}}
+\index{returnLatestEvent@{returnLatestEvent}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnLatestEvent()}{returnLatestEvent()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classleet_1_1Event_1_1Event}{Event\+::\+Event}} leet\+::return\+Latest\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}}]{room }\end{DoxyParamCaption})}
+
+
+
+Gets the latest event sent in the room. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em room} & \doxylink{namespaceleet_1_1Room}{Room} object to get an event from.\\
+\hline
+\end{DoxyParams}
+Note that this function is just a convenient wrapper for \doxylink{namespaceleet_a70ad6031c50aef71041c68eb5bf1c415}{return\+Event\+From\+Timestamp()} \Hypertarget{namespaceleet_a877400ed8e1e79c183a8f7858d79446d}\label{namespaceleet_a877400ed8e1e79c183a8f7858d79446d} 
+\index{leet@{leet}!returnMessages@{returnMessages}}
+\index{returnMessages@{returnMessages}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnMessages()}{returnMessages()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1Message_1_1Message}{leet\+::\+Message\+::\+Message}} $>$ leet\+::return\+Messages (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}}]{room,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}}}]{message\+Count }\end{DoxyParamCaption})}
+
+
+
+Returns a \doxylink{classleet_1_1Message_1_1Message}{Message\+::\+Message} vector from a room. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em room} & \doxylink{namespaceleet_1_1Room}{Room} object, room that the messages should be retrieved from. \\
+\hline
+{\em message\+Count} & Number of messages to retrieve from the room. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a \doxylink{classleet_1_1Message_1_1Message}{Message\+::\+Message} vector which represents the retrieved messages. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a20ad1f62e70791be89e97ef10a2e17e8}\label{namespaceleet_a20ad1f62e70791be89e97ef10a2e17e8} 
+\index{leet@{leet}!returnRoom@{returnRoom}}
+\index{returnRoom@{returnRoom}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnRoom()}{returnRoom()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classleet_1_1Room_1_1Room}{leet\+::\+Room\+::\+Room}} leet\+::return\+Room (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}}]{room }\end{DoxyParamCaption})}
+
+
+
+Gets information about a room based on a room ID. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em room} & \doxylink{namespaceleet_1_1Room}{Room} object, this object should contain a room ID. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a \doxylink{namespaceleet_1_1Room}{Room} object containing room data. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_ae4179f205bbcae31f1332c5daff19630}\label{namespaceleet_ae4179f205bbcae31f1332c5daff19630} 
+\index{leet@{leet}!returnRoomIDs@{returnRoomIDs}}
+\index{returnRoomIDs@{returnRoomIDs}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnRoomIDs()}{returnRoomIDs()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1Room_1_1Room}{leet\+::\+Room\+::\+Room}} $>$ leet\+::return\+Room\+IDs (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp }\end{DoxyParamCaption})}
+
+
+
+Returns room IDs for all the rooms your user has joined. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns room IDs for all the rooms your user has joined. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a0becdb7d81d60ba11e9b196c2ac312f7}\label{namespaceleet_a0becdb7d81d60ba11e9b196c2ac312f7} 
+\index{leet@{leet}!returnRooms@{returnRooms}}
+\index{returnRooms@{returnRooms}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnRooms()}{returnRooms()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1Room_1_1Room}{leet\+::\+Room\+::\+Room}} $>$ leet\+::return\+Rooms (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}}}]{Limit }\end{DoxyParamCaption})}
+
+
+
+Returns a vector of all rooms your user has joined. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em Limit} & Max number of rooms to return. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a vector of all rooms your user has joined. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a9819e1abc2ed3b322de730a89936ea97}\label{namespaceleet_a9819e1abc2ed3b322de730a89936ea97} 
+\index{leet@{leet}!returnRoomsInSpace@{returnRoomsInSpace}}
+\index{returnRoomsInSpace@{returnRoomsInSpace}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnRoomsInSpace()}{returnRoomsInSpace()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1Room_1_1Room}{leet\+::\+Room\+::\+Room}} $>$ leet\+::return\+Rooms\+In\+Space (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{space\+ID,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}}}]{Limit }\end{DoxyParamCaption})}
+
+
+
+Returns a vector of all rooms in a space. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em space\+ID} & \doxylink{namespaceleet_1_1Space}{Space} ID to get rooms from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a vector of all rooms in the space. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_ab744e089b2a044a1058846540a2d45aa}\label{namespaceleet_ab744e089b2a044a1058846540a2d45aa} 
+\index{leet@{leet}!returnServerDiscovery@{returnServerDiscovery}}
+\index{returnServerDiscovery@{returnServerDiscovery}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnServerDiscovery()}{returnServerDiscovery()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::return\+Server\+Discovery (\begin{DoxyParamCaption}\item[{std\+::string}]{Server }\end{DoxyParamCaption})}
+
+
+
+Performs server discovery (.well-\/known/matrix/client) to find the proper Matrix home server URL. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Server} & URL to check for discovery at. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the home server if it can be found. If there\textquotesingle{}s no .well-\/known/matrix/client file on the server, the server URL passed will be returned. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a70a7b20cb7a7c238754013b4c422afb7}\label{namespaceleet_a70a7b20cb7a7c238754013b4c422afb7} 
+\index{leet@{leet}!returnSpaces@{returnSpaces}}
+\index{returnSpaces@{returnSpaces}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnSpaces()}{returnSpaces()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1Space_1_1Space}{leet\+::\+Space\+::\+Space}} $>$ leet\+::return\+Spaces (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}}}]{Limit }\end{DoxyParamCaption})}
+
+
+
+Returns a vector of all spaces your user has joined. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em Limit} & Max number of spaces to return. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a vector of all spaces, along with all child rooms your user has joined. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_aa71e9add3fe71ad537065ebc2553e2ca}\label{namespaceleet_aa71e9add3fe71ad537065ebc2553e2ca} 
+\index{leet@{leet}!returnSupportedLoginTypes@{returnSupportedLoginTypes}}
+\index{returnSupportedLoginTypes@{returnSupportedLoginTypes}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnSupportedLoginTypes()}{returnSupportedLoginTypes()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ leet\+::return\+Supported\+Login\+Types (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get login types supported by the Matrix home server. 
+
+\begin{DoxyReturn}{Returns}
+Returns login types supported by the Matrix home server in the form of an std\+::vector$<$std\+::string$>$. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a3220a8bb8242d9b3bf9694b22d4ee30b}\label{namespaceleet_a3220a8bb8242d9b3bf9694b22d4ee30b} 
+\index{leet@{leet}!returnSupportedSpecs@{returnSupportedSpecs}}
+\index{returnSupportedSpecs@{returnSupportedSpecs}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnSupportedSpecs()}{returnSupportedSpecs()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ leet\+::return\+Supported\+Specs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get supported Matrix specification versions. 
+
+\begin{DoxyReturn}{Returns}
+Returns supported Matrix specification versions in the form of an std\+::vector$<$std\+::string$>$. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_aed2232388d75a5b6837200d3d3009acc}\label{namespaceleet_aed2232388d75a5b6837200d3d3009acc} 
+\index{leet@{leet}!returnSync@{returnSync}}
+\index{returnSync@{returnSync}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnSync()}{returnSync()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classleet_1_1Sync_1_1Sync}{leet\+::\+Sync\+::\+Sync}} leet\+::return\+Sync (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp }\end{DoxyParamCaption})}
+
+
+
+Get sync information from the server. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a \doxylink{namespaceleet_1_1Sync}{Sync} object with the fields. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_aedf0824145f0f316d71e16085b4fc0c4}\label{namespaceleet_aedf0824145f0f316d71e16085b4fc0c4} 
+\index{leet@{leet}!returnTurnCredentials@{returnTurnCredentials}}
+\index{returnTurnCredentials@{returnTurnCredentials}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnTurnCredentials()}{returnTurnCredentials()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classleet_1_1VOIP_1_1Credentials}{leet\+::\+VOIP\+::\+Credentials}} leet\+::return\+Turn\+Credentials (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp }\end{DoxyParamCaption})}
+
+
+
+Get TURN server credentials. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a \doxylink{classleet_1_1VOIP_1_1Credentials}{VOIP\+::\+Credentials} object. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a422f2f5edf4183209f96b572cd0cbf73}\label{namespaceleet_a422f2f5edf4183209f96b572cd0cbf73} 
+\index{leet@{leet}!returnUnixTimestamp@{returnUnixTimestamp}}
+\index{returnUnixTimestamp@{returnUnixTimestamp}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnUnixTimestamp()}{returnUnixTimestamp()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int32\+\_\+t}} leet\+::return\+Unix\+Timestamp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Gets the Unix timestamp. 
+
+\begin{DoxyReturn}{Returns}
+Returns a Unix timestamp (i.\+e. time since epoch) 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a9411e25fb1f3420d7b6c954926db536a}\label{namespaceleet_a9411e25fb1f3420d7b6c954926db536a} 
+\index{leet@{leet}!returnUserName@{returnUserName}}
+\index{returnUserName@{returnUserName}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnUserName()}{returnUserName()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string leet\+::return\+User\+Name (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{user\+ID }\end{DoxyParamCaption})}
+
+
+
+Returns $<$name$>$ from \texorpdfstring{$<$}{<}name\texorpdfstring{$>$}{>}\+:$<$home server$>$ 
+
+
+\begin{DoxyParams}{Parameters}
+{\em user\+ID} & Full user ID \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a string 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a00a66e98469fbf8978fc3face0deb78a}\label{namespaceleet_a00a66e98469fbf8978fc3face0deb78a} 
+\index{leet@{leet}!returnUsersInRoom@{returnUsersInRoom}}
+\index{returnUsersInRoom@{returnUsersInRoom}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{returnUsersInRoom()}{returnUsersInRoom()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::vector$<$ \mbox{\hyperlink{classleet_1_1User_1_1Profile}{leet\+::\+User\+::\+Profile}} $>$ leet\+::return\+Users\+In\+Room (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}}]{room }\end{DoxyParamCaption})}
+
+
+
+Returns a vector of all users in a room. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em room} & \doxylink{namespaceleet_1_1Room}{Room} object, the function uses the room ID, which must be set. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a vector of all users in a room. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}\label{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2} 
+\index{leet@{leet}!saveToFile@{saveToFile}}
+\index{saveToFile@{saveToFile}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{saveToFile()}{saveToFile()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T leet\+::save\+To\+File (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{File,  }\item[{T}]{Data }\end{DoxyParamCaption})}
+
+
+
+Saves data to a file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em File} & String path to the file. \\
+\hline
+{\em Data} & The data that should be saved to the file. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespaceleet_a411cd6c4806c680b3a928ed52c5b315b}\label{namespaceleet_a411cd6c4806c680b3a928ed52c5b315b} 
+\index{leet@{leet}!saveTransID@{saveTransID}}
+\index{saveTransID@{saveTransID}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{saveTransID()}{saveTransID()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}} leet\+::save\+Trans\+ID (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{File }\end{DoxyParamCaption})}
+
+
+
+Saves the stored transaction ID to a file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em File} & String path to the file. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Boolean, true if it was successfully saved, otherwise false is returned.
+\end{DoxyReturn}
+Saves the stored transaction ID to a file. It should be saved each time the client is restarted, and should then be loaded again using load\+Trans\+ID. This is because the Matrix server will ignore duplicate requests.
+
+NOTE\+: The transaction ID does not need to be encrypted, because it is not sensitive data. \Hypertarget{namespaceleet_a40c1e3b3d1988d56aaa389607d10fe57}\label{namespaceleet_a40c1e3b3d1988d56aaa389607d10fe57} 
+\index{leet@{leet}!sendEncryptedMessage@{sendEncryptedMessage}}
+\index{sendEncryptedMessage@{sendEncryptedMessage}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{sendEncryptedMessage()}{sendEncryptedMessage()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} leet\+::send\+Encrypted\+Message (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{classleet_1_1Encryption}{leet\+::\+Encryption}} \texorpdfstring{$\ast$}{*}}]{enc,  }\item[{\mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}}]{room,  }\item[{\mbox{\hyperlink{classleet_1_1Message_1_1Message}{Message\+::\+Message}} \texorpdfstring{$\ast$}{*}}]{msg }\end{DoxyParamCaption})}
+
+
+
+Sends an encrypted message to a room. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em enc} & \doxylink{classleet_1_1Encryption}{Encryption} object. \\
+\hline
+{\em room} & \doxylink{namespaceleet_1_1Room}{Room} to create a session in. \\
+\hline
+{\em msg} & \doxylink{namespaceleet_1_1Message}{Message} to send. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespaceleet_a67dbc8b27a77c92ce074b2ab6ae47850}\label{namespaceleet_a67dbc8b27a77c92ce074b2ab6ae47850} 
+\index{leet@{leet}!sendMessage@{sendMessage}}
+\index{sendMessage@{sendMessage}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{sendMessage()}{sendMessage()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} leet\+::send\+Message (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}}]{room,  }\item[{\mbox{\hyperlink{classleet_1_1Message_1_1Message}{Message\+::\+Message}} \texorpdfstring{$\ast$}{*}}]{msg }\end{DoxyParamCaption})}
+
+
+
+Sends a plain text message to the specified room. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em room} & \doxylink{namespaceleet_1_1Room}{Room} object, room that the message should be sent in. \\
+\hline
+{\em msg} & \doxylink{classleet_1_1Message_1_1Message}{Message\+::\+Message} object, the message that should be sent. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespaceleet_a97a051b8d6cbb32e4cb8e9e8562f81fd}\label{namespaceleet_a97a051b8d6cbb32e4cb8e9e8562f81fd} 
+\index{leet@{leet}!toggleTyping@{toggleTyping}}
+\index{toggleTyping@{toggleTyping}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{toggleTyping()}{toggleTyping()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{void}} leet\+::toggle\+Typing (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}}}]{Timeout,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{bool}}}]{Typing,  }\item[{\mbox{\hyperlink{classleet_1_1Room_1_1Room}{Room\+::\+Room}} \texorpdfstring{$\ast$}{*}}]{room }\end{DoxyParamCaption})}
+
+
+
+Toggles typing in a room. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em Timeout} & How long to type for. \\
+\hline
+{\em Typing} & Boolean, whether or not we should be typing or not. \\
+\hline
+{\em room} & \doxylink{namespaceleet_1_1Room}{Room} to send the event in. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespaceleet_a319a93fd72154257674df5ef49d03beb}\label{namespaceleet_a319a93fd72154257674df5ef49d03beb} 
+\index{leet@{leet}!uploadFile@{uploadFile}}
+\index{uploadFile@{uploadFile}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{uploadFile()}{uploadFile()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classleet_1_1Attachment_1_1Attachment}{leet\+::\+Attachment\+::\+Attachment}} leet\+::upload\+File (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{const}} std\+::string \&}]{File }\end{DoxyParamCaption})}
+
+
+
+Uploads a file to the Matrix server(s). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em File} & Path to the file which should be uploaded. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns an \doxylink{classleet_1_1Attachment_1_1Attachment}{Attachment\+::\+Attachment} object containing an mxc\+:// Matrix URL. 
+\end{DoxyReturn}
+\Hypertarget{namespaceleet_a9fcad94c6a7ae5a4c4f054dec8e0eee5}\label{namespaceleet_a9fcad94c6a7ae5a4c4f054dec8e0eee5} 
+\index{leet@{leet}!uploadKeys@{uploadKeys}}
+\index{uploadKeys@{uploadKeys}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{uploadKeys()}{uploadKeys()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classleet_1_1Encryption}{leet\+::\+Encryption}} leet\+::upload\+Keys (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classleet_1_1User_1_1CredentialsResponse}{User\+::\+Credentials\+Response}} \texorpdfstring{$\ast$}{*}}]{resp,  }\item[{\mbox{\hyperlink{classleet_1_1Encryption}{leet\+::\+Encryption}} \texorpdfstring{$\ast$}{*}}]{enc }\end{DoxyParamCaption})}
+
+
+
+Function that uploads encryption keys for your account to the Matrix home server. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em resp} & Credentials\+Response object, required for authentication. \\
+\hline
+{\em enc} & \doxylink{classleet_1_1Encryption}{Encryption} object. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns an \doxylink{classleet_1_1Encryption}{Encryption} object. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{namespaceleet_ae7fadb8f554b82e37512ece5f451e345}\label{namespaceleet_ae7fadb8f554b82e37512ece5f451e345} 
+\index{leet@{leet}!Error@{Error}}
+\index{Error@{Error}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{Error}{Error}}
+{\footnotesize\ttfamily std\+::string leet\+::\+Error\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespaceleet_aa20a9fa2de98421d60165559a8a23f76}\label{namespaceleet_aa20a9fa2de98421d60165559a8a23f76} 
+\index{leet@{leet}!errorCode@{errorCode}}
+\index{errorCode@{errorCode}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{errorCode}{errorCode}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} leet\+::error\+Code \{0\}\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespaceleet_aca8cf23cb2471b07f1ee22a2077b5b37}\label{namespaceleet_aca8cf23cb2471b07f1ee22a2077b5b37} 
+\index{leet@{leet}!friendlyError@{friendlyError}}
+\index{friendlyError@{friendlyError}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{friendlyError}{friendlyError}}
+{\footnotesize\ttfamily std\+::string leet\+::friendly\+Error\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespaceleet_a047ddd8c4f4dba43c5ee0e38858485ab}\label{namespaceleet_a047ddd8c4f4dba43c5ee0e38858485ab} 
+\index{leet@{leet}!Homeserver@{Homeserver}}
+\index{Homeserver@{Homeserver}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{Homeserver}{Homeserver}}
+{\footnotesize\ttfamily std\+::string leet\+::\+Homeserver \{ "{}https\+://matrix.\+org"{} \}\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespaceleet_a264da018065f7948965b19d85bc324fe}\label{namespaceleet_a264da018065f7948965b19d85bc324fe} 
+\index{leet@{leet}!leetError@{leetError}}
+\index{leetError@{leetError}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{leetError}{leetError}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} leet\+::leet\+Error \{\mbox{\hyperlink{libleet_8hpp_abc6126af1d45847bc59afa0aa3216b04a9e627ee37931636fb073195d19d46307}{LEET\+\_\+\+ERROR\+\_\+\+NONE}}\}\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespaceleet_adc8712b33d096d2f8a204e7bad8ed1d4}\label{namespaceleet_adc8712b33d096d2f8a204e7bad8ed1d4} 
+\index{leet@{leet}!TransID@{TransID}}
+\index{TransID@{TransID}!leet@{leet}}
+\doxysubsubsection{\texorpdfstring{TransID}{TransID}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespaceleet_a8e1e00b1de977d7ae4b3d4d4e753d2a2}{int}} leet\+::\+Trans\+ID \{0\}\hspace{0.3cm}{\ttfamily [inline]}}
+
