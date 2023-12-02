@@ -107,6 +107,42 @@ leet::Room::Room leet::returnRoom(leet::User::CredentialsResponse* resp, leet::R
     return theRoom;
 }
 
+leet::Room::Room leet::upgradeRoom(leet::User::CredentialsResponse* resp, leet::Room::Room* room, const int Version) {
+    using json = nlohmann::json;
+    const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/upgrade" };
+
+    json body;
+
+    body["new_version"] = std::to_string(Version);
+
+    const std::string Output { leet::invokeRequest_Post(leet::getAPI(APIUrl), body.dump(), resp->accessToken) };
+
+    json reqOutput;
+
+    try {
+        reqOutput = { json::parse(Output) };
+    }  catch (const json::parse_error& e) {
+        return *room;
+    }
+
+    std::string theRoomID{""};
+    for (auto& output : reqOutput) {
+        leet::errorCode = 0;
+
+        if (output["replacement_room"].is_string()) theRoomID = output["replacement_room"].get<std::string>();
+        if (output["errcode"].is_string()) leet::Error = output["errcode"].get<std::string>();
+        if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
+    }
+
+    if (!theRoomID.compare("")) {
+        leet::Room::Room theRoom;
+        theRoom.roomID = theRoomID;
+        return leet::returnRoom(resp, &theRoom);
+    }
+
+    return *room;
+}
+
 leet::Room::Room leet::createRoom(leet::User::CredentialsResponse* resp, leet::Room::RoomConfiguration* conf) {
     using json = nlohmann::json;
 

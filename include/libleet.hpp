@@ -592,6 +592,14 @@ namespace leet {
      */
     Room::Room returnRoom(User::CredentialsResponse* resp, Room::Room* room);
     /**
+     * @brief  Upgrades a room to a specific room version.
+     * @param  resp CredentialsResponse object, required for authentication.
+     * @param  room Room object, this object should contain a room ID.
+     * @param  Version Version integer.
+     * @return Returns a room with a new room ID.
+     */
+    Room::Room upgradeRoom(User::CredentialsResponse* resp, Room::Room* room, const int Version);
+    /**
      * @brief  Create a room from a Room::RoomConfiguration object.
      * @param  resp CredentialsResponse object, required for authentication.
      * @parma  conf Room configuration object, this object should contain room information.

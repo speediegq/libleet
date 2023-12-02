@@ -18,9 +18,10 @@ work-in-progress Matrix client [stellar](https://git.speedie.site/speedie/stella
 - Message (including attachment) downloading
 - Message sending
 - Room creation
-- User listing
+- Room upgrades
 - Room listing (including those inside spaces)
 - Space listing
+- User listing
 - Aliases
 - Attachment uploading and downloading
 - Discovery
@@ -47,7 +48,6 @@ work-in-progress Matrix client [stellar](https://git.speedie.site/speedie/stella
 - Push notification endpoints
 - Read marker
 - User presence
-- Room upgrades
 
 ## Dependencies
 
