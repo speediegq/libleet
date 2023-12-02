@@ -42,12 +42,12 @@ work-in-progress Matrix client [stellar](https://git.speedie.site/speedie/stella
 - Device management
 - Threads
 - Third-party/Phone number/SSO authentication
-- Various end-to-end encryption shit
+- Various end-to-end encryption features
 - Push notification endpoints
 - Read marker
 - User presence
 - Reporting content
-- Room upgrades (probably won't implement because it's 2023)
+- Room upgrades
 
 ## Dependencies
 
