@@ -613,6 +613,45 @@ namespace leet {
      * @return Returns a Room object containing room data.
      */
     Room::Room createRoom(User::credentialsResponse* resp, Room::roomConfiguration* conf);
+
+    /**
+     * @brief  Join a public room or a room that you have been invited to.
+     * @param  resp credentialsResponse object, required for authentication.
+     * @param  room Room object, this object should contain a room ID.
+     * @param  Reason Reason for wanting to join.
+     */
+    void joinRoom(User::credentialsResponse* resp, Room::Room* room, const std::string& Reason);
+    /**
+     * @brief  Leave a room you're part of.
+     * @param  resp credentialsResponse object, required for authentication.
+     * @param  room Room object, this object should contain a room ID.
+     * @param  Reason Reason for leaving.
+     */
+    void leaveRoom(User::credentialsResponse* resp, Room::Room* room, const std::string& Reason);
+    /**
+     * @brief  Kick a user from a room.
+     * @param  resp credentialsResponse object, required for authentication.
+     * @param  room Room object, this object should contain a room ID.
+     * @param  profile Profile object, this object should contain a user ID for the user to kick.
+     * @param  Reason Reason for kicking the user.
+     */
+    void kickUserFromRoom(User::credentialsResponse* resp, Room::Room* room, User::Profile* profile, const std::string& Reason);
+    /**
+     * @brief  Ban a user from a room.
+     * @param  resp credentialsResponse object, required for authentication.
+     * @param  room Room object, this object should contain a room ID.
+     * @param  profile Profile object, this object should contain a user ID for the user to ban.
+     * @param  Reason Reason for banning the user.
+     */
+    void banUserFromRoom(User::credentialsResponse* resp, Room::Room* room, User::Profile* profile, const std::string& Reason);
+    /**
+     * @brief  Unban a user from a room.
+     * @param  resp credentialsResponse object, required for authentication.
+     * @param  room Room object, this object should contain a room ID.
+     * @param  profile Profile object, this object should contain a user ID for the user to unban.
+     * @param  Reason Reason for unbanning the user.
+     */
+    void unbanUserFromRoom(User::credentialsResponse* resp, Room::Room* room, User::Profile* profile, const std::string& Reason);
     /**
      * @brief  Invite a user to a room,
      * @param  resp credentialsResponse object, required for authentication.
