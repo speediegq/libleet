@@ -499,6 +499,67 @@ void leet::unbanUserFromRoom(leet::User::credentialsResponse* resp, leet::Room::
     }
 }
 
+const bool getVisibilityOfRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room) {
+    using json = nlohmann::json;
+
+    const std::string Output { leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/directory/list/room/" + room->roomID), resp->accessToken) };
+
+    json reqOutput;
+
+    try {
+        reqOutput = { json::parse(Output) };
+    } catch (const json::parse_error& e) {
+        return false;
+    }
+
+    for (auto& output : reqOutput) {
+        leet::errorCode = 0;
+
+        if (output["errcode"].is_string()) {
+            leet::errorCode = 1;
+            leet::Error = output["errcode"].get<std::string>();
+            if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
+            if (output["visibility"].is_string()) {
+                if (output["visibility"].get<std::string>().compare("private")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+void setVisibilityOfRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room, const bool Visibility) {
+    using json = nlohmann::json;
+
+    json body;
+
+    body["visibility"] = Visibility ? "public" : "private";
+
+    const std::string Output { leet::invokeRequest_Put(leet::getAPI("/_matrix/client/v3/directory/list/room/" + room->roomID), body.dump(), resp->accessToken) };
+
+    json reqOutput;
+
+    try {
+        reqOutput = { json::parse(Output) };
+    } catch (const json::parse_error& e) {
+        return;
+    }
+
+    for (auto& output : reqOutput) {
+        leet::errorCode = 0;
+
+        if (output["errcode"].is_string()) {
+            leet::errorCode = 1;
+            leet::Error = output["errcode"].get<std::string>();
+            if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
+        }
+    }
+}
+
 void leet::setReadMarkerPosition(leet::User::credentialsResponse* resp, leet::Room::Room* room,
         leet::Event::Event* fullyReadEvent, leet::Event::Event* readEvent, leet::Event::Event* privateReadEvent) {
     using json = nlohmann::json;
