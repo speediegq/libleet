@@ -41,7 +41,10 @@ leet::Event::Event leet::returnEventFromTimestamp(leet::User::credentialsRespons
     return event;
 }
 
-/* Return a sync class containing several things */
+leet::Event::Event leet::returnLatestEvent(leet::User::credentialsResponse* resp, leet::Room::Room* room) {
+    return leet::returnEventFromTimestamp(resp, room, leet::returnUnixTimestamp(), true);
+}
+
 leet::Sync::Sync leet::returnSync(leet::User::credentialsResponse* resp) {
     using json = nlohmann::json;
     leet::Sync::Sync sync;

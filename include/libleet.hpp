@@ -701,6 +701,17 @@ namespace leet {
     void toggleTyping(User::credentialsResponse* resp, const int Timeout, const bool Typing, Room::Room* room);
 
     /**
+     * @brief  Sets the read marker position to a specific event
+     * @param  resp credentialsResponse object, required for authentication.
+     * @param  room Room to set the read marker in.
+     * @param  fullyReadEvent Event to place the marker at.
+     * @param  readEvent Event to set the read receipt at.
+     * @param  privateReadEvent Event to set the private read receipt at.
+     */
+    void setReadMarkerPosition(User::credentialsResponse* resp, Room::Room* room,
+        Event::Event* fullyReadEvent, Event::Event* readEvent, Event::Event* privateReadEvent);
+
+    /**
      * @brief  Sends a plain text message to the specified room.
      * @param  resp credentialsResponse object, required for authentication.
      * @param  room Room object, room that the message should be sent in.

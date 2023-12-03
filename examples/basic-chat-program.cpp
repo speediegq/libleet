@@ -133,6 +133,10 @@ int main() {
     /* Now let's fill it with room properties */
     room = leet::returnRoom(&resp, &room);
 
+    /* Set read marker */
+    leet::Event::Event event = leet::returnLatestEvent(&resp, &room);
+    leet::setReadMarkerPosition(&resp, &room, &event, &event, &event);
+
     if (checkError() == true) { // Yeah, appears something went wrong. Most likely means the room ID is invalid.
         std::cout << "Are you stupid? That isn't a valid channel... I think.\n";
         return false;

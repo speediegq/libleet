@@ -340,3 +340,36 @@ void leet::inviteUserToRoom(leet::User::credentialsResponse* resp, leet::Room::R
         }
     }
 }
+
+void leet::setReadMarkerPosition(leet::User::credentialsResponse* resp, leet::Room::Room* room,
+        leet::Event::Event* fullyReadEvent, leet::Event::Event* readEvent, leet::Event::Event* privateReadEvent) {
+    using json = nlohmann::json;
+
+    json body;
+
+    std::cerr << privateReadEvent->eventID;
+
+    body["m.fully_read"] = fullyReadEvent->eventID;
+    body["m.read"] = readEvent->eventID;
+    body["m.read.private"] = privateReadEvent->eventID;
+
+    const std::string Output { leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/rooms/" + room->roomID + "/read_markers"), body.dump(), resp->accessToken) };
+
+    json reqOutput;
+
+    try {
+        reqOutput = { json::parse(Output) };
+    } catch (const json::parse_error& e) {
+        return;
+    }
+
+    for (auto& output : reqOutput) {
+        leet::errorCode = 0;
+
+        if (output["errcode"].is_string()) {
+            leet::errorCode = 1;
+            leet::Error = output["errcode"].get<std::string>();
+            if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
+        }
+    }
+}

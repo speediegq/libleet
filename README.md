@@ -26,6 +26,7 @@ work-in-progress Matrix client [stellar](https://git.speedie.site/speedie/stella
 - Attachment uploading and downloading
 - Discovery
 - Refresh tokens
+- Read marker
 - End to end encryption
   - Can send encrypted text messages.
   - Currently **cannot** send encrypted attachments, read encrypted messages,
@@ -46,7 +47,6 @@ work-in-progress Matrix client [stellar](https://git.speedie.site/speedie/stella
 - Third-party/Phone number/SSO authentication
 - Various end-to-end encryption features
 - Push notification endpoints
-- Read marker
 - User presence
 
 ## Dependencies
