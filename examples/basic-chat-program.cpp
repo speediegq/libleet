@@ -54,7 +54,7 @@ int main() {
 
     cred.Homeserver = leet::returnServerDiscovery(leet::returnHomeServerFromString(cred.Username));
 
-    leet::User::CredentialsResponse resp;
+    leet::User::credentialsResponse resp;
 
     /* Check if we should consider this an attempt to register. Then we will
      * either log in or register.
@@ -74,7 +74,7 @@ int main() {
 
     /* While libleet provides functions for saving a transaction ID to file and loading it:
      *
-     * leet::TransID = 0; // Initial value is zero, saved if no file exists
+     * leet::transID = 0; // Initial value is zero, saved if no file exists
      * leet::loadTransID("/tmp/basic-chat-program-transid"); // Now it will be set to the value saved to the file
      * leet::saveTransID("/tmp/basic-chat-program-transid"); // Now we save the value
      *
@@ -85,16 +85,16 @@ int main() {
      * Synapse on the server side is to simply use the amount of milliseconds passed
      * since the Unix epoch, like this:
      *
-     * leet::TransID = leet::returnUnixTimestamp(); // This libleet function simply returns the amount of UNIX millis since January 1st 1970
+     * leet::transID = leet::returnUnixTimestamp(); // This libleet function simply returns the amount of UNIX millis since January 1st 1970
      *
      * And then we can simply do this again each time we use a function that uses a transaction ID.
      * Please note that the functions do not automatically increment this value, you are responsible
      * for doing so. If you do not, the event will be considered a duplicate by the server as per the
      * Matrix specification and as such most likely ignored.
      *
-     * All functions that use a transaction ID will use leet::TransID, functions will never require an integer to be manually specified.
+     * All functions that use a transaction ID will use leet::transID, functions will never require an integer to be manually specified.
      */
-    leet::TransID = leet::returnUnixTimestamp();
+    leet::transID = leet::returnUnixTimestamp();
 
     std::string myRoom{""};
     std::cout << "\033[2J\033[1;1H"; // Clear the screen on UNIX-like operating systems
@@ -221,7 +221,7 @@ int main() {
          */
 
         /* Get a new transaction ID */
-        leet::TransID = leet::returnUnixTimestamp();
+        leet::transID = leet::returnUnixTimestamp();
 
         /* Send the encrypted message
          * You can use leet::sendMessage() to send plain text messages. leet::sendEncryptedMessage() should be used if you need to send an encrypted message.

@@ -6,11 +6,11 @@
  * https://git.speedie.site/speedie/libleet
  */
 
-void leet::sendMessage(leet::User::CredentialsResponse* resp, leet::Room::Room* room, leet::Message::Message* msg) {
+void leet::sendMessage(leet::User::credentialsResponse* resp, leet::Room::Room* room, leet::Message::Message* msg) {
     using json = nlohmann::json;
-    const int TransID { leet::TransID };
+    const int transID { leet::transID };
     const std::string eventType { "m.room.message" };
-    const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/send/" + eventType + "/" + std::to_string(TransID) };
+    const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/send/" + eventType + "/" + std::to_string(transID) };
 
     json list;
 
@@ -53,11 +53,11 @@ void leet::sendMessage(leet::User::CredentialsResponse* resp, leet::Room::Room* 
 }
 
 #ifndef LEET_NO_ENCRYPTION
-void leet::sendEncryptedMessage(leet::User::CredentialsResponse* resp, leet::Encryption* enc, leet::Room::Room* room, leet::Message::Message* msg) {
+void leet::sendEncryptedMessage(leet::User::credentialsResponse* resp, leet::Encryption* enc, leet::Room::Room* room, leet::Message::Message* msg) {
     using json = nlohmann::json;
-    const int TransID { leet::TransID };
+    const int transID { leet::transID };
     const std::string eventType { "m.room.encrypted" };
-    const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/send/" + eventType + "/" + std::to_string(TransID) };
+    const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/send/" + eventType + "/" + std::to_string(transID) };
 
     json Body;
 
@@ -87,7 +87,7 @@ void leet::sendEncryptedMessage(leet::User::CredentialsResponse* resp, leet::Enc
 }
 #endif
 
-const std::vector<leet::Message::Message> leet::returnMessages(leet::User::CredentialsResponse* resp, leet::Room::Room* room, const int messageCount) {
+const std::vector<leet::Message::Message> leet::returnMessages(leet::User::credentialsResponse* resp, leet::Room::Room* room, const int messageCount) {
     using json = nlohmann::json;
     std::vector<leet::Message::Message> vector;
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/messages?dir=b&limit=" + std::to_string(messageCount) };
@@ -154,7 +154,7 @@ const std::vector<leet::Message::Message> leet::returnMessages(leet::User::Crede
     return vector;
 }
 
-const std::string leet::returnFilter(leet::User::CredentialsResponse* resp, leet::Filter::Filter *filter) {
+const std::string leet::returnFilter(leet::User::credentialsResponse* resp, leet::Filter::Filter *filter) {
     using json = nlohmann::json;
     const std::string APIUrl { "/_matrix/client/v3/user/" + resp->userID + "/filter" };
 

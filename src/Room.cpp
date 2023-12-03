@@ -45,7 +45,7 @@ const std::string leet::findRoomID(std::string Alias) {
 }
 
 /* Returns an array of all rooms */
-const std::vector<leet::Room::Room> leet::returnRooms(leet::User::CredentialsResponse* resp, const int Limit) {
+const std::vector<leet::Room::Room> leet::returnRooms(leet::User::credentialsResponse* resp, const int Limit) {
     using json = nlohmann::json;
 
     std::vector<leet::Room::Room> vector;
@@ -78,7 +78,7 @@ const std::vector<leet::Room::Room> leet::returnRooms(leet::User::CredentialsRes
 }
 
 /* Returns a single room based on the room ID */
-leet::Room::Room leet::returnRoom(leet::User::CredentialsResponse* resp, leet::Room::Room* room) {
+leet::Room::Room leet::returnRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room) {
     using json = nlohmann::json;
     leet::Room::Room theRoom;
     json returnOutput;
@@ -107,7 +107,7 @@ leet::Room::Room leet::returnRoom(leet::User::CredentialsResponse* resp, leet::R
     return theRoom;
 }
 
-leet::Room::Room leet::upgradeRoom(leet::User::CredentialsResponse* resp, leet::Room::Room* room, const int Version) {
+leet::Room::Room leet::upgradeRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room, const int Version) {
     using json = nlohmann::json;
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/upgrade" };
 
@@ -143,7 +143,7 @@ leet::Room::Room leet::upgradeRoom(leet::User::CredentialsResponse* resp, leet::
     return *room;
 }
 
-leet::Room::Room leet::createRoom(leet::User::CredentialsResponse* resp, leet::Room::RoomConfiguration* conf) {
+leet::Room::Room leet::createRoom(leet::User::credentialsResponse* resp, leet::Room::roomConfiguration* conf) {
     using json = nlohmann::json;
 
     leet::Room::Room theRoom;
@@ -184,7 +184,7 @@ leet::Room::Room leet::createRoom(leet::User::CredentialsResponse* resp, leet::R
 }
 
 /* Returns an array of all room IDs */
-const std::vector<leet::Room::Room> leet::returnRoomIDs(leet::User::CredentialsResponse* resp) {
+const std::vector<leet::Room::Room> leet::returnRoomIDs(leet::User::credentialsResponse* resp) {
     using json = nlohmann::json;
 
     std::vector<leet::Room::Room> vector;
@@ -210,7 +210,7 @@ const std::vector<leet::Room::Room> leet::returnRoomIDs(leet::User::CredentialsR
 }
 
 /* Returns an array of all rooms in a space */
-const std::vector<leet::Room::Room> leet::returnRoomsInSpace(leet::User::CredentialsResponse* resp, const std::string& spaceID, const int Limit) {
+const std::vector<leet::Room::Room> leet::returnRoomsInSpace(leet::User::credentialsResponse* resp, const std::string& spaceID, const int Limit) {
     using json = nlohmann::json;
     std::vector<leet::Room::Room> rooms;
     if (spaceID[0] != '!') {
@@ -249,7 +249,7 @@ const std::vector<leet::Room::Room> leet::returnRoomsInSpace(leet::User::Credent
 }
 
 /* Returns a vector of all spaces */
-const std::vector<leet::Space::Space> leet::returnSpaces(leet::User::CredentialsResponse* resp, const int Limit) {
+const std::vector<leet::Space::Space> leet::returnSpaces(leet::User::credentialsResponse* resp, const int Limit) {
     std::vector<leet::Space::Space> spaces;
     std::vector<leet::Room::Room> rooms = leet::returnRoomIDs(resp);
 
@@ -284,7 +284,7 @@ const std::vector<leet::Space::Space> leet::returnSpaces(leet::User::Credentials
     return spaces;
 }
 
-void leet::toggleTyping(leet::User::CredentialsResponse* resp, const int Timeout, const bool Typing, leet::Room::Room* room) {
+void leet::toggleTyping(leet::User::credentialsResponse* resp, const int Timeout, const bool Typing, leet::Room::Room* room) {
     using json = nlohmann::json;
 
     json list;
@@ -313,7 +313,7 @@ void leet::toggleTyping(leet::User::CredentialsResponse* resp, const int Timeout
     }
 }
 
-void leet::inviteUserToRoom(leet::User::CredentialsResponse* resp, leet::Room::Room* room, const std::string& Reason) {
+void leet::inviteUserToRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room, const std::string& Reason) {
     using json = nlohmann::json;
 
     json request;

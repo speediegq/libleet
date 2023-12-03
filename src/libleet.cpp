@@ -29,11 +29,11 @@
 #include "Encryption.cpp"
 
 const std::string leet::getAPI(const std::string& API) {
-    return leet::Homeserver + API; // api: /_matrix/client/v3/login
+    return leet::Homeserver + API;
 }
 
 const int leet::generateTransID() {
-    return ++leet::TransID;
+    return ++leet::transID;
 }
 
 const std::string leet::returnServerDiscovery(std::string Server) {
@@ -60,7 +60,6 @@ const std::string leet::returnServerDiscovery(std::string Server) {
                 return output["m.homeserver"]["base_url"].get<std::string>();
     }
 
-    /* No .well-known/matrix/client, give up */
     return Server;
 }
 
@@ -104,7 +103,7 @@ std::vector<std::string> leet::returnSupportedSpecs() {
     return vector;
 }
 
-const int leet::returnMaxUploadLimit(leet::User::CredentialsResponse* resp) {
+const int leet::returnMaxUploadLimit(leet::User::credentialsResponse* resp) {
     using json = nlohmann::json;
     const std::string APIUrl { "/_matrix/media/v3/config" };
     const std::string Output { leet::invokeRequest_Get(leet::getAPI(APIUrl), resp->accessToken) };

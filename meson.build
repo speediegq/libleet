@@ -33,14 +33,5 @@ lib = library('leet',
   install : true
 )
 
-pkgconfig = configuration_data()
-pkgconfig.set('prefix', get_option('prefix'))
-pkgconfig.set('libdir', join_paths(get_option('prefix'), 'lib'))
-pkgconfig.set('includedir', join_paths(get_option('prefix'), 'include'))
-pkgconfig.set('Name', meson.project_name())
-pkgconfig.set('Version', meson.project_version())
-pkgconfig.set('Libs', '-L${libdir} -lleet')
-pkgconfig.set('Cflags', '-I${includedir}')
-pkgconfig_file = configure_file(output : 'libleet.pc', configuration : pkgconfig, install : true, install_dir : join_paths(get_option('prefix'), 'lib', 'pkgconfig'))
-
-install_data(pkgconfig_file)
+pkgconfig = import('pkgconfig')
+pkgconfig.generate(libraries : '-lleet', subdirs : 'libleet', version : so_version, name : meson.project_name(), filebase : meson.project_name(), description : 'Matrix client library')

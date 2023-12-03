@@ -6,7 +6,7 @@
  * https://git.speedie.site/speedie/libleet
  */
 
-leet::VOIP::Credentials leet::returnTurnCredentials(leet::User::CredentialsResponse* resp) {
+leet::VOIP::Credentials leet::returnTurnCredentials(leet::User::credentialsResponse* resp) {
     leet::VOIP::Credentials cred;
 
     using json = nlohmann::json;

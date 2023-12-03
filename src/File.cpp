@@ -45,15 +45,15 @@ template <typename T> T leet::loadFromFile(const std::string& File) {
 }
 
 const bool leet::saveTransID(const std::string& File) {
-    leet::saveToFile<int>(File, leet::TransID);
+    leet::saveToFile<int>(File, leet::transID);
     return true;
 }
 
 const bool leet::loadTransID(const std::string& File) {
-    return (leet::TransID = leet::loadFromFile<int>(File));
+    return (leet::transID = leet::loadFromFile<int>(File));
 }
 
-leet::Attachment::Attachment leet::uploadFile(leet::User::CredentialsResponse* resp, const std::string& File) {
+leet::Attachment::Attachment leet::uploadFile(leet::User::credentialsResponse* resp, const std::string& File) {
     using json = nlohmann::json;
     leet::Attachment::Attachment theAttachment;
     const std::string Output = leet::invokeRequest_Post_File(leet::getAPI("/_matrix/media/v3/upload"), File, resp->accessToken);
@@ -85,7 +85,7 @@ leet::Attachment::Attachment leet::uploadFile(leet::User::CredentialsResponse* r
     return theAttachment;
 }
 
-const bool leet::downloadFile(leet::User::CredentialsResponse* resp, leet::Attachment::Attachment* Attachment, const std::string& outputFile) {
+const bool leet::downloadFile(leet::User::credentialsResponse* resp, leet::Attachment::Attachment* Attachment, const std::string& outputFile) {
     std::string Server{};
     std::string ID{};
     std::string File{Attachment->URL};

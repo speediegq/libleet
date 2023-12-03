@@ -53,7 +53,7 @@ int main() {
 
     cred.Homeserver = leet::returnServerDiscovery(leet::returnHomeServerFromString(cred.Username));
 
-    leet::User::CredentialsResponse resp;
+    leet::User::credentialsResponse resp;
 
     /* Check if we should consider this an attempt to register. Then we will
      * either log in or register.
@@ -71,7 +71,7 @@ int main() {
         return false;
     }
 
-    leet::Room::RoomConfiguration conf;
+    leet::Room::roomConfiguration conf;
 
     conf.Federate = true;
     conf.directMessage = false;

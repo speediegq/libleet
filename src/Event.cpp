@@ -10,7 +10,7 @@ const int32_t leet::returnUnixTimestamp() {
     return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
-leet::Event::Event leet::returnEventFromTimestamp(leet::User::CredentialsResponse* resp, leet::Room::Room* room, const int32_t Timestamp, const bool Direction) {
+leet::Event::Event leet::returnEventFromTimestamp(leet::User::credentialsResponse* resp, leet::Room::Room* room, const int32_t Timestamp, const bool Direction) {
     using json = nlohmann::json;
     leet::Event::Event event;
     std::string Dir = Direction ? "f" : "b";
@@ -42,7 +42,7 @@ leet::Event::Event leet::returnEventFromTimestamp(leet::User::CredentialsRespons
 }
 
 /* Return a sync class containing several things */
-leet::Sync::Sync leet::returnSync(leet::User::CredentialsResponse* resp) {
+leet::Sync::Sync leet::returnSync(leet::User::credentialsResponse* resp) {
     using json = nlohmann::json;
     leet::Sync::Sync sync;
 
@@ -91,7 +91,7 @@ leet::Sync::Sync leet::returnSync(leet::User::CredentialsResponse* resp) {
     return sync;
 }
 
-void leet::reportEvent(leet::User::CredentialsResponse* resp, leet::Room::Room* room, leet::Event::Event* event, const std::string& Reason, const int Score) {
+void leet::reportEvent(leet::User::credentialsResponse* resp, leet::Room::Room* room, leet::Event::Event* event, const std::string& Reason, const int Score) {
     using json = nlohmann::json;
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/report/" + event->eventID };
 

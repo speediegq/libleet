@@ -23,7 +23,7 @@ const std::string leet::returnUserName(const std::string& userID) {
 }
 
 /* Returns a leet::User::Profile class containing things such as display name and avatar URL */
-leet::User::Profile leet::getUserData(leet::User::CredentialsResponse* resp, const std::string& userID) {
+leet::User::Profile leet::getUserData(leet::User::credentialsResponse* resp, const std::string& userID) {
     using json = nlohmann::json;
     leet::errorCode = 0;
     leet::User::Profile profile;
@@ -72,7 +72,7 @@ leet::User::Profile leet::getUserData(leet::User::CredentialsResponse* resp, con
 }
 
 /* Returns an array of all devices for a user */
-const std::vector<leet::User::Device> leet::returnDevicesFromUser(leet::User::CredentialsResponse* resp, const std::vector<leet::User::Profile>& user) {
+const std::vector<leet::User::Device> leet::returnDevicesFromUser(leet::User::credentialsResponse* resp, const std::vector<leet::User::Profile>& user) {
     std::vector<leet::User::Device> devices;
     using json = nlohmann::json;
 
@@ -179,7 +179,7 @@ const bool leet::checkIfUsernameIsAvailable(const std::string& Username) {
 }
 
 /* Returns an array of all users in a room */
-const std::vector<leet::User::Profile> leet::returnUsersInRoom(leet::User::CredentialsResponse* resp, leet::Room::Room* room) {
+const std::vector<leet::User::Profile> leet::returnUsersInRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room) {
     using json = nlohmann::json;
     std::vector<leet::User::Profile> vector;
 

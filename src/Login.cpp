@@ -31,9 +31,9 @@ std::vector<std::string> leet::returnSupportedLoginTypes() {
     return vector;
 }
 
-leet::User::CredentialsResponse leet::refreshAccessToken(leet::User::CredentialsResponse* resp) {
+leet::User::credentialsResponse leet::refreshAccessToken(leet::User::credentialsResponse* resp) {
     using json = nlohmann::json;
-    leet::User::CredentialsResponse newResponse = *resp;
+    leet::User::credentialsResponse newResponse = *resp;
 
     if (!newResponse.refreshToken.compare("")) {
         return newResponse;
@@ -96,8 +96,8 @@ bool leet::checkRegistrationTokenValidity(const std::string& Token) {
     return false;
 }
 
-leet::User::CredentialsResponse leet::registerAccount(leet::User::Credentials* cred) {
-    leet::User::CredentialsResponse resp;
+leet::User::credentialsResponse leet::registerAccount(leet::User::Credentials* cred) {
+    leet::User::credentialsResponse resp;
     using json = nlohmann::json;
 
     std::string theUsername = cred->Username;
@@ -152,8 +152,8 @@ leet::User::CredentialsResponse leet::registerAccount(leet::User::Credentials* c
     return resp;
 }
 
-leet::User::CredentialsResponse leet::loginAccount(leet::User::Credentials* cred) {
-    leet::User::CredentialsResponse resp;
+leet::User::credentialsResponse leet::loginAccount(leet::User::Credentials* cred) {
+    leet::User::credentialsResponse resp;
     using json = nlohmann::json;
     json list;
 

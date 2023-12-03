@@ -27,7 +27,7 @@ leet::Encryption leet::initEncryptionFromPickle(const std::string& pickleKey, co
     return enc;
 }
 
-leet::Encryption leet::uploadKeys(leet::User::CredentialsResponse* resp, leet::Encryption* enc) {
+leet::Encryption leet::uploadKeys(leet::User::credentialsResponse* resp, leet::Encryption* enc) {
     leet::Encryption ret = *enc;
 
     if (!ret.hasCreatedAccount) {
@@ -44,7 +44,7 @@ leet::Encryption leet::uploadKeys(leet::User::CredentialsResponse* resp, leet::E
     return ret;
 }
 
-leet::Encryption leet::createSessionInRoom(leet::User::CredentialsResponse* resp, leet::Encryption* enc, leet::Room::Room* room) {
+leet::Encryption leet::createSessionInRoom(leet::User::credentialsResponse* resp, leet::Encryption* enc, leet::Room::Room* room) {
     leet::Encryption ret = *enc;
 
     if (!ret.hasCreatedAccount) {
