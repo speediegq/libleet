@@ -814,6 +814,14 @@ namespace leet {
     Event::Event returnLatestEvent(User::credentialsResponse* resp, Room::Room* room);
 
     /**
+     * @brief  Redact an event sent in a room.
+     * @param  resp credentialsResponse object, required for authentication.
+     * @param  room Room object to get an event from.
+     * @param  event The event to redact.
+     * @param  Reason Reason for the redaction.
+     */
+    void redactEvent(User::credentialsResponse* resp, Room::Room* room, Event::Event* event, const std::string& Reason);
+    /**
      * @brief  Report an event to the home server owner.
      * @param  resp credentialsResponse object, required for authentication.
      * @param  room Room the event can be found in.
