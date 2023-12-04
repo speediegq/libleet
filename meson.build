@@ -12,10 +12,10 @@ project_source_files = [
 ]
 
 project_dependencies = [
-  dependency('nlohmann_json'),
-  dependency('cpr'),
-  dependency('olm'),
-  dependency('openssl'),
+  dependency('nlohmann_json', fallback : 'nlohmann_json'),
+  dependency('cpr', fallback : 'cpr'),
+  dependency('openssl', fallback : 'openssl'),
+  dependency('olm', fallback : 'olm'),
 ]
 
 build_args = [

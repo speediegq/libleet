@@ -59,6 +59,14 @@ work-in-progress Matrix client [stellar](https://git.speedie.site/speedie/stella
 - openssl
   - For end to end encryption, -DLEET\_NO\_ENCRYPTION to disable
 
+To install these dependencies on **Debian**:
+
+- `apt install meson nlohmann-json3-dev libolm-dev libssl-dev`
+- Note that libolm is not available from standard Debian bookworm repositories.
+
+libcpr must be compiled from source on Debian,
+[instructions here](https://github.com/libcpr/cpr).
+
 ## Compiling and installing
 
 If you use the meson build system, you can compile
