@@ -63,9 +63,16 @@ To install these dependencies on **Debian**:
 
 - `apt install meson nlohmann-json3-dev libolm-dev libssl-dev`
 - Note that libolm is not available from standard Debian bookworm repositories.
+- libcpr must be compiled from source on Debian,
+[see instructions here](https://github.com/libcpr/cpr).
 
-libcpr must be compiled from source on Debian,
-[instructions here](https://github.com/libcpr/cpr).
+If you're too lazy to compile these libraries yourself (I can't blame you),
+you can simply rely on Meson. Meson will automatically download and build
+all of the dependencies if they are not present on your system,
+though if you're running Debian 12 it should be noted that you MUST
+update your Meson version, otherwise it will fail to get the dependencies
+where CMake is used upstream. If you use SID, this is not a problem you have
+to deal with.
 
 ## Compiling and installing
 
