@@ -126,3 +126,11 @@ const int leet::returnMaxUploadLimit(leet::User::credentialsResponse* resp) {
 
     return 0;
 }
+
+const bool leet::checkError() {
+    if (leet::errorCode != 0 || leet::Error.compare("")) {
+        return false;
+    }
+
+    return true;
+}

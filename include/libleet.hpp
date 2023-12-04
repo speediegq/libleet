@@ -490,6 +490,12 @@ namespace leet {
     const int returnMaxUploadLimit(User::credentialsResponse* resp);
 
     /**
+     * @brief  Check if an error occured.
+     * @return Returns false if an error occured, otherwise returns true;
+     */
+    const bool checkError();
+
+    /**
      * @brief  Attempts to create an account on the home server.
      * @param  cred Credentials object to use for registering
      * @return credentialsResponse object, containing the access token among other variables.
