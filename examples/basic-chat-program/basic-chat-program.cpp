@@ -8,13 +8,8 @@
 #include <string>
 #include <algorithm>
 #include <filesystem>
-/* In practice you would:
- * #include <libleet/libleet.hpp>
- * and link with libleet:
- * g++ basic-example.cpp -o basic-example -lleet
- */
-#include "../include/libleet.hpp"
-#include "../src/libleet.cpp"
+#include "../../include/libleet.hpp"
+#include "../../src/libleet.cpp"
 
 int checkError() {
     if (leet::errorCode != 0) { // Oh no, failed to login

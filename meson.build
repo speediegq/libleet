@@ -26,7 +26,13 @@ so_version = meson.project_version()
 
 install_headers('include/libleet.hpp', subdir : 'libleet')
 
-lib = library('leet',
+lib = static_library('leet',
+  project_source_files,
+  dependencies : project_dependencies,
+  install : true
+)
+
+lib_shared = shared_library('leet',
   project_source_files,
   dependencies : project_dependencies,
   version : so_version,

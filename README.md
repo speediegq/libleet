@@ -106,8 +106,6 @@ See the Issue tracker, as well as 'Not yet supported'.
 ## Examples
 
 You can find examples in the examples subdirectory.
-For simplicity, they must all be compiled from the Git
-root directory, rather than dynamically linked.
 
 In addition,
 [stellar-backend](https://git.speedie.site/speedie/stellar-backend)
