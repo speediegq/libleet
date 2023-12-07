@@ -115,15 +115,15 @@ namespace leet {
         class Credentials { /* Only applies for the login account */
             private:
             public:
-                std::string Username; // Username
-                std::string Password; // Password
-                std::string displayName; // Client side display name
-                std::string deviceID; // Unique ID
-                std::string Homeserver;
-                bool refreshToken; // Should we use a refresh token?
-                std::string Token; // An actual token
-                int Identifier; // Identifier used to log in
-                int Type; // Type
+                std::string Username{}; // Username
+                std::string Password{}; // Password
+                std::string displayName{}; // Client side display name
+                std::string deviceID{}; // Unique ID
+                std::string Homeserver{};
+                bool refreshToken{false}; // Should we use a refresh token?
+                std::string Token{}; // An actual token
+                int Identifier{}; // Identifier used to log in
+                int Type{}; // Type
 
                 void clearCredentials() {
                     Username = "";
@@ -144,12 +144,12 @@ namespace leet {
         class credentialsResponse { /* Only applies for the login account */
             private:
             public:
-                std::string accessToken; // Access token, which will be used to authenticate all future events for this session
-                std::string refreshToken; // Refresh token, if one is returned and used
-                std::string deviceID; // @<user>:<homeserver>
-                std::string Homeserver; // Should correspond to leet::User::Credentials.Homeserver
-                std::string userID; // Should correspond to leet::User::Credentials.User
-                int Expiration; // When the access token expires.
+                std::string accessToken{}; // Access token, which will be used to authenticate all future events for this session
+                std::string refreshToken{}; // Refresh token, if one is returned and used
+                std::string deviceID{}; // @<user>:<homeserver>
+                std::string Homeserver{}; // Should correspond to leet::User::Credentials.Homeserver
+                std::string userID{}; // Should correspond to leet::User::Credentials.User
+                int Expiration{}; // When the access token expires.
         }; /* https://playground.matrix.org/#post-/_matrix/client/v3/login */
 
         /**
@@ -158,14 +158,14 @@ namespace leet {
         class Device {
             private:
             public:
-                std::string userID; // His user ID
-                std::string deviceID; // His device ID
-                std::string curve25519Key; // His public curve25519 key
-                std::string ed25519Key; // His public ed25519 key
-                std::string ed25519Signature; // His public ed25519 signature
-                std::string deviceDisplayName; // His device display name (not to be confused with device ID)
-                bool olm; // Whether olm is supported or not
-                bool megolm; // Whether megolm is supported or not
+                std::string userID{}; // His user ID
+                std::string deviceID{}; // His device ID
+                std::string curve25519Key{}; // His public curve25519 key
+                std::string ed25519Key{}; // His public ed25519 key
+                std::string ed25519Signature{}; // His public ed25519 signature
+                std::string deviceDisplayName{}; // His device display name (not to be confused with device ID)
+                bool olm{false}; // Whether olm is supported or not
+                bool megolm{false}; // Whether megolm is supported or not
         }; /* https://spec.matrix.org/v1.1/client-server-api/#post_matrixclientv3keysquery */
 
         /**
@@ -174,9 +174,9 @@ namespace leet {
         class Profile {
             private:
             public:
-                std::string userID; // His user ID
-                std::string displayName; // His display name
-                std::string avatarURL; // His avatar mxc:// URL
+                std::string userID{}; // His user ID
+                std::string displayName{}; // His display name
+                std::string avatarURL{}; // His avatar mxc:// URL
                 std::vector<User::Device> Devices; // All of his devices
         }; /* https://spec.matrix.org/v1.8/client-server-api/#profiles */
     }
@@ -188,9 +188,9 @@ namespace leet {
         class Credentials {
             private:
             public:
-                std::string Username; // The TURN server username
-                std::string Password; // The TURN server password
-                int timeToLiveIn;
+                std::string Username{}; // The TURN server username
+                std::string Password{}; // The TURN server password
+                int timeToLiveIn{};
                 std::vector<std::string> URI;
         };
     }
@@ -202,16 +202,16 @@ namespace leet {
         class Room {
             private:
             public:
-                std::string roomID; // Room ID
-                std::string roomType; // Room type
-                std::string Name; // Room name
-                std::string avatarURL; // Avatar mxc:// URL
-                bool guestCanJoin; // Whether guest accounts can join or not
-                bool worldReadable; // Matrix speak for whether the room is public or not
-                std::string Alias; // Room alias (i.e. #speedie:matrix.org)
-                std::string Topic; // Room topic
-                std::string joinRule; // Join rule
-                int memberCount; // Number of members in the room
+                std::string roomID{}; // Room ID
+                std::string roomType{}; // Room type
+                std::string Name{}; // Room name
+                std::string avatarURL{}; // Avatar mxc:// URL
+                bool guestCanJoin{false}; // Whether guest accounts can join or not
+                bool worldReadable{false}; // Matrix speak for whether the room is public or not
+                std::string Alias{}; // Room alias (i.e. #speedie:matrix.org)
+                std::string Topic{}; // Room topic
+                std::string joinRule{}; // Join rule
+                int memberCount{}; // Number of members in the room
         };
         /**
          * @brief  Class which represents settings for a single room that should be created.
@@ -222,9 +222,9 @@ namespace leet {
                 bool Federate{false};
                 bool directMessage{false};
                 int Preset{LEET_PRESET_PRIVATE};
-                std::string Name;
-                std::string Alias;
-                std::string Topic;
+                std::string Name{};
+                std::string Alias{};
+                std::string Topic{};
         };
     }
 
@@ -241,16 +241,16 @@ namespace leet {
         class Space {
             private:
             public:
-                std::string spaceID; // Space ID
-                std::string roomType; // Room type
-                std::string Name; // Space name
-                std::string avatarURL; // Avatar mxc:// URL
-                bool guestCanJoin; // Whether guest accounts can join or not
-                bool worldReadable; // Matrix speak for whether the space is public or not
-                std::string Alias; // Space room alias (i.e. #speediegq:matrix.org)
-                std::string Topic; // Space room topic
-                std::string joinRule; // Join rule
-                int memberCount; // Number of members in the space
+                std::string spaceID{}; // Space ID
+                std::string roomType{}; // Room type
+                std::string Name{}; // Space name
+                std::string avatarURL{}; // Avatar mxc:// URL
+                bool guestCanJoin{false}; // Whether guest accounts can join or not
+                bool worldReadable{false}; // Matrix speak for whether the space is public or not
+                std::string Alias{}; // Space room alias (i.e. #speediegq:matrix.org)
+                std::string Topic{}; // Space room topic
+                std::string joinRule{}; // Join rule
+                int memberCount{}; // Number of members in the space
                 std::vector<Room::Room> Rooms; // Rooms in the space
         };
     }
@@ -265,32 +265,32 @@ namespace leet {
         class Message {
             private:
             public:
-                std::string messageText; // Message text
-                std::string formattedText; // Formatted message
-                std::string Format; // Message format
-                std::string Type; // Event type (i.e. m.room.message)
-                std::string messageType; // Message type (i.e. m.image, m.audio, m.video, m.file, m.text)
-                std::string eventID; // Event ID
-                std::string Sender; // The sender user ID
-                std::string mimeType; // Message mime type
-                int32_t Age; // Time since the message was posted
-                int attachmentWidth; // Attachment width
-                int attachmentHeight; // Attachment height
-                int attachmentSize; // Attachment file size
-                int attachmentLength; // Mainly applies for videos and music
-                std::string attachmentURL; // Attachment mxc:// URL
-                int thumbnailWidth; // Thumbnail width
-                int thumbnailHeight; // Thumbnail height
-                int thumbnailSize; // Thumbnail file size
-                std::string thumbnailMimeType; // Thumbnail mime type
-                std::string thumbnailURL; // Thumbnail mxc:// URL
+                std::string messageText{}; // Message text
+                std::string formattedText{}; // Formatted message
+                std::string Format{}; // Message format
+                std::string Type{}; // Event type (i.e. m.room.message)
+                std::string messageType{}; // Message type (i.e. m.image, m.audio, m.video, m.file, m.text)
+                std::string eventID{}; // Event ID
+                std::string Sender{}; // The sender user ID
+                std::string mimeType{}; // Message mime type
+                int32_t Age{}; // Time since the message was posted
+                int attachmentWidth{}; // Attachment width
+                int attachmentHeight{}; // Attachment height
+                int attachmentSize{}; // Attachment file size
+                int attachmentLength{}; // Mainly applies for videos and music
+                std::string attachmentURL{}; // Attachment mxc:// URL
+                int thumbnailWidth{}; // Thumbnail width
+                int thumbnailHeight{}; // Thumbnail height
+                int thumbnailSize{}; // Thumbnail file size
+                std::string thumbnailMimeType{}; // Thumbnail mime type
+                std::string thumbnailURL{}; // Thumbnail mxc:// URL
 
-                bool Encrypted; // Whether the message is encrypted or not
-                bool megolm;
-                std::string cipherText; // Encrypted message text
-                std::string senderKey; // Sender curve25519 key
-                std::string sessionID; // Sender session ID
-                std::string deviceID; // Sender device ID
+                bool Encrypted{false}; // Whether the message is encrypted or not
+                bool megolm{false};
+                std::string cipherText{}; // Encrypted message text
+                std::string senderKey{}; // Sender curve25519 key
+                std::string sessionID{}; // Sender session ID
+                std::string deviceID{}; // Sender device ID
         };
     }
 
@@ -301,7 +301,7 @@ namespace leet {
         class Attachment {
             private:
             public:
-                std::string URL;
+                std::string URL{};
         };
     }
 
@@ -312,12 +312,12 @@ namespace leet {
         class Filter {
             private:
             public:
-                std::vector<std::string> notSenders; // Senders to exclude
-                std::vector<std::string> Senders; // Senders to include
-                std::vector<std::string> notRooms; // Rooms to exclude
-                std::vector<std::string> Rooms; // Rooms to include
+                std::vector<std::string> notSenders{}; // Senders to exclude
+                std::vector<std::string> Senders{}; // Senders to include
+                std::vector<std::string> notRooms{}; // Rooms to exclude
+                std::vector<std::string> Rooms{}; // Rooms to include
                 std::vector<std::string> Fields = { "type", "content", "sender" }; // Vector of fields
-                int Limit = 0; // Max number of events to return
+                int Limit{0}; // Max number of events to return
         };
     }
 
@@ -328,12 +328,12 @@ namespace leet {
         class userEvent {
             private:
             public:
-                std::string userID;
-                std::string avatarURL;
-                bool currentlyActive;
-                int lastActiveAgo;
-                std::string Presence;
-                std::string statusMessage;
+                std::string userID{};
+                std::string avatarURL{};
+                bool currentlyActive{false};
+                int lastActiveAgo{};
+                std::string Presence{};
+                std::string statusMessage{};
         };
         /**
          * @brief Class that represents a name event.
@@ -341,10 +341,10 @@ namespace leet {
         class nameEvent {
             private:
             public:
-                std::string roomID;
-                std::string roomName;
-                std::string Inviter;
-                std::string stateKey;
+                std::string roomID{};
+                std::string roomName{};
+                std::string Inviter{};
+                std::string stateKey{};
         };
         /**
          * @brief Class that represents an invite event.
@@ -352,21 +352,21 @@ namespace leet {
         class inviteEvent {
             private:
             public:
-                std::string Membership;
-                std::string Inviter;
-                std::string invitedUser;
+                std::string Membership{};
+                std::string Inviter{};
+                std::string invitedUser{};
         };
         /**
          * @brief Class that represents a Megolm session sent in the room */
         class megolmSession {
             private:
             public:
-                std::string Algorithm;
-                std::string cipherText;
-                int cipherType;
-                std::string senderKey;
-                std::string Sender;
-                std::string Type;
+                std::string Algorithm{};
+                std::string cipherText{};
+                int cipherType{};
+                std::string senderKey{};
+                std::string Sender{};
+                std::string Type{};
         };
         /**
          * @brief Class containing objects of all the other classes in leet::Sync
@@ -378,7 +378,7 @@ namespace leet {
                 std::vector<nameEvent> nameEvents;
                 std::vector<inviteEvent> inviteEvents;
                 std::vector<megolmSession> megolmSessions;
-                std::string nextBatch;
+                std::string nextBatch{};
                 nlohmann::json theRequest; // The full request in nlohmann::json format, because this class is not complete
         };
     }
@@ -393,14 +393,14 @@ namespace leet {
         class Event {
             private:
             public:
-                std::string eventID; // Event ID (duh)
-                int32_t Age; // Time since the event occured
+                std::string eventID{}; // Event ID
+                int32_t Age{}; // Time since the event occured
         };
     }
 
     inline std::string Homeserver{ "https://matrix.org" }; // Home server used to make API calls. This should be overridden once a home server has been determined.
-    inline std::string Error; // Error code returned by the server (i.e. M_UNKNOWN)
-    inline std::string friendlyError; // Human readable error code also returned by the server in most cases (i.e. Unknown error)
+    inline std::string Error{}; // Error code returned by the server (i.e. M_UNKNOWN)
+    inline std::string friendlyError{}; // Human readable error code also returned by the server in most cases (i.e. Unknown error)
     inline int leetError{LEET_ERROR_NONE}; // libleet specific error
     inline int errorCode{0}; // Error code returned by libleet functions. If not set to 0, something went wrong.
     inline int transID{0}; // Transaction ID. Should be loaded/saved for each session, and incremented for each event
