@@ -566,8 +566,6 @@ void leet::setReadMarkerPosition(leet::User::credentialsResponse* resp, leet::Ro
 
     json body;
 
-    std::cerr << privateReadEvent->eventID;
-
     body["m.fully_read"] = fullyReadEvent->eventID;
     body["m.read"] = readEvent->eventID;
     body["m.read.private"] = privateReadEvent->eventID;
