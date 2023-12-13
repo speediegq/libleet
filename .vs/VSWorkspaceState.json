@@ -1,0 +1,14 @@
+{
+  "DevContainersInfoBarHidden": true,
+  "ActiveTargetSystem": "Local Machine",
+  "ExpandedNodes": [
+    "",
+    "\\packages",
+    "\\src",
+    "\\windows-olm",
+    "\\windows-olm\\include",
+    "\\windows-olm\\include\\olm"
+  ],
+  "SelectedNode": "\\packages.config",
+  "PreviewInSolutionExplorer": false
+}

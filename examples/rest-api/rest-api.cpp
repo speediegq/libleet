@@ -6,8 +6,7 @@
 #include <boost/beast/http.hpp>
 #include <boost/asio.hpp>
 #include <nlohmann/json.hpp>
-#include "../../include/libleet.hpp"
-#include "../../src/libleet.cpp"
+#include <libleet/libleet.hpp>
 #include "rest-api.hpp"
 
 const std::string returnRooms(const std::string& Body) {

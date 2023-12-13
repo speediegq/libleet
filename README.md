@@ -5,8 +5,10 @@ specification, as well as Element features for a great user experience.
 
 **This library is very much work in progress.**
 Expect things to change, and as such it is not suitable for use
-yet. If you wish to help implement some of the many Matrix
+yet unless you feel like rewriting your code at a later date. 
+If you wish to help implement some of the many Matrix
 features, feel free to do so in the form of a pull request.
+It would be greatly appreciated :)
 
 libleet is the library that powers the backend for the
 work-in-progress Matrix client [stellar](https://git.speedie.site/speedie/stellar).
@@ -61,16 +63,13 @@ work-in-progress Matrix client [stellar](https://git.speedie.site/speedie/stella
 
 To install these dependencies on **Debian**:
 
-- `apt install meson nlohmann-json3-dev libolm-dev libssl-dev`
+- `apt install meson nlohmann-json3-dev libolm-dev libssl-dev libboost-dev`
 - Note that libolm is not available from standard Debian bookworm repositories.
+A meson wrap is included, which can be used if necessary.
 
-If you're too lazy to compile these libraries yourself (I can't blame you),
-you can simply rely on Meson. Meson will automatically download and build
-all of the dependencies if they are not present on your system,
-though if you're running Debian 12 it should be noted that you MUST
-update your Meson version, otherwise it will fail to get the dependencies
-where CMake is used upstream. If you use SID, this is not a problem you have
-to deal with.
+To install these dependencies on **Arch**:
+
+- `pacman -S meson nlohmann_json libolm openssl boost`
 
 ## Compiling with meson (Microsoft Windows/macOS/Linux/BSD)
 
@@ -87,28 +86,53 @@ You can do it like this:
 If a dependency is not available, meson will fetch the source
 code and attempt to build it to satisfy the dependency.
 
+## Compiling with Visual Studio (Microsoft Windows)
+
+To compile using Visual Studio 2022, you can open the solution file
+and install the dependencies using nuget. All dependencies can be
+installed this way, except for libolm.
+
+To install libolm, you need to compile the CMake project manually.
+You can do this by simply cloning [olm](https://gitlab.matrix.org/matrix-org/olm)
+using Git. I recommend building a Release rather than a Debug build,
+and I recommend that you statically link.
+
+Then you can link with the resulting header files and the library
+and then build libleet using msvc. You should end up with either
+a dynamic library (.dll) or a static library (.lib)
+
+## Use in projects
+
+To use libleet in projects:
+
+```cpp
+/* Include libleet
+ * On Linux, the binary can be found in /usr/lib and the headers
+ * can be found in /usr/include/libleet.
+ * If you're using BSD or Windows, this may differ. You can use
+ * pkg-config to find the appropriate path and linker flag.
+ */
+#include <libleet/libleet.hpp>
+```
+
+Due to rather large dependencies, it is not recommended that you
+statically link your program that depends on libleet. It's possible,
+but not ideal in my opinion.
+
 ## Generating documentation
 
 Doxygen is used project-wide for generating documentation.
 
 To generate documentation: `cd docs; doxygen; cd ..`
 
-## Compiling with Visual Studio (Microsoft Windows)
-
-If you're compiling with Visual Studio, you can use the
-included solution file. I don't use Windows so I don'
-t really know if it works very well. Please note that
-with this approach you must compile olm separately
-for Windows. Thus, it is recommended that you use
-Meson even when building on Windows.
-
 ## Design goals
 
+- Fast
 - Easy to use
-- Make use of C++ features
+- Cross-platform
+- Make use of C++ features where appropriate, whilst not being too intimidating
 - Support Element as well as possible
-- Be modern. libleet uses modern C++ features where appropriate
-- Simplify much of the junk so that developers can just focus on
+- Simplify Matrix API calls so that developers can just focus on
 designing their user interface
 
 ## Features to implement
@@ -118,11 +142,12 @@ See the Issue tracker, as well as 'Not yet supported'.
 ## Examples
 
 You can find examples in the examples subdirectory.
+There are many examples that use different features
+of the library. If you plan on writing a client, you should check
+out `basic-chat-client` and perhaps `rest-api`.
 
-In addition,
-[stellar-backend](https://git.speedie.site/speedie/stellar-backend)
-is a web API which may also *serve* (get it?) as an example
-for how to write a program to interface with Matrix using libleet.
+You can build one of the examples using meson, in the same way
+libleet is built.
 
 ## License
 
