@@ -58,7 +58,7 @@ leet::Sync::Sync leet::returnSync(leet::User::credentialsResponse* resp) {
         return sync;
     }
 
-    sync.theRequest = theOutput;
+    sync.theRequest = theOutput.dump();
 
     auto& reqOutput = theOutput["to_device"]["events"];
 

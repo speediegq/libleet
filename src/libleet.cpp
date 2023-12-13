@@ -15,9 +15,15 @@
 #include <filesystem>
 #include <chrono>
 #include <nlohmann/json.hpp>
+#ifndef LEET_NO_ENCRYPTION
+#include <olm/error.h>
+#include <olm/olm.h>
+#include <olm/sas.h>
+#endif
 
 #include "../include/libleet.hpp"
 #include "net/Request.cpp"
+#include "Encryption.cpp"
 #include "Login.cpp"
 #include "Request.cpp"
 #include "User.cpp"
@@ -26,7 +32,6 @@
 #include "File.cpp"
 #include "Event.cpp"
 #include "Voip.cpp"
-#include "Encryption.cpp"
 
 const std::string leet::getAPI(const std::string& API) {
     return leet::Homeserver + API;

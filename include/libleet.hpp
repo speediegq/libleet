@@ -16,13 +16,6 @@
 #include <exception>
 #include <random>
 #include <map>
-#include <nlohmann/json.hpp>
-#include <cpr/cpr.h>
-#ifndef LEET_NO_ENCRYPTION
-#include <olm/error.h>
-#include <olm/olm.h>
-#include <olm/sas.h>
-#endif
 
 /* Identifier */
 enum {
@@ -379,7 +372,7 @@ namespace leet {
                 std::vector<inviteEvent> inviteEvents;
                 std::vector<megolmSession> megolmSessions;
                 std::string nextBatch{};
-                nlohmann::json theRequest; // The full request in nlohmann::json format, because this class is not complete
+                std::string theRequest{};
         };
     }
 
@@ -859,16 +852,15 @@ namespace leet {
     VOIP::Credentials returnTurnCredentials(User::credentialsResponse* resp);
 
     #ifndef LEET_NO_ENCRYPTION
+    /**
+     * @brief  Class which represents everything necessary to support encryption for a Matrix account
+     */
     class olmAccount {
         private:
         public:
-            using json = nlohmann::json;
             void* accountMemory;
-            OlmAccount* Account;
             void* utilityMemory;
-            OlmUtility* Utility;
             void* megolmSessionMemory;
-            OlmOutboundGroupSession* megolmSession;
             char* megolmSessionID;
             std::size_t megolmSessionIDLength;
             char* megolmSessionKey;
@@ -882,9 +874,6 @@ namespace leet {
             std::string curve25519;
             std::string ed25519;
 
-            /* Used to store established olm and megolm sessions */
-            std::map<std::string, OlmSession*> olmSessions;
-
             /* These booleans essentially exist to prevent consequences from occuring in case
             * the caller tries to free or allocate twice.
             */
@@ -897,764 +886,84 @@ namespace leet {
             bool utilityMemoryAllocated{false};
 
             /**
-             * @brief  Throws an 'olm failure: ' error.
-             * @param  Failure String to append to the error.
-             */
-            void handleError(const std::string& Failure) {
-                throw std::runtime_error{ "olm failure: " + Failure };
-            }
+            * @brief  Creates an account.
+            *
+            * Creates an account, to be uploaded.
+            * In basic test clients, or clients that will only run once or run constantly it is fine to call this
+            * each time the program is restarted, but for proper clients you should call this function once, pickle
+            * the data, store the key and data and unpickle the data using unpickle() or the convenient loadAccount()
+            * function.
+            */
+            void createAccount();
 
             /**
-             * @brief  Creates an account.
-             *
-             * Creates an account, to be uploaded.
-             * In basic test clients, or clients that will only run once or run constantly it is fine to call this
-             * each time the program is restarted, but for proper clients you should call this function once, pickle
-             * the data, store the key and data and unpickle the data using unpickle() or the convenient loadAccount()
-             * function.
-             */
-            void createAccount() {
-                if (!accountMemoryAllocated) {
-                    accountMemory = malloc(olm_account_size());
-                    Account = olm_account(accountMemory);
-                    accountMemoryAllocated = true;
-                } else {
-                    throw std::runtime_error{ "createAccount(): Cannot allocate memory because it is already allocated." };
-                }
-
-                leetCrypto::randomBytes randomBytes(olm_create_account_random_length(Account));
-
-                if (olm_create_account(Account, randomBytes.data(), randomBytes.length()) == olm_error()) {
-                    handleError("olm_create_account()");
-                }
-            }
+            * @brief  Loads an account from pickle data using the pickle key.
+            * @param  pickleKey Pickle key to use when unpickling the data. This must be stored by the client.
+            * @param  pickleData Pickle data to unpickle with the key. This must be stored by the client.
+            *
+            * Loads an account from pickle data and a pickle key.
+            * The pickle key should be stored somewhere, preferably encrypted for security reasons.
+            * Your client should (must) store the pickle data as well. This function does not check
+            * if the data is valid, so you should make sure it is. A runtime error will occur otherwise.
+            *
+            * Don't forget to free accountMemory
+            */
+            void loadAccount(const std::string& pickleKey, const std::string& pickleData);
 
             /**
-             * @brief  Loads an account from pickle data using the pickle key.
-             * @param  pickleKey Pickle key to use when unpickling the data. This must be stored by the client.
-             * @param  pickleData Pickle data to unpickle with the key. This must be stored by the client.
-             *
-             * Loads an account from pickle data and a pickle key.
-             * The pickle key should be stored somewhere, preferably encrypted for security reasons.
-             * Your client should (must) store the pickle data as well. This function does not check
-             * if the data is valid, so you should make sure it is. A runtime error will occur otherwise.
-             *
-             * Don't forget to free accountMemory
-             */
-            void loadAccount(const std::string& pickleKey, const std::string& pickleData) {
-                if (!accountMemoryAllocated) {
-                    accountMemory = malloc(olm_account_size());
-                    Account = unpickle(pickleKey, pickleData, Account);
-                    accountMemoryAllocated = true;
-                } else {
-                    throw std::runtime_error{ "loadAccount(): Cannot allocate memory because it is already allocated." };
-                }
-            }
+            * @brief  Creates a Megolm session.
+            *
+            * Creates a megolm session.
+            */
+            void createMegolmSession();
 
             /**
-             * @brief  Creates a Megolm session.
-             *
-             * Creates a megolm session.
-             */
-            void createMegolmSession() {
-                if (!megolmSessionMemoryAllocated) {
-                    megolmSessionMemory = malloc(olm_outbound_group_session_size());
-                    megolmSession = olm_outbound_group_session(megolmSessionMemory);
-                    megolmSessionMemoryAllocated = true;
-                } else {
-                    throw std::runtime_error{ "createMegolmSession(): Cannot allocate memory because it is already allocated. (1)" };
-                }
-                leetCrypto::randomBytes randomBytesSession(olm_init_outbound_group_session_random_length(megolmSession));
-
-                if (olm_init_outbound_group_session(megolmSession, static_cast<uint8_t* >(randomBytesSession.data()), randomBytesSession.length()) == olm_error()) {
-                    free(megolmSessionMemory);
-                    megolmSessionMemoryAllocated = false;
-                    handleError("olm_init_outbound_group_session()");
-                }
-
-                if (!megolmSessionIDMemoryAllocated) {
-                    megolmSessionIDLength = olm_outbound_group_session_id_length(megolmSession);
-                    megolmSessionID = (char* )malloc(megolmSessionIDLength + 1);
-                    megolmSessionIDMemoryAllocated = true;
-                } else {
-                    throw std::runtime_error{ "createMegolmSession(): Cannot allocate memory because it is already allocated. (2)" };
-                }
-
-                std::size_t tSize = olm_outbound_group_session_id(megolmSession, (uint8_t* )megolmSessionID, megolmSessionIDLength);
-
-                if (tSize == olm_error()) {
-                    handleError("olm_outbound_group_session_id()");
-                }
-
-                megolmSessionID[tSize] = '\0';
-            }
+            * @brief  Loads a Megolm session from pickle data
+            * @param  pickleKey Pickle key to use when unpickling the data. This must be stored by the client.
+            * @param  pickleData Pickle data to unpickle with the key. This must be stored by the client.
+            *
+            * Loads a megolm session from pickle data
+            */
+            void loadMegolmSession(const std::string& pickleKey, const std::string& pickleData);
 
             /**
-             * @brief  Loads a Megolm session from pickle data
-             * @param  pickleKey Pickle key to use when unpickling the data. This must be stored by the client.
-             * @param  pickleData Pickle data to unpickle with the key. This must be stored by the client.
-             *
-             * Loads a megolm session from pickle data
-             */
-            void loadMegolmSession(const std::string& pickleKey, const std::string& pickleData) {
-                if (!megolmSessionMemoryAllocated) {
-                    megolmSessionMemory = malloc(olm_outbound_group_session_size());
-                    megolmSession = unpickle(pickleKey, pickleData, megolmSession);
-                    megolmSessionMemoryAllocated = true;
-                } else {
-                    throw std::runtime_error{ "createMegolmSession(): Cannot allocate memory because it is already allocated. (1)" };
-                }
-
-                if (!megolmSessionIDMemoryAllocated) {
-                    megolmSessionIDLength = olm_outbound_group_session_id_length(megolmSession);
-                    megolmSessionID = (char* )malloc(megolmSessionIDLength + 1);
-                    megolmSessionIDMemoryAllocated = true;
-                } else {
-                    throw std::runtime_error{ "createMegolmSession(): Cannot allocate memory because it is already allocated. (2)" };
-                }
-
-                std::size_t tSize = olm_outbound_group_session_id(megolmSession, (uint8_t* )megolmSessionID, megolmSessionIDLength);
-
-                if (tSize == olm_error()) {
-                    handleError("olm_outbound_group_session_id()");
-                }
-
-                megolmSessionID[tSize] = '\0';
-            }
+            * @brief  Creates an identity.
+            */
+            void createIdentity();
 
             /**
-             * @brief  Creates an identity.
-             */
-            void createIdentity() {
-                if (!identityMemoryAllocated) {
-                    identityLength = olm_account_identity_keys_length(Account);
-                    Identity = (char* )malloc(identityLength + 1);
-                    identityMemoryAllocated = true;
-                } else {
-                    throw std::runtime_error{ "createIdentity(): Cannot allocate memory because it is already allocated." };
-                }
-
-                std::size_t tSize = olm_account_identity_keys(Account, Identity, identityLength);
-
-                if (tSize == olm_error()) {
-                    free(Identity); // Identity was allocated
-                    identityMemoryAllocated = false;
-                    handleError("olm_account_identity_keys()");
-                }
-
-                Identity[tSize] = '\0';
-                json identityJson;
-
-                try {
-                    identityJson = { json::parse(Identity) };
-                } catch (const json::parse_error& e) {
-                    free(Identity);
-                    identityMemoryAllocated = false;
-                    return;
-                }
-
-                for (auto &output : identityJson) {
-                    leet::errorCode = 0;
-
-                    if (output["curve25519"].is_string())
-                        curve25519 = output["curve25519"].get<std::string>();
-                    if (output["ed25519"].is_string())
-                        ed25519 = output["ed25519"].get<std::string>();
-                }
-
-                // Now we don't this anymore
-                free(Identity);
-                identityMemoryAllocated = false;
-            }
+            * @brief Uploads the device keys
+            * @param  resp credentialsResponse object, required for authentication.
+            */
+            void upload(leet::User::credentialsResponse* resp);
 
             /**
-             * @brief Uploads the device keys
-             * @param  resp credentialsResponse object, required for authentication.
-             */
-            void upload(leet::User::credentialsResponse* resp) {
-                if (!curve25519.compare("")) {
-                    throw std::runtime_error{ "upload(): Identity not allocated." };
-                }
-
-                json Body = {
-                    { "algorithms", {"m.olm.v1.curve25519-aes-sha2", "m.megolm.v1.aes-sha2" }},
-                    { "device_id", resp->deviceID },
-                    { "user_id", resp->userID },
-                    { "keys", {
-                        { std::string("ed25519:") + resp->deviceID, ed25519 },
-                        { std::string("curve25519:") + resp->deviceID, curve25519 }
-                    } }
-                };
-
-                std::string Keys = Body.dump();
-
-                if (!signatureMemoryAllocated) {
-                    signatureLength = olm_account_signature_length(Account);
-                    Signature = (char* )malloc(signatureLength + 1);
-                    signatureMemoryAllocated = true;
-                } else {
-                    throw std::runtime_error{ "upload(): Cannot allocate memory because it is already allocated." };
-                }
-
-                // Sign using the json we constructed, which will provide us with a signature
-                if (olm_account_sign(Account, Keys.data(), Keys.length(), Signature, signatureLength) == olm_error()) {
-                    free(Signature); // Signature was allocated
-                    signatureMemoryAllocated = false;
-                    handleError("olm_account_sign()");
-                }
-
-                Signature[signatureLength] = '\0';
-
-                Body["signatures"] = {
-                    { resp->userID, {
-                        { std::string("ed25519:") + resp->deviceID, Signature }
-                    } }
-                };
-
-                json keysJson = {
-                    { "device_keys", Body }
-                };
-
-                free(Signature);
-                signatureMemoryAllocated = false;
-
-                // Upload our device keys
-                const std::string Output {
-                    leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/keys/upload"), keysJson.dump(), resp->accessToken)
-                };
-
-                json uploadedKeys;
-
-                try {
-                    uploadedKeys = json::parse(Output);
-                } catch (const json::parse_error& e) {
-                    return;
-                }
-
-                keysRemaining = uploadedKeys["one_time_key_counts"]["signed_curve25519"];
-
-                // Max / 2 is a good amount of one time keys to keep available
-                const int keysToKeep = olm_account_max_number_of_one_time_keys(Account) / 2;
-
-                // We might need to generate new keys
-                if (keysRemaining < keysToKeep) {
-                    int keysNeeded = keysToKeep - keysRemaining;
-                    std::size_t otkLength = olm_account_one_time_keys_length(Account);
-                    char* Otk = (char* )malloc(otkLength + 1);
-
-                    std::size_t tSize = olm_account_one_time_keys(Account, Otk, otkLength);
-
-                    if (tSize == olm_error()) {
-                        free(Otk); // Otk was allocated
-                        handleError("olm_account_one_time_keys() (1)");
-                    }
-
-                    Otk[tSize] = '\0';
-
-                    json Otks;
-
-                    try {
-                        Otks = json::parse(Otk);
-                    } catch (const json::parse_error& e) {
-                        return;
-                    }
-
-                    free(Otk);
-
-                    int keysAvailable = Otks["ed25519"].size();
-
-                    // We do need to generate new keys
-                    if (keysNeeded > keysAvailable) {
-                        int keysToGenerate = keysNeeded - keysAvailable;
-                        std::size_t otkRandomLength = olm_account_generate_one_time_keys_random_length(Account, keysToGenerate);
-                        leetCrypto::randomBytes randomBytes(otkRandomLength);
-
-                        if (olm_account_generate_one_time_keys(Account, keysToGenerate, randomBytes.data(), randomBytes.length()) == olm_error()) {
-                            handleError("olm_account_generate_one_time_keys()");
-                        }
-
-                        // Now let's get all the keys we have
-                        otkLength = olm_account_one_time_keys_length(Account);
-                        Otk = (char* )malloc(otkLength + 1);
-
-                        tSize = olm_account_one_time_keys(Account, Otk, otkLength);
-                        if (tSize == olm_error()) {
-                            handleError("olm_account_one_time_keys() (2)");
-                        }
-
-                        Otk[tSize] = '\0';
-                        Otks = json::parse(Otk);
-
-                        free(Otk);
-                    }
-
-                    json signedOtks;
-
-                    // Now let's sign all of them
-                    for (auto& output : Otks["curve25519"].items()) {
-                        json Keys = {
-                            { "key", output.value() }
-                        };
-
-                        if (!signatureMemoryAllocated) {
-                            signatureLength = olm_account_signature_length(Account);
-                            Signature = (char* )malloc(signatureLength + 1);
-                            signatureMemoryAllocated = true;
-                        } else {
-                            throw std::runtime_error{ "upload(): Cannot allocate memory because it is already allocated." };
-                        }
-
-                        std::string theKeys = Keys.dump();
-
-                        if (olm_account_sign(Account, theKeys.data(), theKeys.length(), Signature, signatureLength) == olm_error()) {
-                            free(Signature);
-                            signatureMemoryAllocated = false;
-                            handleError("olm_account_sign()");
-                        }
-
-                        Signature[signatureLength] = '\0';
-
-                        Keys["signatures"] = {
-                            { resp->userID, {
-                                { std::string("ed25519:") + resp->deviceID, Signature }
-                            } }
-                        };
-
-                        // Increase the number of keys
-                        signedOtks[std::string("signed_curve25519:") + output.key()] = Keys;
-                        free(Signature);
-                        signatureMemoryAllocated = false;
-                    }
-
-                    // Upload it all
-                    json Body = { { "one_time_keys", signedOtks } };
-                    const std::string outputReq {
-                        leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/keys/upload"), Body.dump(), resp->accessToken)
-                    };
-
-                    olm_account_mark_keys_as_published(Account);
-                }
-            }
+            * @brief Creates a session with one or more users in the current room.
+            * @param  resp credentialsResponse object, required for authentication.
+            * @param  room The room to send and create the event in.
+            * @param  users Vector of users to create a session with.
+            */
+            void createSession(leet::User::credentialsResponse* resp, leet::Room::Room* room, const std::vector<leet::User::Profile>& users);
 
             /**
-             * @brief Creates a session with one or more users in the current room.
-             * @param  resp credentialsResponse object, required for authentication.
-             * @param  room The room to send and create the event in.
-             * @param  users Vector of users to create a session with.
-             */
-            void createSession(leet::User::credentialsResponse* resp, leet::Room::Room* room, const std::vector<leet::User::Profile>& users) {
-                if (!megolmSessionMemoryAllocated) {
-                    throw std::runtime_error{ "createSession(): Megolm session not allocated." };
-                }
-
-                if (!utilityMemoryAllocated) {
-                    utilityMemory = malloc(olm_utility_size());
-                    Utility = olm_utility(utilityMemory);
-                    utilityMemoryAllocated = true;
-                } else {
-                    throw std::runtime_error{ "createSession(): Cannot allocate memory because it is already allocated. (0)" };
-                }
-
-                // Loop through all devices that this user has
-                json Body;
-                json deviceKeys;
-
-                for (auto& user : users) {
-                    for (auto& output : user.Devices) { // each user and each of his devices
-                        // deviceKeys should look like the json returned from keys/query
-                        if (output.olm && output.megolm) {
-                            deviceKeys["device_keys"][output.userID][output.deviceID]["algorithms"] = json::array({"m.olm.v1.curve25519-aes-sha2", "m.megolm.v1.aes-sha2"});
-                        } else if (output.olm) {
-                            deviceKeys["device_keys"][output.userID][output.deviceID]["algorithms"] = json::array({"m.olm.v1.curve25519-aes-sha2"});
-                        } else if (output.megolm) {
-                            deviceKeys["device_keys"][output.userID][output.deviceID]["algorithms"] = json::array({"m.megolm.v1.aes-sha2"});
-                        }
-
-                        deviceKeys["device_keys"][output.userID][output.deviceID]["device_id"] = output.deviceID;
-                        deviceKeys["device_keys"][output.userID][output.deviceID]["keys"]["curve25519:" + output.deviceID] = output.curve25519Key;
-                        deviceKeys["device_keys"][output.userID][output.deviceID]["keys"]["ed25519:" + output.deviceID] = output.ed25519Key;
-                        deviceKeys["device_keys"][output.userID][output.deviceID]["user_id"] = output.userID;
-
-                        Body["one_time_keys"][output.userID][output.deviceID] = "signed_curve25519";
-                    }
-                }
-
-                const std::string Output {
-                    leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/keys/claim"), Body.dump(), resp->accessToken)
-                };
-
-                json claimedKeys;
-
-                try {
-                    claimedKeys = json::parse(Output);
-                } catch (const json::parse_error& e) {
-                    return;
-                }
-
-                std::size_t tSize;
-
-                json eventToSend;
-                for (auto& user : users) {
-                    for (auto& output : user.Devices) {
-                        json deviceKey = deviceKeys["device_keys"][output.userID][output.deviceID];
-                        const std::string keysToSign = deviceKey.dump();
-
-                        char* signatureCopy = (char* )malloc(output.ed25519Signature.length() + 1);
-                        output.ed25519Signature.copy(signatureCopy, output.ed25519Signature.length());
-
-                        if (olm_ed25519_verify(Utility, output.ed25519Key.data(), output.ed25519Key.length(),
-                            keysToSign.data(), keysToSign.length(), signatureCopy, output.ed25519Signature.length()) == olm_error()) {
-
-                            free(signatureCopy);
-                            continue; // Invalid device
-                        }
-
-                        free(signatureCopy);
-
-                        // fetch megolm session key
-                        megolmSessionKeyLength = olm_outbound_group_session_key_length(megolmSession);
-                        megolmSessionKey = (char* )malloc(megolmSessionKeyLength + 1);
-
-                        tSize = olm_outbound_group_session_key(megolmSession, (uint8_t* )megolmSessionKey, megolmSessionKeyLength);
-
-                        if (tSize == olm_error()) {
-                            handleError("olm_outbound_group_session_key()");
-                        }
-
-                        megolmSessionKey[tSize] = '\0';
-
-                        std::string Otk{""};
-
-                        json Signed = claimedKeys["one_time_keys"][output.userID][output.deviceID];
-                        for (auto& signedOtk : Signed.items()) {
-                            if (signedOtk.value().contains("key")) {
-                                Otk = signedOtk.value()["key"];
-                                break;
-                            }
-                        }
-
-                        if (!Otk.compare("")) {
-                            continue;
-                        }
-
-                        // Create an olm session
-                        OlmSession* Session;
-                        void* sessionMemory;
-
-                        if (!olmSessionMemoryAllocated) {
-                            sessionMemory = malloc(olm_session_size());
-                            Session = olm_session(sessionMemory);
-                            olmSessionMemoryAllocated = true;
-                        } else {
-                            throw std::runtime_error{ "createSession(): Cannot allocate memory because it is already allocated. (4)" };
-                        }
-
-                        // Store the session
-                        olmSessions[output.userID+output.curve25519Key+output.deviceID] = Session;
-
-                        leetCrypto::randomBytes randomBytes(olm_create_outbound_session_random_length(Session));
-
-                        if (olm_create_outbound_session(Session, Account, output.curve25519Key.data(), output.curve25519Key.length(), Otk.data(), Otk.length(), randomBytes.data(), randomBytes.length()) == olm_error()) {
-                            handleError("olm_create_outbound_session()");
-                        }
-
-                        json roomKeyMessage;
-
-                        roomKeyMessage["algorithm"] = "m.megolm.v1.aes-sha2";
-                        roomKeyMessage["room_id"] = room->roomID;
-                        roomKeyMessage["session_id"] = megolmSessionID;
-                        roomKeyMessage["session_key"] = megolmSessionKey;
-
-                        json roomKey;
-
-                        roomKey["type"] = "m.room_key";
-                        roomKey["content"] = roomKeyMessage;
-                        roomKey["sender"] = resp->userID;
-                        roomKey["sender_device"] = resp->deviceID;
-                        roomKey["recipient"] = output.userID;
-                        roomKey["recipient_keys"]["ed25519"] = output.ed25519Key;
-                        roomKey["keys"]["ed25519"] = ed25519;
-
-                        const std::string roomKeyMsg = roomKey.dump();
-
-                        leetCrypto::randomBytes randomBytesEncrypt(olm_encrypt_random_length(Session));
-                        std::size_t cipherTextLength = olm_encrypt_message_length(Session, roomKeyMsg.length());
-                        char* cipherText = (char* )malloc(cipherTextLength + 1);
-
-                        tSize = olm_encrypt(Session, roomKeyMsg.data(), roomKeyMsg.length(), randomBytesEncrypt.data(), randomBytesEncrypt.length(), cipherText, cipherTextLength);
-
-                        if (tSize == olm_error()) {
-                            free(cipherText);
-                            handleError("olm_encrypt()");
-                        }
-
-                        cipherText[tSize] = '\0';
-
-                        json encryptedMessage;
-
-                        encryptedMessage["algorithm"] = "m.olm.v1.curve25519-aes-sha2";
-                        encryptedMessage["sender_key"] = curve25519;
-                        encryptedMessage["ciphertext"][output.curve25519Key]["type"] = olm_encrypt_message_type(Session);
-                        encryptedMessage["ciphertext"][output.curve25519Key]["body"] = cipherText;
-
-                        eventToSend["messages"][output.userID][output.deviceID] = encryptedMessage;
-
-                        free(cipherText);
-                        free(megolmSessionKey);
-                        free(sessionMemory);
-
-                        olmSessionMemoryAllocated = false;
-                    }
-                }
-
-                const std::string putOutput {
-                    leet::invokeRequest_Put(leet::getAPI("/_matrix/client/v3/sendToDevice/m.room.encrypted/" + std::to_string(transID)), eventToSend.dump(), resp->accessToken)
-                };
-
-                free(utilityMemory);
-                utilityMemoryAllocated = false;
-            }
+            * @brief  Encrypt a message.
+            * @param  resp credentialsResponse object, required for authentication.
+            * @param  message Message to encrypt.
+            * @return Returns a json string containing the encrypted cipher text.
+            *
+            * Returns string json containing encrypted cipher text, which can then be uploaded to the server as an event
+            */
+            const std::string encryptMessage(leet::User::credentialsResponse* resp, const std::string& message);
 
             /**
-             * @brief  Encrypt a message.
-             * @param  resp credentialsResponse object, required for authentication.
-             * @param  message Message to encrypt.
-             * @return Returns a json string containing the encrypted cipher text.
-             *
-             * Returns string json containing encrypted cipher text, which can then be uploaded to the server as an event
-             */
-            const std::string encryptMessage(leet::User::credentialsResponse* resp, const std::string& message) {
-                std::size_t cipherTextLength = olm_group_encrypt_message_length(megolmSession, message.length());
-                char* cipherText = (char* )malloc(cipherTextLength + 1);
-                std::size_t tSize = olm_group_encrypt(megolmSession, (uint8_t* )message.data(), message.length(), (uint8_t* )cipherText, cipherTextLength);
-
-                if (tSize == olm_error()) {
-                    handleError("olm_group_encrypt()");
-                }
-
-                cipherText[tSize] = '\0';
-
-                json retMessage = {
-                    { "algorithm", "m.megolm.v1.aes-sha2" },
-                    { "sender_key", curve25519 },
-                    { "ciphertext", cipherText },
-                    { "session_id", megolmSessionID },
-                    { "device_id", resp->deviceID }
-                };
-
-                free(cipherText);
-
-                return retMessage.dump();
-            }
+            * @brief  Clean up by clearing the Olm account.
+            */
+            void clear();
 
             /**
-             * @brief  Pickle an OlmAccount*
-             * @param  pickleKey The key that should be used to pickle. The client should (must) store this safely. It is considered sensitive data.
-             * @return Returns a pickle for an OlmAccount. The client should (must) store this safely. It is considered sensitive data.
-             *
-             * Returns a pickle for an OlmAccount
-             */
-            const std::string pickle(const std::string& pickleKey, OlmAccount* acc) {
-                std::size_t pickleLength = olm_pickle_account_length(acc);
-                char* Pickle = (char* )malloc(pickleLength + 1);
-                const char* pKey = pickleKey.c_str();
-                std::size_t pKeyLength = pickleKey.length();
-
-                if (olm_pickle_account(acc, pKey, pKeyLength, Pickle, pickleLength) == olm_error()) {
-                    handleError("olm_pickle_account()");
-                }
-
-                const std::string ret = Pickle;
-                free(Pickle);
-
-                return ret;
-            }
-
-            /**
-             * @brief  Unpickle an OlmAccount*
-             * @param  pickleKey The key that should be used to unpickle. The client should (must) store this safely. It is considered sensitive data.
-             * @param  pickleData The pickle data returned by a pickle() function.
-             * @return Returns an OlmAccount*.
-             *
-             * Returns a pickle for an OlmAccount
-             */
-            OlmAccount* unpickle(const std::string& pickleKey, const std::string& pickleData, OlmAccount* acc) {
-                const char* pKey = pickleKey.c_str();
-                std::size_t pKeyLength = pickleKey.length();
-
-                std::size_t pickleLength = olm_pickle_account_length(acc);
-                char* Pickle = const_cast<char*>(pickleData.c_str());
-
-                if (olm_unpickle_account(acc, pKey, pKeyLength, Pickle, pickleLength) == olm_error()) {
-                    handleError("olm_unpickle_account()");
-                }
-
-                return acc;
-            }
-
-            /**
-             * @brief  Pickle an OlmInboundGroupSession*
-             * @param  pickleKey The key that should be used to pickle. The client should (must) store this safely. It is considered sensitive data.
-             * @return Returns a pickle for an OlmInboundGroupSession. The client should (must) store this safely. It is considered sensitive data.
-             *
-             * Returns a pickle for an OlmInboundGroupSession
-             */
-            const std::string pickle(const std::string& pickleKey, OlmInboundGroupSession* session) {
-                std::size_t pickleLength = olm_pickle_inbound_group_session_length(session);
-                char* Pickle = (char* )malloc(pickleLength + 1);
-                const char* pKey = pickleKey.c_str();
-                std::size_t pKeyLength = pickleKey.length();
-
-                if (olm_pickle_inbound_group_session(session, pKey, pKeyLength, Pickle, pickleLength) == olm_error()) {
-                    handleError("olm_pickle_account()");
-                }
-
-                const std::string ret = Pickle;
-                free(Pickle);
-
-                return ret;
-            }
-
-            /**
-             * @brief  Unpickle an OlmInboundGroupSession*
-             * @param  pickleKey The key that should be used to unpickle. The client should (must) store this safely. It is considered sensitive data.
-             * @param  pickleData The pickle data returned by a pickle() function.
-             * @return Returns an OlmInboundGroupSession*.
-             *
-             * Returns a pickle for an OlmInboundGroupSession
-             */
-            OlmInboundGroupSession* unpickle(const std::string& pickleKey, const std::string& pickleData, OlmInboundGroupSession* session) {
-                const char* pKey = pickleKey.c_str();
-                std::size_t pKeyLength = pickleKey.length();
-
-                std::size_t pickleLength = olm_pickle_inbound_group_session_length(session);
-                char* Pickle = const_cast<char*>(pickleData.c_str());
-
-                if (olm_unpickle_inbound_group_session(session, pKey, pKeyLength, Pickle, pickleLength) == olm_error()) {
-                    handleError("olm_unpickle_account()");
-                }
-
-                return session;
-            }
-
-            /**
-             * @brief  Pickle an OlmOutboundGroupSession*
-             * @param  pickleKey The key that should be used to pickle. The client should (must) store this safely. It is considered sensitive data.
-             * @return Returns a pickle for an OlmOutboundGroupSession. The client should (must) store this safely. It is considered sensitive data.
-             *
-             * Returns a pickle for an OlmOutboundGroupSession
-             */
-            const std::string pickle(const std::string& pickleKey, OlmOutboundGroupSession* session) {
-                std::size_t pickleLength = olm_pickle_outbound_group_session_length(session);
-                char* Pickle = (char* )malloc(pickleLength + 1);
-                const char* pKey = pickleKey.c_str();
-                std::size_t pKeyLength = pickleKey.length();
-
-                if (olm_pickle_outbound_group_session(session, pKey, pKeyLength, Pickle, pickleLength) == olm_error()) {
-                    handleError("olm_pickle_account()");
-                }
-
-                const std::string ret = Pickle;
-                free(Pickle);
-
-                return ret;
-            }
-
-            /**
-             * @brief  Unpickle an OlmOutboundGroupSession*
-             * @param  pickleKey The key that should be used to unpickle. The client should (must) store this safely. It is considered sensitive data.
-             * @param  pickleData The pickle data returned by a pickle() function.
-             * @return Returns an OlmOutboundGroupSession*.
-             *
-             * Returns a pickle for an OlmOutboundGroupSession
-             */
-            OlmOutboundGroupSession* unpickle(const std::string& pickleKey, const std::string& pickleData, OlmOutboundGroupSession* session) {
-                const char* pKey = pickleKey.c_str();
-                std::size_t pKeyLength = pickleKey.length();
-
-                std::size_t pickleLength = olm_pickle_outbound_group_session_length(session);
-                char* Pickle = const_cast<char*>(pickleData.c_str());
-
-                if (olm_unpickle_outbound_group_session(session, pKey, pKeyLength, Pickle, pickleLength) == olm_error()) {
-                    handleError("olm_unpickle_account()");
-                }
-
-                return session;
-            }
-
-            /**
-             * @brief  Pickle an OlmSession*
-             * @param  pickleKey The key that should be used to pickle. The client should (must) store this safely. It is considered sensitive data.
-             * @return Returns a pickle for an OlmSession. The client should (must) store this safely. It is considered sensitive data.
-             *
-             * Returns a pickle for an OlmSession
-             */
-            const std::string pickle(const std::string& pickleKey, OlmSession* session) {
-                std::size_t pickleLength = olm_pickle_session_length(session);
-                char* Pickle = (char* )malloc(pickleLength + 1);
-                const char* pKey = pickleKey.c_str();
-                std::size_t pKeyLength = pickleKey.length();
-
-                if (olm_pickle_session(session, pKey, pKeyLength, Pickle, pickleLength) == olm_error()) {
-                    handleError("olm_pickle_account()");
-                }
-
-                const std::string ret = Pickle;
-                free(Pickle);
-
-                return ret;
-            }
-
-            /**
-             * @brief  Unpickle an OlmSession*
-             * @param  pickleKey The key that should be used to unpickle. The client should (must) store this safely. It is considered sensitive data.
-             * @param  pickleData The pickle data returned by a pickle() function.
-             * @return Returns an OlmSession*.
-             *
-             * Returns a pickle for an OlmSession
-             */
-            OlmSession* unpickle(const std::string& pickleKey, const std::string& pickleData, OlmSession* session) {
-                const char* pKey = pickleKey.c_str();
-                std::size_t pKeyLength = pickleKey.length();
-
-                std::size_t pickleLength = olm_pickle_session_length(session);
-                char* Pickle = const_cast<char*>(pickleData.c_str());
-
-                if (olm_unpickle_session(session, pKey, pKeyLength, Pickle, pickleLength) == olm_error()) {
-                    handleError("olm_unpickle_account()");
-                }
-
-                return session;
-            }
-
-            /**
-             * @brief  Clean up by clearing the Olm account.
-             */
-            void clear() {
-                if (accountMemoryAllocated) {
-                    olm_clear_account(Account);
-                } else {
-                    throw std::runtime_error{ "clear(): Cannot clear account because memory is not allocated for the account." };
-                }
-            }
-
-            /**
-             * @brief  Free memory that has been allocated.
-             */
-            void destroy() {
-                if (megolmSessionIDMemoryAllocated) {
-                    free(megolmSessionID);
-                    megolmSessionIDMemoryAllocated = false;
-                }
-                if (megolmSessionMemoryAllocated) {
-                    free(megolmSessionMemory);
-                    megolmSessionMemoryAllocated = false;
-                }
-                if (accountMemoryAllocated) {
-                    free(accountMemory);
-                    accountMemoryAllocated = false;
-                }
-            }
+            * @brief  Free memory that has been allocated.
+            */
+            void destroy();
     };
 
     /**
@@ -1668,15 +977,10 @@ namespace leet {
             bool hasCreatedAccount{false};
             bool Cleaned = false;
 
-            void destroy() {
-                if (!Cleaned) {
-                    account.clear();
-                    account.destroy();
-                    Cleaned = true;
-                } else {
-                    throw std::runtime_error{ "olmAccount: Already destroyed." };
-                }
-            }
+            /**
+             * @brief  Function that frees all allocated Olm data.
+             */
+            void destroy();
     };
 
     /**

@@ -1,5 +1,5 @@
 project(
-  'basic-chat-program',
+  'rest-api',
   'cpp',
   version : '"0.1"',
   default_options : ['warning_level=3']
@@ -8,10 +8,12 @@ project(
 cc = meson.get_compiler('cpp')
 
 project_source_files = [
-  'basic-chat-program.cpp',
+  'rest-api.cpp',
 ]
 
 project_dependencies = [
+  dependency('nlohmann_json', fallback : 'nlohmann_json'),
+  dependency('boost'),
   dependency('libleet'),
 ]
 
@@ -26,4 +28,4 @@ project_target = executable(
   c_args : build_args,
 )
 
-test('basic-chat-program', project_target)
+test('rest-api', project_target)

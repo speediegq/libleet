@@ -8,8 +8,7 @@
 #include <string>
 #include <algorithm>
 #include <filesystem>
-#include "../../include/libleet.hpp"
-#include "../../src/libleet.cpp"
+#include <libleet/libleet.hpp>
 
 int checkError() {
     if (leet::errorCode != 0) { // Oh no, failed to login
