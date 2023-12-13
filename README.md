@@ -51,7 +51,7 @@ work-in-progress Matrix client [stellar](https://git.speedie.site/speedie/stella
 
 ## Dependencies
 
-- cpr
+- boost
 - nlohmann\_json
 - C++20 [compiler](https://en.cppreference.com/w/cpp/compiler_support/20)
 - olm
@@ -63,8 +63,6 @@ To install these dependencies on **Debian**:
 
 - `apt install meson nlohmann-json3-dev libolm-dev libssl-dev`
 - Note that libolm is not available from standard Debian bookworm repositories.
-- libcpr must be compiled from source on Debian,
-[see instructions here](https://github.com/libcpr/cpr).
 
 If you're too lazy to compile these libraries yourself (I can't blame you),
 you can simply rely on Meson. Meson will automatically download and build
@@ -74,21 +72,35 @@ update your Meson version, otherwise it will fail to get the dependencies
 where CMake is used upstream. If you use SID, this is not a problem you have
 to deal with.
 
-## Compiling and installing
+## Compiling with meson (Microsoft Windows/macOS/Linux/BSD)
 
-If you use the meson build system, you can compile
-libleet like this:
+You can compile libleet using the meson build system
+on Windows, macOS, Linux and other Unix-like
+operating systems.
+
+You can do it like this:
 
 - `meson setup build --prefix=/usr --reconfigure`
 - `cd build`
-- `meson install`
+- `meson install` as superuser.
+
+If a dependency is not available, meson will fetch the source
+code and attempt to build it to satisfy the dependency.
+
+## Generating documentation
+
+Doxygen is used project-wide for generating documentation.
 
 To generate documentation: `cd docs; doxygen; cd ..`
 
+## Compiling with Visual Studio (Microsoft Windows)
+
 If you're compiling with Visual Studio, you can use the
-solution. I don't use Windows so I don't really know if
-it works very well. Please note that with this approach
-you must compile olm separately for Windows.
+included solution file. I don't use Windows so I don'
+t really know if it works very well. Please note that
+with this approach you must compile olm separately
+for Windows. Thus, it is recommended that you use
+Meson even when building on Windows.
 
 ## Design goals
 

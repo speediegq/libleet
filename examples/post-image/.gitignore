@@ -1,0 +1,4 @@
+subprojects/*-*
+subprojects/packagecache
+build
+post-image

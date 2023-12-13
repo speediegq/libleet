@@ -1,5 +1,5 @@
 project(
-  'basic-chat-program',
+  'parse-url',
   'cpp',
   version : '"0.1"',
   default_options : ['warning_level=3']
@@ -8,14 +8,14 @@ project(
 cc = meson.get_compiler('cpp')
 
 project_source_files = [
-  'basic-chat-program.cpp',
+  'parse-url.cpp',
 ]
 
 project_dependencies = [
   dependency('nlohmann_json', fallback : 'nlohmann_json'),
-  dependency('boost'),
   dependency('openssl', fallback : 'openssl'),
   dependency('olm', fallback : 'olm'),
+  dependency('boost'),
 ]
 
 build_args = [
@@ -29,4 +29,4 @@ project_target = executable(
   c_args : build_args,
 )
 
-test('basic-chat-program', project_target)
+test('parse-url', project_target)

@@ -1,0 +1,4 @@
+subprojects/*-*
+subprojects/packagecache
+build
+decode-mxc-url

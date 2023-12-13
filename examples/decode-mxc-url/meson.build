@@ -1,5 +1,5 @@
 project(
-  'basic-chat-program',
+  'decode-mxc-url',
   'cpp',
   version : '"0.1"',
   default_options : ['warning_level=3']
@@ -8,7 +8,7 @@ project(
 cc = meson.get_compiler('cpp')
 
 project_source_files = [
-  'basic-chat-program.cpp',
+  'decode-mxc-url.cpp',
 ]
 
 project_dependencies = [
@@ -29,4 +29,4 @@ project_target = executable(
   c_args : build_args,
 )
 
-test('basic-chat-program', project_target)
+test('decode-mxc-url', project_target)

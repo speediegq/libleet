@@ -32,7 +32,7 @@ template <typename T> T leet::loadFromFile(const std::string& File) {
         }
 
         while (std::getline(inputFile, line)) {
-            T ret = std::atoi(line.c_str());
+            T ret = std::stoi(line);
 
             inputFile.close();
             return ret;
@@ -85,6 +85,28 @@ leet::Attachment::Attachment leet::uploadFile(leet::User::credentialsResponse* r
     return theAttachment;
 }
 
+const std::string leet::decodeFile(leet::User::credentialsResponse* resp, leet::Attachment::Attachment* Attachment) {
+    std::string Server{};
+    std::string ID{};
+    std::string File{Attachment->URL};
+    std::size_t it = File.find("mxc://");
+
+    if (it != std::string::npos) {
+        it += 6;
+        std::size_t nextSlash = File.find("/", it);
+
+        if (nextSlash != std::string::npos) {
+            Server = File.substr(it, nextSlash - it);
+            ID = File.substr(nextSlash + 1);
+        } else {
+            leet::errorCode = 1;
+            return "";
+        }
+    }
+
+    return leet::getAPI("/_matrix/media/v3/download/" + Server + "/" + ID + "?allow_redirect=false");
+}
+
 const bool leet::downloadFile(leet::User::credentialsResponse* resp, leet::Attachment::Attachment* Attachment, const std::string& outputFile) {
     std::string Server{};
     std::string ID{};
@@ -113,12 +135,26 @@ const bool leet::downloadFile(leet::User::credentialsResponse* resp, leet::Attac
         return false;
     }
 
-    // Download the file
+    /*
     std::ofstream of(outputFile, std::ios::binary);
     cpr::Response response = cpr::Download(of, cpr::Url{API});
     if (response.status_code == 200) {
         return true;
     }
+    */
+    leetRequest::URL url;
+    leetRequest::Request request;
 
-    return false;
+    url.parseURLFromString(API);
+
+    request.Host = url.Host;
+    request.Endpoint = url.Endpoint;
+    request.Query = url.Query;
+    request.Port = url.Port;
+    request.Protocol = url.Protocol;
+    request.Type = leetRequest::LEET_REQUEST_REQTYPE_GET;
+    request.userAgent = "LIBLEET_USER_AGENT";
+    request.outputFile = outputFile;
+
+    return request.downloadFile();
 }

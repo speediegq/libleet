@@ -795,6 +795,13 @@ namespace leet {
      * @return Returns true if it was downloaded successfully, otherwise false is returned.
      */
     const bool downloadFile(User::credentialsResponse* resp, Attachment::Attachment* Attachment, const std::string& outputFile);
+    /**
+     * @brief  Gets a download link for an attachment from the Matrix server.
+     * @param  resp credentialsResponse object, required for authentication.
+     * @param  File Attachment object containing an mxc:// URL to download from.
+     * @return Returns a URL in the form of an std::string
+     */
+    const std::string decodeFile(User::credentialsResponse* resp, Attachment::Attachment* Attachment);
 
     /**
      * @brief  Gets the Unix timestamp

@@ -13,9 +13,9 @@ project_source_files = [
 
 project_dependencies = [
   dependency('nlohmann_json', fallback : 'nlohmann_json'),
-  dependency('cpr', fallback : 'cpr'),
   dependency('openssl', fallback : 'openssl'),
   dependency('olm', fallback : 'olm'),
+  dependency('boost'),
 ]
 
 build_args = [
@@ -25,6 +25,7 @@ build_args = [
 so_version = meson.project_version()
 
 install_headers('include/libleet.hpp', subdir : 'libleet')
+install_headers('include/net/Request.hpp', subdir : 'libleet')
 
 lib = static_library('leet',
   project_source_files,

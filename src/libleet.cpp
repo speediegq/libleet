@@ -15,9 +15,9 @@
 #include <filesystem>
 #include <chrono>
 #include <nlohmann/json.hpp>
-#include <cpr/cpr.h>
 
 #include "../include/libleet.hpp"
+#include "net/Request.cpp"
 #include "Login.cpp"
 #include "Request.cpp"
 #include "User.cpp"
