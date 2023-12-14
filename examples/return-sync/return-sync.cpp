@@ -2,6 +2,7 @@
 #include <string>
 #include <algorithm>
 #include <filesystem>
+#include <nlohmann/json.hpp>
 #include <libleet/libleet.hpp>
 
 int main() {
@@ -35,5 +36,7 @@ int main() {
 
     leet::Sync::Sync sync = leet::returnSync(&resp);
 
-    std::cout << sync.theRequest << "\n";
+    nlohmann::json obj = nlohmann::json::parse(sync.theRequest);
+
+    std::cout << obj.dump(2) << "\n";
 }
