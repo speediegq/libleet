@@ -5,7 +5,7 @@ specification, as well as Element features for a great user experience.
 
 **This library is very much work in progress.**
 Expect things to change, and as such it is not suitable for use
-yet unless you feel like rewriting your code at a later date. 
+yet unless you feel like rewriting your code at a later date.
 If you wish to help implement some of the many Matrix
 features, feel free to do so in the form of a pull request.
 It would be greatly appreciated :)

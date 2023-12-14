@@ -14,6 +14,13 @@
 #include <regex>
 #include <filesystem>
 #include <chrono>
+#include <string>
+#include <string_view>
+#include <cstring>
+#include <ctime>
+#include <exception>
+#include <random>
+#include <map>
 #include <nlohmann/json.hpp>
 #ifndef LEET_NO_ENCRYPTION
 #include <olm/error.h>

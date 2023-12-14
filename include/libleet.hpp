@@ -8,15 +8,6 @@
 
 #ifndef LIBLEET_HPP
 #define LIBLEET_HPP
-#include <iostream>
-#include <string>
-#include <cstring>
-#include <ctime>
-#include <vector>
-#include <exception>
-#include <random>
-#include <map>
-
 #ifndef LEET_NO_ENCRYPTION
 namespace leetCrypto {
     /**
@@ -900,8 +891,8 @@ namespace leet {
             std::size_t signatureLength;
             int keysRemaining{0};
 
-            std::string curve25519;
-            std::string ed25519;
+            std::string curve25519{};
+            std::string ed25519{};
 
             /* These booleans essentially exist to prevent consequences from occuring in case
             * the caller tries to free or allocate twice.
