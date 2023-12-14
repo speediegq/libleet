@@ -154,8 +154,9 @@ const std::vector<leet::Message::Message> leet::returnMessages(leet::User::crede
     return vector;
 }
 
-const std::string leet::returnFilter(leet::User::credentialsResponse* resp, leet::Filter::Filter *filter) {
+leet::Filter::Filter leet::returnFilter(leet::User::credentialsResponse* resp, leet::Filter::filterConfiguration *filter) {
     using json = nlohmann::json;
+    leet::Filter::Filter retFilter;
     const std::string APIUrl { "/_matrix/client/v3/user/" + resp->userID + "/filter" };
 
     json list;
@@ -184,16 +185,17 @@ const std::string leet::returnFilter(leet::User::credentialsResponse* resp, leet
     try {
         reqOutput = json::parse(Output);
     } catch (const json::parse_error& e) {
-        return "";
+        return retFilter;
     }
 
     for (auto& output : reqOutput) {
         leet::errorCode = 0;
 
         if (output["filter_id"].is_string()) {
-            return output["filter_id"].get<std::string>();
+            retFilter.filterID = output["filter_id"].get<std::string>();
+            return retFilter;
         }
     }
 
-    return "";
+    return retFilter;
 }

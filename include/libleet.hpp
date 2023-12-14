@@ -37,6 +37,13 @@ enum {
     LEET_PRESET_PUBLIC, // Invite not required, users can just join (except guests)
 };
 
+/* Presence */
+enum {
+    LEET_PRESENCE_OFFLINE,
+    LEET_PRESENCE_ONLINE,
+    LEET_PRESENCE_UNAVAILABLE,
+};
+
 /* Errors */
 enum {
     LEET_ERROR_NONE,
@@ -300,9 +307,9 @@ namespace leet {
 
     namespace Filter {
         /**
-         * @brief Filter, can be used to find an event ID by functions that make use of it.
+         * @brief Filter configuration, can be used to generate a filter which can be used to find an event ID by functions that make use of it.
          */
-        class Filter {
+        class filterConfiguration {
             private:
             public:
                 std::vector<std::string> notSenders{}; // Senders to exclude
@@ -311,6 +318,15 @@ namespace leet {
                 std::vector<std::string> Rooms{}; // Rooms to include
                 std::vector<std::string> Fields = { "type", "content", "sender" }; // Vector of fields
                 int Limit{0}; // Max number of events to return
+        };
+
+        /**
+         * @brief Filter, which can be used to find an event ID by functions that make use of it.
+         */
+        class Filter {
+            private:
+            public:
+                std::string filterID{}; // Filter ID returned from endpoint
         };
     }
 
@@ -374,6 +390,19 @@ namespace leet {
                 std::string nextBatch{};
                 std::string theRequest{};
         };
+
+        /**
+         * @brief Class containing settings for a sync call
+         */
+        class syncConfiguration {
+            private:
+            public:
+                std::string Since{};
+                leet::Filter::Filter Filter;
+                bool fullState{false};
+                int Presence{LEET_PRESENCE_OFFLINE};
+                int Timeout{30000};
+        };
     }
 
     namespace Event {
@@ -391,7 +420,7 @@ namespace leet {
         };
     }
 
-    inline std::string Homeserver{ "https://matrix.org" }; // Home server used to make API calls. This should be overridden once a home server has been determined.
+    inline std::string Homeserver{"https://matrix.org"}; // Home server used to make API calls. This should be overridden once a home server has been determined.
     inline std::string Error{}; // Error code returned by the server (i.e. M_UNKNOWN)
     inline std::string friendlyError{}; // Human readable error code also returned by the server in most cases (i.e. Unknown error)
     inline int leetError{LEET_ERROR_NONE}; // libleet specific error
@@ -768,10 +797,10 @@ namespace leet {
     /**
      * @brief  Returns a filter ID which can be used when requesting data.
      * @param  resp credentialsResponse object, required for authentication.
-     * @param  filter Filter object.
+     * @param  filter Filter configuration.
      * @return Returns a filter ID which can be used when requesting data.
      */
-    const std::string returnFilter(User::credentialsResponse* resp, Filter::Filter *filter);
+    Filter::Filter returnFilter(User::credentialsResponse* resp, Filter::filterConfiguration *filter);
 
     /**
      * @brief  Uploads a file to the Matrix server(s).
@@ -842,7 +871,7 @@ namespace leet {
      * @param  resp credentialsResponse object, required for authentication.
      * @return Returns a Sync object with the fields.
      */
-    Sync::Sync returnSync(User::credentialsResponse* resp);
+    Sync::Sync returnSync(User::credentialsResponse* resp, Sync::syncConfiguration* conf);
 
     /**
      * @brief  Get TURN server credentials

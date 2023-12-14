@@ -34,7 +34,8 @@ int main() {
 
     leet::transID = leet::returnUnixTimestamp();
 
-    leet::Sync::Sync sync = leet::returnSync(&resp);
+    leet::Sync::syncConfiguration conf;
+    leet::Sync::Sync sync = leet::returnSync(&resp, &conf);
 
     nlohmann::json obj = nlohmann::json::parse(sync.theRequest);
 

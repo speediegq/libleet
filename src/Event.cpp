@@ -45,11 +45,32 @@ leet::Event::Event leet::returnLatestEvent(leet::User::credentialsResponse* resp
     return leet::returnEventFromTimestamp(resp, room, leet::returnUnixTimestamp(), true);
 }
 
-leet::Sync::Sync leet::returnSync(leet::User::credentialsResponse* resp) {
+leet::Sync::Sync leet::returnSync(leet::User::credentialsResponse* resp, leet::Sync::syncConfiguration* conf) {
     using json = nlohmann::json;
     leet::Sync::Sync sync;
+    std::string presenceString{"offline"};
 
-    const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/sync"), resp->accessToken);
+    switch(conf->Presence) {
+        case LEET_PRESENCE_OFFLINE:
+            presenceString = "offline";
+            break;
+        case LEET_PRESENCE_ONLINE:
+            presenceString = "online";
+            break;
+        case LEET_PRESENCE_UNAVAILABLE:
+            presenceString = "unavailable";
+            break;
+        default:
+            break;
+    }
+
+    const std::string Output = leet::invokeRequest_Get(
+            leet::getAPI("/_matrix/client/v3/sync?presence=" + presenceString + "&timeout=" + std::to_string(conf->Timeout) +
+                        (conf->Since.compare("") ? "&since=" + conf->Since : "") + "&full_state=" + (conf->fullState ? "true" : "false") +
+                        (conf->Filter.filterID.compare("") ? "&filter=" + conf->Filter.filterID : "")),
+                        resp->accessToken
+    );
+
     json theOutput;
 
     try {
@@ -60,33 +81,32 @@ leet::Sync::Sync leet::returnSync(leet::User::credentialsResponse* resp) {
 
     sync.theRequest = theOutput.dump();
 
-    auto& reqOutput = theOutput;
+    auto& reqOutput = theOutput["to_device"]["events"];
 
     for (auto& output : reqOutput) {
         leet::errorCode = 0;
 
-        // megolmSession
         leet::Sync::megolmSession megolmSession;
 
-        if (!output["to_device"]["events"]["content"]["sender_key"].is_null()) {
-            megolmSession.senderKey = output["to_device"]["events"]["content"]["sender_key"];
+        if (!output["content"]["sender_key"].is_null()) {
+            megolmSession.senderKey = output["content"]["sender_key"];
         }
-        if (!output["to_device"]["events"]["content"]["algorithm"].is_null()) {
-            megolmSession.Algorithm = output["to_device"]["events"]["content"]["algorithm"];
+        if (!output["content"]["algorithm"].is_null()) {
+            megolmSession.Algorithm = output["content"]["algorithm"];
         }
         if (megolmSession.senderKey.compare("")) {
-            if (!output["to_device"]["events"]["content"]["ciphertext"][megolmSession.senderKey]["body"].is_null()) {
-                megolmSession.cipherText = output["to_device"]["events"]["content"]["ciphertext"][megolmSession.senderKey]["body"];
+            if (!output["content"]["ciphertext"][megolmSession.senderKey]["body"].is_null()) {
+                megolmSession.cipherText = output["content"]["ciphertext"][megolmSession.senderKey]["body"];
             }
-            if (!output["to_device"]["events"]["content"]["ciphertext"][megolmSession.senderKey]["type"].is_null()) {
-                megolmSession.cipherType = output["to_device"]["events"]["content"]["ciphertext"][megolmSession.senderKey]["type"];
+            if (!output["content"]["ciphertext"][megolmSession.senderKey]["type"].is_null()) {
+                megolmSession.cipherType = output["content"]["ciphertext"][megolmSession.senderKey]["type"];
             }
         }
-        if (!output["to_device"]["events"]["sender"].is_null()) {
-            megolmSession.Sender = output["to_device"]["events"]["sender"];
+        if (!output["sender"].is_null()) {
+            megolmSession.Sender = output["sender"];
         }
-        if (!output["to_device"]["events"]["type"].is_null()) {
-            megolmSession.Type = output["to_device"]["events"]["type"];
+        if (!output["type"].is_null()) {
+            megolmSession.Type = output["type"];
         }
 
         sync.megolmSessions.push_back(megolmSession);
