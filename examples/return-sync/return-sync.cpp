@@ -8,8 +8,8 @@
 int main() {
     leet::User::Credentials cred;
 
-    cred.Identifier = LEET_IDENTIFIER_USERID;
-    cred.Type = LEET_TYPE_PASSWORD;
+    cred.Identifier = leet::LEET_IDENTIFIER_USERID;
+    cred.Type = leet::LEET_TYPE_PASSWORD;
 
     std::cout << "\033[2J\033[1;1H";
     std::cout << "Enter a Matrix username (@<username>:<home server>)\n> ";
@@ -28,7 +28,7 @@ int main() {
 
     cred.clearCredentials();
 
-    if (!leet::checkError()) {
+    if (leet::checkError()) {
         return false;
     }
 

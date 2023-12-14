@@ -17,48 +17,6 @@
 #include <random>
 #include <map>
 
-/* Identifier */
-enum {
-    LEET_IDENTIFIER_USERID,
-    LEET_IDENTIFIER_THIRDPARTYID, /* Unsupported for now */
-    LEET_IDENTIFIER_PHONE, /* Unsupported for now */
-};
-
-/* Type */
-enum {
-    LEET_TYPE_PASSWORD,
-    LEET_TYPE_TOKEN,
-};
-
-/* Preset */
-enum {
-    LEET_PRESET_TRUSTED_PRIVATE, // Everyone becomes an administrator, otherwise same as LEET_PRESET_PRIVATE
-    LEET_PRESET_PRIVATE, // Invite from an existing member of the room required to join
-    LEET_PRESET_PUBLIC, // Invite not required, users can just join (except guests)
-};
-
-/* Presence */
-enum {
-    LEET_PRESENCE_OFFLINE,
-    LEET_PRESENCE_ONLINE,
-    LEET_PRESENCE_UNAVAILABLE,
-};
-
-/* Errors */
-enum {
-    LEET_ERROR_NONE,
-    LEET_ERROR_MSG_IS_NOT_AN_ENCRYPTED_MSG,
-    LEET_ERROR_SESSION_FOR_MSG_WAS_NOT_RETRIEVED,
-    LEET_ERROR_SESSION_IS_NOT_PROPERLY_ENCRYPTED,
-    LEET_ERROR_FAILED_TO_CREATE_INBOUND_SESSION,
-    LEET_ERROR_MESSAGE_HAS_NO_SENDER,
-    LEET_ERROR_MESSAGE_HAS_WRONG_SENDER,
-    LEET_ERROR_MESSAGE_HAS_WRONG_USERID,
-    LEET_ERROR_NOT_OUR_MESSAGE,
-    LEET_ERROR_WRONG_MESSAGE_TYPE,
-    LEET_ERROR_WRONG_MESSAGE_ALGORITHM,
-};
-
 #ifndef LEET_NO_ENCRYPTION
 namespace leetCrypto {
     /**
@@ -104,6 +62,48 @@ namespace leetCrypto {
 
 /* The main namespace, most functions and variables will be contained in this. */
 namespace leet {
+    /* Identifier */
+    enum {
+        LEET_IDENTIFIER_USERID,
+        LEET_IDENTIFIER_THIRDPARTYID, /* Unsupported for now */
+        LEET_IDENTIFIER_PHONE, /* Unsupported for now */
+    };
+
+    /* Type */
+    enum {
+        LEET_TYPE_PASSWORD,
+        LEET_TYPE_TOKEN,
+    };
+
+    /* Preset */
+    enum {
+        LEET_PRESET_TRUSTED_PRIVATE, // Everyone becomes an administrator, otherwise same as LEET_PRESET_PRIVATE
+        LEET_PRESET_PRIVATE, // Invite from an existing member of the room required to join
+        LEET_PRESET_PUBLIC, // Invite not required, users can just join (except guests)
+    };
+
+    /* Presence */
+    enum {
+        LEET_PRESENCE_OFFLINE,
+        LEET_PRESENCE_ONLINE,
+        LEET_PRESENCE_UNAVAILABLE,
+    };
+
+    /* Errors */
+    enum {
+        LEET_ERROR_NONE,
+        LEET_ERROR_MSG_IS_NOT_AN_ENCRYPTED_MSG,
+        LEET_ERROR_SESSION_FOR_MSG_WAS_NOT_RETRIEVED,
+        LEET_ERROR_SESSION_IS_NOT_PROPERLY_ENCRYPTED,
+        LEET_ERROR_FAILED_TO_CREATE_INBOUND_SESSION,
+        LEET_ERROR_MESSAGE_HAS_NO_SENDER,
+        LEET_ERROR_MESSAGE_HAS_WRONG_SENDER,
+        LEET_ERROR_MESSAGE_HAS_WRONG_USERID,
+        LEET_ERROR_NOT_OUR_MESSAGE,
+        LEET_ERROR_WRONG_MESSAGE_TYPE,
+        LEET_ERROR_WRONG_MESSAGE_ALGORITHM,
+    };
+
     namespace User {
         /**
          * @brief Credentials class which contains fields passed to login requests.

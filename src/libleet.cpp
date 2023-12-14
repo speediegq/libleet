@@ -133,7 +133,7 @@ const int leet::returnMaxUploadLimit(leet::User::credentialsResponse* resp) {
 }
 
 const bool leet::checkError() {
-    if (leet::errorCode != 0 || leet::Error.compare("")) {
+    if (leet::errorCode != 0) {
         return false;
     }
 

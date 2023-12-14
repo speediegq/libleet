@@ -1,28 +1,14 @@
-/* libleet example client
- * ======================
- *
- * This is a libleet example client which hardcodes credentials and allows messages to be read
- * and sent.
- */
 #include <iostream>
 #include <string>
 #include <algorithm>
 #include <filesystem>
 #include <libleet/libleet.hpp>
 
-int checkError() {
-    if (leet::errorCode != 0) { // Oh no, failed to login
-        std::cerr << "Failed. " << leet::friendlyError << " (" << leet::Error << ")\n"; // leet::friendlyError is a (usually) human-friendly error returned by the Matrix server. leet::Error is a more specific error code
-        return 1;
-    }
-    return 0;
-}
-
 int main() {
     leet::User::Credentials cred; // Create a credentials object which we'll pass to the login functionm.
 
-    cred.Identifier = LEET_IDENTIFIER_USERID; // Our identifier. We're using a user ID, not a third party ID or phone number.
-    cred.Type = LEET_TYPE_PASSWORD; // Our type. We're authenticating using a password, and that's the only supported method as of now.
+    cred.Identifier = leet::LEET_IDENTIFIER_USERID; // Our identifier. We're using a user ID, not a third party ID or phone number.
+    cred.Type = leet::LEET_TYPE_PASSWORD; // Our type. We're authenticating using a password, and that's the only supported method as of now.
 
     /* Get the username */
     std::cout << "\033[2J\033[1;1H";
@@ -62,7 +48,7 @@ int main() {
     /* Now that we don't need the credentials anymore, let's get rid of them for security reasons */
     cred.clearCredentials();
 
-    if (checkError() == true) { // Yeah, appears something went wrong.
+    if (!leet::checkError()) { // Yeah, appears something went wrong.
         return false;
     }
 
@@ -131,7 +117,7 @@ int main() {
     leet::Event::Event event = leet::returnLatestEvent(&resp, &room);
     leet::setReadMarkerPosition(&resp, &room, &event, &event, &event);
 
-    if (checkError() == true) { // Yeah, appears something went wrong. Most likely means the room ID is invalid.
+    if (!leet::checkError()) { // Yeah, appears something went wrong.
         std::cout << "Are you stupid? That isn't a valid channel... I think.\n";
         return false;
     }
@@ -146,8 +132,6 @@ int main() {
     /* Now let's create an Olm session with each device in the room and upload our new Megolm session */
     enc = leet::createSessionInRoom(&resp, &enc, &room);
 #endif
-
-    leet::Sync::Sync sync = leet::returnSync(&resp);
 
     /* Read user messages in a loop */
     for (;;) {
