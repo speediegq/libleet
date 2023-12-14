@@ -42,7 +42,6 @@ const int leet::generateTransID() {
 }
 
 const std::string leet::returnServerDiscovery(std::string Server) {
-    using json = nlohmann::json;
     leet::errorCode = 0;
 
     if (Server[0] != 'h' || Server[1] != 't' || Server[2] != 't' || Server[3] != 'p') {
@@ -51,12 +50,12 @@ const std::string leet::returnServerDiscovery(std::string Server) {
 
     const std::string Output = leet::invokeRequest_Get(Server + "/.well-known/matrix/client");
 
-    if (json::accept(Output)) {
-        json reqOutput;
+    if (nlohmann::json::accept(Output)) {
+        nlohmann::json reqOutput;
 
         try {
-            reqOutput = { json::parse(Output) };
-        } catch (const json::parse_error& e) {
+            reqOutput = { nlohmann::json::parse(Output) };
+        } catch (const nlohmann::json::parse_error& e) {
             return Server;
         }
 
@@ -82,17 +81,16 @@ const std::string leet::returnHomeServerFromString(const std::string& userID) {
 }
 
 std::vector<std::string> leet::returnSupportedSpecs() {
-    using json = nlohmann::json;
     std::vector<std::string> vector;
     const std::string APIUrl { "/_matrix/client/versions" };
 
     std::string Output { leet::invokeRequest_Get(leet::getAPI(APIUrl)) };
 
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    } catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
         return vector;
     }
 
@@ -109,15 +107,14 @@ std::vector<std::string> leet::returnSupportedSpecs() {
 }
 
 const int leet::returnMaxUploadLimit(leet::User::credentialsResponse* resp) {
-    using json = nlohmann::json;
     const std::string APIUrl { "/_matrix/media/v3/config" };
     const std::string Output { leet::invokeRequest_Get(leet::getAPI(APIUrl), resp->accessToken) };
 
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    }  catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    }  catch (const nlohmann::json::parse_error& e) {
         return 0;
     }
 

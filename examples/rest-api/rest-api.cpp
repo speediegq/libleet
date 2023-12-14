@@ -10,27 +10,25 @@
 #include "rest-api.hpp"
 
 const std::string returnRooms(const std::string& Body) {
-    using json = nlohmann::json;
-
     if (!Body.compare("")) {
-        json ErrorResponse;
+        nlohmann::json ErrorResponse;
         ErrorResponse["error"] = "API_NO_BODY";
         return ErrorResponse.dump();
     }
 
-    json Incoming;
+    nlohmann::json Incoming;
 
     try {
-        Incoming = { json::parse(Body) };
-    } catch (const json::parse_error& e) {
-        json ErrorResponse;
+        Incoming = { nlohmann::json::parse(Body) };
+    } catch (const nlohmann::json::parse_error& e) {
+        nlohmann::json ErrorResponse;
         ErrorResponse["error"] = "API_INVALID_UTF8";
         return ErrorResponse.dump();
     }
 
     leet::User::credentialsResponse resp;
 
-    if (json::accept(Body)) {
+    if (nlohmann::json::accept(Body)) {
         for (auto& it : Incoming) {
             if (it["token"].is_string()) resp.accessToken = it["token"].get<std::string>();
             if (it["devid"].is_string()) resp.deviceID = it["devid"].get<std::string>();
@@ -59,7 +57,7 @@ const std::string returnRooms(const std::string& Body) {
 
     // return an error
     if (Error) {
-        json ErrorResponse;
+        nlohmann::json ErrorResponse;
         ErrorResponse["error"] = theError;
         return ErrorResponse.dump();
     }
@@ -67,12 +65,12 @@ const std::string returnRooms(const std::string& Body) {
     std::vector<leet::Room::Room> vector = leet::returnRooms(&resp, 9999);
 
     if (leet::errorCode != 0 || leet::friendlyError.compare("") || leet::Error.compare("")) {
-        json ErrorResponse;
+        nlohmann::json ErrorResponse;
         ErrorResponse["error"] = "API_FAILED_TO_RETURN_ROOMS";
         return ErrorResponse.dump();
     }
 
-    json roomList;
+    nlohmann::json roomList;
 
     for (auto& it : vector) {
         roomList[it.roomID]["roomid"] = it.roomID;
@@ -91,27 +89,25 @@ const std::string returnRooms(const std::string& Body) {
 }
 
 const std::string attemptLogin(const std::string& Body) {
-    using json = nlohmann::json;
-
     if (!Body.compare("")) {
-        json ErrorResponse;
+        nlohmann::json ErrorResponse;
         ErrorResponse["error"] = "API_NO_BODY";
         return ErrorResponse.dump();
     }
 
-    json Incoming;
+    nlohmann::json Incoming;
 
     try {
-        Incoming = { json::parse(Body) };
-    } catch (const json::parse_error& e) {
-        json ErrorResponse;
+        Incoming = { nlohmann::json::parse(Body) };
+    } catch (const nlohmann::json::parse_error& e) {
+        nlohmann::json ErrorResponse;
         ErrorResponse["error"] = "API_INVALID_UTF8";
         return ErrorResponse.dump();
     }
 
     leet::User::Credentials cred;
 
-    if (json::accept(Body)) {
+    if (nlohmann::json::accept(Body)) {
         for (auto& output : Incoming) {
             if (output["username"].is_string()) cred.Username = output["username"].get<std::string>();
             if (output["password"].is_string()) cred.Password = output["password"].get<std::string>();
@@ -133,7 +129,7 @@ const std::string attemptLogin(const std::string& Body) {
     }
 
     if (Error) {
-        json ErrorResponse;
+        nlohmann::json ErrorResponse;
         ErrorResponse["error"] = theError;
         return ErrorResponse.dump();
     }
@@ -145,7 +141,7 @@ const std::string attemptLogin(const std::string& Body) {
     leet::User::credentialsResponse resp;
     resp = leet::loginAccount(&cred);
 
-    json jsonResponse;
+    nlohmann::json jsonResponse;
 
     if (leet::errorCode != 0 || leet::Error.compare("")) {
         jsonResponse["error"] = leet::Error;
@@ -163,10 +159,8 @@ const std::string attemptLogin(const std::string& Body) {
 }
 
 const std::string generateResponseFromEndpoint(const std::string& Endpoint, const std::string& Body) {
-    using json = nlohmann::json;
-
     if (!Endpoint.compare("")) {
-        json ErrorResponse;
+        nlohmann::json ErrorResponse;
         ErrorResponse["error"] = "API_NO_ENDPOINT_SPECIFIED";
         return ErrorResponse.dump();
     } else if (!Endpoint.compare("/api/login")) { // login
@@ -174,7 +168,7 @@ const std::string generateResponseFromEndpoint(const std::string& Endpoint, cons
     } else if (!Endpoint.compare("/api/return_rooms")) { // return rooms
         return returnRooms(Body);
     } else {
-        json ErrorResponse;
+        nlohmann::json ErrorResponse;
         ErrorResponse["error"] = "API_INVALID_ENDPOINT_SPECIFIED";
         return ErrorResponse.dump();
     }

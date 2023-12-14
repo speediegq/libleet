@@ -24,7 +24,6 @@ const std::string leet::returnUserName(const std::string& userID) {
 
 /* Returns a leet::User::Profile class containing things such as display name and avatar URL */
 leet::User::Profile leet::getUserData(leet::User::credentialsResponse* resp, const std::string& userID) {
-    using json = nlohmann::json;
     leet::errorCode = 0;
     leet::User::Profile profile;
 
@@ -43,11 +42,11 @@ leet::User::Profile leet::getUserData(leet::User::credentialsResponse* resp, con
     const std::string API { leet::getAPI("/_matrix/client/v3/profile/" + profile.userID) };
     const std::string Output = invokeRequest_Get(API);
 
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    } catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
         return profile;
     }
 
@@ -74,23 +73,22 @@ leet::User::Profile leet::getUserData(leet::User::credentialsResponse* resp, con
 /* Returns an array of all devices for a user */
 const std::vector<leet::User::Device> leet::returnDevicesFromUser(leet::User::credentialsResponse* resp, const std::vector<leet::User::Profile>& user) {
     std::vector<leet::User::Device> devices;
-    using json = nlohmann::json;
 
-    json Body;
-    json deviceKeys;
+    nlohmann::json Body;
+    nlohmann::json deviceKeys;
 
     for (auto& theUser : user) {
-        deviceKeys[theUser.userID] = json::array();
+        deviceKeys[theUser.userID] = nlohmann::json::array();
         Body["device_keys"] = deviceKeys;
         Body["timeout"] = 10000;
     }
 
     const std::string Output = leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/keys/query"), Body.dump(), resp->accessToken);
-    json returnOutput;
+    nlohmann::json returnOutput;
 
     try {
-        returnOutput = json::parse(Output);
-    } catch (const json::parse_error& e) {
+        returnOutput = nlohmann::json::parse(Output);
+    } catch (const nlohmann::json::parse_error& e) {
         return devices;
     }
 
@@ -103,15 +101,15 @@ const std::vector<leet::User::Device> leet::returnDevicesFromUser(leet::User::cr
             device.userID = userID.userID;
             device.deviceID = it.key();
 
-            json::json_pointer curve25519Pointer("/keys/curve25519:" + device.deviceID);
+            nlohmann::json::json_pointer curve25519Pointer("/keys/curve25519:" + device.deviceID);
             if (it.value().contains(curve25519Pointer)) {
                 device.curve25519Key = it.value()["keys"]["curve25519:" + device.deviceID];
             }
-            json::json_pointer ed25519Pointer("/keys/ed25519:" + device.deviceID);
+            nlohmann::json::json_pointer ed25519Pointer("/keys/ed25519:" + device.deviceID);
             if (it.value().contains(ed25519Pointer)) {
                 device.ed25519Key = it.value()["keys"]["ed25519:" + device.deviceID];
             }
-            json::json_pointer ed25519SigPointer("/signatures/" + userID.userID + "/ed25519:" + device.deviceID);
+            nlohmann::json::json_pointer ed25519SigPointer("/signatures/" + userID.userID + "/ed25519:" + device.deviceID);
             if (it.value().contains(ed25519SigPointer)) {
                 device.ed25519Signature = it.value()["signatures"][userID.userID]["ed25519:" + device.deviceID];
             }
@@ -137,7 +135,6 @@ const std::vector<leet::User::Device> leet::returnDevicesFromUser(leet::User::cr
 
 /* Returns true if username is valid and available for registering */
 const bool leet::checkIfUsernameIsAvailable(const std::string& Username) {
-    using json = nlohmann::json;
     leet::errorCode = 0;
 
     std::string theUsername = Username;
@@ -154,11 +151,11 @@ const bool leet::checkIfUsernameIsAvailable(const std::string& Username) {
     const std::string API { leet::getAPI("/_matrix/client/v3/register/available?username=" + theUsername) };
     const std::string Output = invokeRequest_Get(API);
 
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    } catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
         return false; // fallback to false is probably safest?
     }
 
@@ -180,15 +177,14 @@ const bool leet::checkIfUsernameIsAvailable(const std::string& Username) {
 
 /* Returns an array of all users in a room */
 const std::vector<leet::User::Profile> leet::returnUsersInRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room) {
-    using json = nlohmann::json;
     std::vector<leet::User::Profile> vector;
 
     const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/rooms/" + room->roomID + "/joined_members"), resp->accessToken);
-    json returnOutput;
+    nlohmann::json returnOutput;
 
     try {
-        returnOutput = json::parse(Output);
-    } catch (const json::parse_error& e) {
+        returnOutput = nlohmann::json::parse(Output);
+    } catch (const nlohmann::json::parse_error& e) {
         return vector;
     }
 

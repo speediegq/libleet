@@ -8,8 +8,6 @@
 
 /* Converts an alias to a proper room ID */
 const std::string leet::findRoomID(std::string Alias) {
-    using json = nlohmann::json;
-
     leet::errorCode = 0;
 
     if (Alias[0] == '!') { // It's a proper room ID already
@@ -20,11 +18,11 @@ const std::string leet::findRoomID(std::string Alias) {
     Alias.replace(0, 1, "%23");
 
     const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/directory/room/") + Alias);
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    } catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
         return "";
     }
 
@@ -46,17 +44,15 @@ const std::string leet::findRoomID(std::string Alias) {
 
 /* Returns an array of all rooms */
 const std::vector<leet::Room::Room> leet::returnRooms(leet::User::credentialsResponse* resp, const int Limit) {
-    using json = nlohmann::json;
-
     std::vector<leet::Room::Room> vector;
     std::vector<leet::Room::Room> vectorWithVal;
 
     const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/joined_rooms"), resp->accessToken);
-    json returnOutput;
+    nlohmann::json returnOutput;
 
     try {
-        returnOutput = json::parse(Output);
-    } catch (const json::parse_error& e) {
+        returnOutput = nlohmann::json::parse(Output);
+    } catch (const nlohmann::json::parse_error& e) {
         return vector;
     }
 
@@ -79,13 +75,12 @@ const std::vector<leet::Room::Room> leet::returnRooms(leet::User::credentialsRes
 
 /* Returns a single room based on the room ID */
 leet::Room::Room leet::returnRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room) {
-    using json = nlohmann::json;
     leet::Room::Room theRoom;
-    json returnOutput;
+    nlohmann::json returnOutput;
 
     try {
-        returnOutput = json::parse(leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v1/rooms/" + room->roomID + "/hierarchy"), resp->accessToken));
-    } catch (const json::parse_error& e) {
+        returnOutput = nlohmann::json::parse(leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v1/rooms/" + room->roomID + "/hierarchy"), resp->accessToken));
+    } catch (const nlohmann::json::parse_error& e) {
         return theRoom;
     }
 
@@ -108,20 +103,19 @@ leet::Room::Room leet::returnRoom(leet::User::credentialsResponse* resp, leet::R
 }
 
 leet::Room::Room leet::upgradeRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room, const int Version) {
-    using json = nlohmann::json;
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/upgrade" };
 
-    json body;
+    nlohmann::json body;
 
     body["new_version"] = std::to_string(Version);
 
     const std::string Output { leet::invokeRequest_Post(leet::getAPI(APIUrl), body.dump(), resp->accessToken) };
 
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    }  catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    }  catch (const nlohmann::json::parse_error& e) {
         return *room;
     }
 
@@ -144,10 +138,8 @@ leet::Room::Room leet::upgradeRoom(leet::User::credentialsResponse* resp, leet::
 }
 
 leet::Room::Room leet::createRoom(leet::User::credentialsResponse* resp, leet::Room::roomConfiguration* conf) {
-    using json = nlohmann::json;
-
     leet::Room::Room theRoom;
-    json theJson;
+    nlohmann::json theJson;
 
     theJson["creation_content"]["m.federate"] = conf->Federate;
     theJson["name"] = conf->Name;
@@ -164,11 +156,11 @@ leet::Room::Room leet::createRoom(leet::User::credentialsResponse* resp, leet::R
     }
 
     const std::string Output = leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/createRoom"), theJson.dump(), resp->accessToken);
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    } catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
         return theRoom;
     }
 
@@ -185,16 +177,14 @@ leet::Room::Room leet::createRoom(leet::User::credentialsResponse* resp, leet::R
 
 /* Returns an array of all room IDs */
 const std::vector<leet::Room::Room> leet::returnRoomIDs(leet::User::credentialsResponse* resp) {
-    using json = nlohmann::json;
-
     std::vector<leet::Room::Room> vector;
 
     const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/joined_rooms"), resp->accessToken);
-    json returnOutput;
+    nlohmann::json returnOutput;
 
     try {
-        returnOutput = json::parse(Output);
-    } catch (const json::parse_error& e) {
+        returnOutput = nlohmann::json::parse(Output);
+    } catch (const nlohmann::json::parse_error& e) {
         return vector;
     }
 
@@ -211,18 +201,17 @@ const std::vector<leet::Room::Room> leet::returnRoomIDs(leet::User::credentialsR
 
 /* Returns an array of all rooms in a space */
 const std::vector<leet::Room::Room> leet::returnRoomsInSpace(leet::User::credentialsResponse* resp, const std::string& spaceID, const int Limit) {
-    using json = nlohmann::json;
     std::vector<leet::Room::Room> rooms;
     if (spaceID[0] != '!') {
         return rooms;
     }
 
     const std::string Output { leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v1/rooms/" + spaceID + "/hierarchy?limit=" + std::to_string(Limit)), resp->accessToken) };
-    json returnOutput;
+    nlohmann::json returnOutput;
 
     try {
-        returnOutput = json::parse(Output);
-    } catch (const json::parse_error& e) {
+        returnOutput = nlohmann::json::parse(Output);
+    } catch (const nlohmann::json::parse_error& e) {
         return rooms;
     }
 
@@ -285,20 +274,18 @@ const std::vector<leet::Space::Space> leet::returnSpaces(leet::User::credentials
 }
 
 void leet::toggleTyping(leet::User::credentialsResponse* resp, const int Timeout, const bool Typing, leet::Room::Room* room) {
-    using json = nlohmann::json;
-
-    json list;
+    nlohmann::json list;
 
     list["timeout"] = Timeout;
     list["typing"] = Typing;
 
     const std::string Output { leet::invokeRequest_Put(leet::getAPI("/_matrix/client/v3/rooms/" + room->roomID + "/typing/" + resp->userID), list.dump(), resp->accessToken) };
 
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    } catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
@@ -314,19 +301,17 @@ void leet::toggleTyping(leet::User::credentialsResponse* resp, const int Timeout
 }
 
 void leet::inviteUserToRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room, const std::string& Reason) {
-    using json = nlohmann::json;
-
-    json request;
+    nlohmann::json request;
 
     request["reason"] = Reason;
     request["user_id"] = resp->userID;
 
     const std::string Output { leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/rooms/" + room->roomID + "/invite"), request.dump(), resp->accessToken) };
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    } catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
@@ -342,9 +327,7 @@ void leet::inviteUserToRoom(leet::User::credentialsResponse* resp, leet::Room::R
 }
 
 void leet::joinRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room, const std::string& Reason) {
-    using json = nlohmann::json;
-
-    json body;
+    nlohmann::json body;
 
     if (!Reason.compare("")) {
         body["reason"] = Reason;
@@ -352,11 +335,11 @@ void leet::joinRoom(leet::User::credentialsResponse* resp, leet::Room::Room* roo
 
     const std::string Output { leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/rooms/" + room->roomID + "/join"), body.dump(), resp->accessToken) };
 
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    } catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
@@ -374,9 +357,7 @@ void leet::joinRoom(leet::User::credentialsResponse* resp, leet::Room::Room* roo
 }
 
 void leet::leaveRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room, const std::string& Reason) {
-    using json = nlohmann::json;
-
-    json body;
+    nlohmann::json body;
 
     if (!Reason.compare("")) {
         body["reason"] = Reason;
@@ -384,11 +365,11 @@ void leet::leaveRoom(leet::User::credentialsResponse* resp, leet::Room::Room* ro
 
     const std::string Output { leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/rooms/" + room->roomID + "/leave"), body.dump(), resp->accessToken) };
 
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    } catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
@@ -404,9 +385,7 @@ void leet::leaveRoom(leet::User::credentialsResponse* resp, leet::Room::Room* ro
 }
 
 void leet::kickUserFromRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room, leet::User::Profile* profile, const std::string& Reason) {
-    using json = nlohmann::json;
-
-    json body;
+    nlohmann::json body;
 
     if (!Reason.compare("")) {
         body["reason"] = Reason;
@@ -416,11 +395,11 @@ void leet::kickUserFromRoom(leet::User::credentialsResponse* resp, leet::Room::R
 
     const std::string Output { leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/rooms/" + room->roomID + "/kick"), body.dump(), resp->accessToken) };
 
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    } catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
@@ -436,9 +415,7 @@ void leet::kickUserFromRoom(leet::User::credentialsResponse* resp, leet::Room::R
 }
 
 void leet::banUserFromRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room, leet::User::Profile* profile, const std::string& Reason) {
-    using json = nlohmann::json;
-
-    json body;
+    nlohmann::json body;
 
     if (!Reason.compare("")) {
         body["reason"] = Reason;
@@ -448,11 +425,11 @@ void leet::banUserFromRoom(leet::User::credentialsResponse* resp, leet::Room::Ro
 
     const std::string Output { leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/rooms/" + room->roomID + "/ban"), body.dump(), resp->accessToken) };
 
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    } catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
@@ -468,9 +445,7 @@ void leet::banUserFromRoom(leet::User::credentialsResponse* resp, leet::Room::Ro
 }
 
 void leet::unbanUserFromRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room, leet::User::Profile* profile, const std::string& Reason) {
-    using json = nlohmann::json;
-
-    json body;
+    nlohmann::json body;
 
     if (!Reason.compare("")) {
         body["reason"] = Reason;
@@ -480,11 +455,11 @@ void leet::unbanUserFromRoom(leet::User::credentialsResponse* resp, leet::Room::
 
     const std::string Output { leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/rooms/" + room->roomID + "/unban"), body.dump(), resp->accessToken) };
 
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    } catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
@@ -500,15 +475,13 @@ void leet::unbanUserFromRoom(leet::User::credentialsResponse* resp, leet::Room::
 }
 
 const bool getVisibilityOfRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room) {
-    using json = nlohmann::json;
-
     const std::string Output { leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/directory/list/room/" + room->roomID), resp->accessToken) };
 
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    } catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
         return false;
     }
 
@@ -533,19 +506,17 @@ const bool getVisibilityOfRoom(leet::User::credentialsResponse* resp, leet::Room
 }
 
 void setVisibilityOfRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room, const bool Visibility) {
-    using json = nlohmann::json;
-
-    json body;
+    nlohmann::json body;
 
     body["visibility"] = Visibility ? "public" : "private";
 
     const std::string Output { leet::invokeRequest_Put(leet::getAPI("/_matrix/client/v3/directory/list/room/" + room->roomID), body.dump(), resp->accessToken) };
 
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    } catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
@@ -562,9 +533,7 @@ void setVisibilityOfRoom(leet::User::credentialsResponse* resp, leet::Room::Room
 
 void leet::setReadMarkerPosition(leet::User::credentialsResponse* resp, leet::Room::Room* room,
         leet::Event::Event* fullyReadEvent, leet::Event::Event* readEvent, leet::Event::Event* privateReadEvent) {
-    using json = nlohmann::json;
-
-    json body;
+    nlohmann::json body;
 
     body["m.fully_read"] = fullyReadEvent->eventID;
     body["m.read"] = readEvent->eventID;
@@ -572,11 +541,11 @@ void leet::setReadMarkerPosition(leet::User::credentialsResponse* resp, leet::Ro
 
     const std::string Output { leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/rooms/" + room->roomID + "/read_markers"), body.dump(), resp->accessToken) };
 
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    } catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 

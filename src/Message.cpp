@@ -7,12 +7,11 @@
  */
 
 void leet::sendMessage(leet::User::credentialsResponse* resp, leet::Room::Room* room, leet::Message::Message* msg) {
-    using json = nlohmann::json;
     const int transID { leet::transID };
     const std::string eventType { "m.room.message" };
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/send/" + eventType + "/" + std::to_string(transID) };
 
-    json list;
+    nlohmann::json list;
 
     if (!msg->messageType.compare("m.image") || !msg->messageType.compare("m.audio") || !msg->messageType.compare("m.video") || !msg->messageType.compare("m.file")) {
         if (msg->attachmentURL[0] != 'm' || msg->attachmentURL[1] != 'x' || msg->attachmentURL[2] != 'c') {
@@ -34,10 +33,10 @@ void leet::sendMessage(leet::User::credentialsResponse* resp, leet::Room::Room* 
 
     const std::string Output { leet::invokeRequest_Put(leet::getAPI(APIUrl), list.dump(), resp->accessToken) };
 
-    json reqOutput;
+    nlohmann::json reqOutput;
     try {
-        reqOutput = { json::parse(Output) };
-    } catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
@@ -54,12 +53,11 @@ void leet::sendMessage(leet::User::credentialsResponse* resp, leet::Room::Room* 
 
 #ifndef LEET_NO_ENCRYPTION
 void leet::sendEncryptedMessage(leet::User::credentialsResponse* resp, leet::Encryption* enc, leet::Room::Room* room, leet::Message::Message* msg) {
-    using json = nlohmann::json;
     const int transID { leet::transID };
     const std::string eventType { "m.room.encrypted" };
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/send/" + eventType + "/" + std::to_string(transID) };
 
-    json Body;
+    nlohmann::json Body;
 
     Body["type"] = "m.room.message";
     Body["room_id"] = room->roomID;
@@ -68,10 +66,10 @@ void leet::sendEncryptedMessage(leet::User::credentialsResponse* resp, leet::Enc
 
     const std::string Output { leet::invokeRequest_Put(leet::getAPI(APIUrl), enc->account.encryptMessage(resp, Body.dump()), resp->accessToken) };
 
-    json reqOutput;
+    nlohmann::json reqOutput;
     try {
-        reqOutput = { json::parse(Output) };
-    } catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
@@ -88,16 +86,15 @@ void leet::sendEncryptedMessage(leet::User::credentialsResponse* resp, leet::Enc
 #endif
 
 const std::vector<leet::Message::Message> leet::returnMessages(leet::User::credentialsResponse* resp, leet::Room::Room* room, const int messageCount) {
-    using json = nlohmann::json;
     std::vector<leet::Message::Message> vector;
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/messages?dir=b&limit=" + std::to_string(messageCount) };
 
     std::string Output { leet::invokeRequest_Get(leet::getAPI(APIUrl), resp->accessToken) };
 
-    json reqOutput;
+    nlohmann::json reqOutput;
     try {
-        reqOutput = json::parse(Output);
-    } catch (const json::parse_error& e) {
+        reqOutput = nlohmann::json::parse(Output);
+    } catch (const nlohmann::json::parse_error& e) {
         return vector;
     }
 
@@ -155,11 +152,10 @@ const std::vector<leet::Message::Message> leet::returnMessages(leet::User::crede
 }
 
 leet::Filter::Filter leet::returnFilter(leet::User::credentialsResponse* resp, leet::Filter::filterConfiguration *filter) {
-    using json = nlohmann::json;
     leet::Filter::Filter retFilter;
     const std::string APIUrl { "/_matrix/client/v3/user/" + resp->userID + "/filter" };
 
-    json list;
+    nlohmann::json list;
 
     list["event_format"] = "client";
     list["event_fields"] = filter->Fields;
@@ -181,10 +177,10 @@ leet::Filter::Filter leet::returnFilter(leet::User::credentialsResponse* resp, l
 
     std::string Output { leet::invokeRequest_Post(leet::getAPI(APIUrl), list.dump(), resp->accessToken) };
 
-    json reqOutput;
+    nlohmann::json reqOutput;
     try {
-        reqOutput = json::parse(Output);
-    } catch (const json::parse_error& e) {
+        reqOutput = nlohmann::json::parse(Output);
+    } catch (const nlohmann::json::parse_error& e) {
         return retFilter;
     }
 

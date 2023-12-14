@@ -7,16 +7,16 @@
  */
 
 std::vector<std::string> leet::returnSupportedLoginTypes() {
-    using json = nlohmann::json;
     std::vector<std::string> vector;
     const std::string APIUrl { "/_matrix/client/v3/login" };
 
     std::string Output { leet::invokeRequest_Get(leet::getAPI(APIUrl)) };
 
-    json reqOutput;
+    nlohmann::json reqOutput;
+
     try {
-        reqOutput = json::parse(Output);
-    } catch (const json::parse_error& e) {
+        reqOutput = nlohmann::json::parse(Output);
+    } catch (const nlohmann::json::parse_error& e) {
         return vector;
     }
 
@@ -32,22 +32,21 @@ std::vector<std::string> leet::returnSupportedLoginTypes() {
 }
 
 leet::User::credentialsResponse leet::refreshAccessToken(leet::User::credentialsResponse* resp) {
-    using json = nlohmann::json;
     leet::User::credentialsResponse newResponse = *resp;
 
     if (!newResponse.refreshToken.compare("")) {
         return newResponse;
     }
 
-    json body;
+    nlohmann::json body;
 
     body["refresh_token"] = newResponse.refreshToken;
 
-    json refreshOutput;
+    nlohmann::json refreshOutput;
 
     try {
-        refreshOutput = { json::parse(leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/refresh"), body.dump())) };
-    } catch (const json::parse_error& e) {
+        refreshOutput = { nlohmann::json::parse(leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/refresh"), body.dump())) };
+    } catch (const nlohmann::json::parse_error& e) {
         return newResponse;
     }
 
@@ -68,13 +67,11 @@ leet::User::credentialsResponse leet::refreshAccessToken(leet::User::credentials
 }
 
 bool leet::checkRegistrationTokenValidity(const std::string& Token) {
-    using json = nlohmann::json;
-
-    json body;
+    nlohmann::json body;
 
     try {
-        body = { json::parse(leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v1/register/m.login.registration_token/validity?token=" + Token))) };
-    } catch (const json::parse_error& e) {
+        body = { nlohmann::json::parse(leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v1/register/m.login.registration_token/validity?token=" + Token))) };
+    } catch (const nlohmann::json::parse_error& e) {
         return false;
     }
 
@@ -98,7 +95,6 @@ bool leet::checkRegistrationTokenValidity(const std::string& Token) {
 
 leet::User::credentialsResponse leet::registerAccount(leet::User::Credentials* cred) {
     leet::User::credentialsResponse resp;
-    using json = nlohmann::json;
 
     std::string theUsername = cred->Username;
 
@@ -111,7 +107,7 @@ leet::User::credentialsResponse leet::registerAccount(leet::User::Credentials* c
         }
     }
 
-    json body;
+    nlohmann::json body;
 
     if (cred->deviceID.compare("")) {
         body["device_id"] = cred->deviceID;
@@ -123,11 +119,11 @@ leet::User::credentialsResponse leet::registerAccount(leet::User::Credentials* c
     body["password"] = cred->Password;
     body["refresh_token"] = cred->refreshToken;
 
-    json registerOutput;
+    nlohmann::json registerOutput;
 
     try {
-        registerOutput = { json::parse(leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/register"), body.dump())) };
-    } catch (const json::parse_error& e) {
+        registerOutput = { nlohmann::json::parse(leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/register"), body.dump())) };
+    } catch (const nlohmann::json::parse_error& e) {
         return resp;
     }
 
@@ -154,8 +150,7 @@ leet::User::credentialsResponse leet::registerAccount(leet::User::Credentials* c
 
 leet::User::credentialsResponse leet::loginAccount(leet::User::Credentials* cred) {
     leet::User::credentialsResponse resp;
-    using json = nlohmann::json;
-    json list;
+    nlohmann::json list;
 
     std::string actualType{};
 
@@ -182,7 +177,7 @@ leet::User::credentialsResponse leet::loginAccount(leet::User::Credentials* cred
     list["refresh_token"] = cred->refreshToken;
     list["type"] = actualType;
 
-    json loginOutput = { json::parse(leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/login"), list.dump())) };
+    nlohmann::json loginOutput = { nlohmann::json::parse(leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/login"), list.dump())) };
 
     for (auto& output : loginOutput) {
         leet::errorCode = 0;

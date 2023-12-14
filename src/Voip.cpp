@@ -9,16 +9,13 @@
 leet::VOIP::Credentials leet::returnTurnCredentials(leet::User::credentialsResponse* resp) {
     leet::VOIP::Credentials cred;
 
-    using json = nlohmann::json;
-    const std::string APIUrl { "/_matrix/client/v3/voip/turnServer" };
+    const std::string Output { leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/voip/turnServer"), resp->accessToken) };
 
-    const std::string Output { leet::invokeRequest_Get(leet::getAPI(APIUrl), resp->accessToken) };
-
-    json reqOutput;
+    nlohmann::json reqOutput;
 
     try {
-        reqOutput = { json::parse(Output) };
-    }  catch (const json::parse_error& e) {
+        reqOutput = { nlohmann::json::parse(Output) };
+    }  catch (const nlohmann::json::parse_error& e) {
         return cred;
     }
 
