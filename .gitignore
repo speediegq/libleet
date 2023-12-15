@@ -6,3 +6,5 @@ docs/latex
 docs/man
 subprojects/*-*
 subprojects/packagecache
+packages
+.vs/libleet

@@ -33,7 +33,12 @@ int main() {
     leet::Sync::syncConfiguration conf;
     leet::Sync::Sync sync = leet::returnSync(&resp, &conf);
 
-    nlohmann::json obj = nlohmann::json::parse(sync.theRequest);
-
-    std::cout << obj.dump(2) << "\n";
+    for (const auto& it : sync.megolmSessions) {
+        std::cout << "Algorithm:   " << it.Algorithm << "\n";
+        std::cout << "Sender Key:  " << it.senderKey << "\n";
+        std::cout << "Sender:      " << it.Sender << "\n";
+        std::cout << "Type:        " << it.Type << "\n";
+        std::cout << "Cipher Type: " << it.cipherType << "\n";
+        std::cout << "Cipher Text: " << it.cipherText << "\n\n";
+    }
 }

@@ -9,6 +9,8 @@
 #ifndef LIBLEET_HPP
 #define LIBLEET_HPP
 #ifndef LEET_NO_ENCRYPTION
+#include <random>
+
 namespace leetCrypto {
     /**
      * @brief Simply fills a buffer with random bytes
