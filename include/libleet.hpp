@@ -10,6 +10,7 @@
 #define LIBLEET_HPP
 #ifndef LEET_NO_ENCRYPTION
 #include <random>
+#include <cstring>
 
 namespace leetCrypto {
     /**

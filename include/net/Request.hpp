@@ -11,17 +11,6 @@
 
 #include <iostream>
 #include <string>
-#include <boost/beast/core.hpp>
-#include <boost/beast/http.hpp>
-#include <boost/beast/version.hpp>
-#include <boost/beast/ssl.hpp>
-#include <boost/asio/connect.hpp>
-#include <boost/asio/ip/tcp.hpp>
-#include <boost/asio/ssl/error.hpp>
-#include <boost/asio/ssl/stream.hpp>
-#include <boost/asio/ssl/rfc2818_verification.hpp>
-#include <boost/asio/ssl/host_name_verification.hpp>
-#include <openssl/ssl.h>
 
 namespace leetRequest {
     enum { /* supported protocols */
@@ -116,7 +105,6 @@ namespace leetRequest {
     std::string userCert{}; // User-specified root certificate string
 
     const std::string getRootCertificates();
-    void applyRootCertificates(boost::asio::ssl::context& ctx, const std::string& cert);
 }
 
 #endif

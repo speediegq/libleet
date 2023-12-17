@@ -12,6 +12,17 @@
 #include <filesystem>
 #include <fstream>
 #include <sstream>
+#include <boost/beast/core.hpp>
+#include <boost/beast/http.hpp>
+#include <boost/beast/version.hpp>
+#include <boost/beast/ssl.hpp>
+#include <boost/asio/connect.hpp>
+#include <boost/asio/ip/tcp.hpp>
+#include <boost/asio/ssl/error.hpp>
+#include <boost/asio/ssl/stream.hpp>
+#include <boost/asio/ssl/rfc2818_verification.hpp>
+#include <boost/asio/ssl/host_name_verification.hpp>
+#include <openssl/ssl.h>
 #include "../../include/net/Request.hpp"
 #include "Cert.cpp"
 
@@ -80,7 +91,15 @@ leetRequest::Response leetRequest::Request::makeRequest() {
     try {
         boost::asio::ssl::context ctx(boost::asio::ssl::context::tlsv12_client);
 
-        leetRequest::applyRootCertificates(ctx, leetRequest::getRootCertificates());
+        const std::string_view cert{leetRequest::getRootCertificates()};
+	
+	boost::system::error_code ec;
+
+	ctx.add_certificate_authority(boost::asio::buffer(cert.data(), cert.size()), ec);
+
+	if (ec) {
+	    throw boost::system::system_error{ec};
+	}
 
         boost::asio::io_context ioc;
         boost::asio::ip::tcp::resolver resolver(ioc);
@@ -91,8 +110,8 @@ leetRequest::Response leetRequest::Request::makeRequest() {
         boost::beast::ssl_stream<boost::beast::tcp_stream> stream(ioc, ctx);
 
         if (!SSL_set_tlsext_host_name(stream.native_handle(), Host.c_str())) {
-            boost::beast::error_code ec{static_cast<int>(::ERR_get_error()), boost::asio::error::get_ssl_category()};
-            throw boost::beast::system_error{ec};
+		boost::system::error_code ssl_ec{static_cast<int>(::ERR_get_error()), boost::asio::error::get_ssl_category()};
+            throw boost::beast::system_error{ssl_ec};
         }
 
         const auto results { resolver.resolve(Host, std::to_string(Port)) };
@@ -160,8 +179,6 @@ leetRequest::Response leetRequest::Request::makeRequest() {
         resp.statusCode = res.result_int();
         resp.Body = boost::beast::buffers_to_string(res.body().data());
 
-        boost::beast::error_code ec;
-
         stream.next_layer().cancel();
         stream.shutdown(ec);
         stream.next_layer().close();
@@ -197,14 +214,4 @@ const bool leetRequest::Request::downloadFile() {
     }
 
     return false;
-}
-
-void leetRequest::applyRootCertificates(boost::asio::ssl::context& ctx, const std::string& cert) {
-    boost::system::error_code ec;
-
-    ctx.add_certificate_authority(boost::asio::buffer(cert.data(), cert.size()), ec);
-
-    if (ec) {
-        throw boost::system::system_error{ec};
-    }
 }

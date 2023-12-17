@@ -28,4 +28,9 @@
     <None Include="docs\Doxyfile" />
     <None Include="docs\index.css" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\libleet.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
