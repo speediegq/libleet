@@ -37,6 +37,7 @@
 #include "Message.cpp"
 #include "File.cpp"
 #include "Event.cpp"
+#include "Sync.cpp"
 #include "Voip.cpp"
 
 const std::string leet::getAPI(const std::string& API) {

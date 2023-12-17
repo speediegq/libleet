@@ -349,14 +349,54 @@ namespace leet {
                 std::string stateKey{};
         };
         /**
-         * @brief Class that represents an invite event.
+         * @brief Class that represents a room event.
          */
-        class inviteEvent {
+        class roomEvent {
             private:
             public:
-                std::string Membership{};
-                std::string Inviter{};
-                std::string invitedUser{};
+                /**
+                 * @brief Class that represents an invite event.
+                 */
+                class inviteEvent {
+                    private:
+                    public:
+                        std::string roomID{}; // room id to join
+                        std::string userID{}; // inviter
+                        std::string inviteID{}; // id of the actual invite
+                        std::string avatarURL{}; // avatar of the inviter
+                        std::string displayName{}; // display name of the inviter
+                        std::string Creator{};
+                        std::string Type{};
+                        std::string joinRule{};
+                        std::string roomName{};
+                        std::string roomTopic{};
+                        int roomVersion{};
+
+                        bool Encrypted{false};
+                };
+                /**
+                 * @brief Class that represents a join event.
+                 */
+                class joinEvent {
+                    private:
+                    public:
+                };
+                /**
+                 * @brief Class that represents a knock event.
+                 */
+                class knockEvent {
+                    private:
+                    public:
+                };
+                /**
+                 * @brief Class that represents a leave event.
+                 */
+                class leaveEvent {
+                    private:
+                    public:
+                };
+
+                std::vector<inviteEvent> Invites;
         };
         /**
          * @brief Class that represents a Megolm session sent in the room */
@@ -376,9 +416,9 @@ namespace leet {
         class Sync {
             private:
             public:
-                std::vector<userEvent> userEvents;
-                std::vector<nameEvent> nameEvents;
-                std::vector<inviteEvent> inviteEvents;
+                userEvent userEvents;
+                nameEvent nameEvents;
+                roomEvent roomEvents;
                 std::vector<megolmSession> megolmSessions;
                 std::string nextBatch{};
                 std::string theRequest{};
@@ -403,7 +443,7 @@ namespace leet {
          * @brief Class that represents a generic event not covered by another class.
          *
          * Class that represents a generic event not covered by another class. It doesn't do much
-         * and only provides the event ID and time stamp so it can be used with invokeRequest for example.
+         * and only provides the event ID and time stamp so it can be us ed with invokeRequest for example.
          */
         class Event {
             private:
