@@ -597,6 +597,11 @@ namespace leet {
      */
     User::credentialsResponse refreshAccessToken(User::credentialsResponse* resp);
     /**
+     * @brief  Invalidate an access token
+     * @param  Token Token to invalidate.
+     */
+    void invalidateAccessToken(const std::string& Token);
+    /**
      * @brief  Returns user data in the form of a User::Profile object.
      * @param  resp credentialsResponse object, required for authentication.
      * @param  userID User to get data for.

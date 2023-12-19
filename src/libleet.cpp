@@ -142,3 +142,8 @@ const bool leet::checkError() {
 
     return true;
 }
+
+void leet::invalidateAccessToken(const std::string& Token) {
+    leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/logout"), Token);
+}
+
