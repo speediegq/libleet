@@ -267,7 +267,7 @@ namespace leet {
                 std::string eventID{}; // Event ID
                 std::string Sender{}; // The sender user ID
                 std::string mimeType{}; // Message mime type
-                int32_t Age{}; // Time since the message was posted
+                int64_t Age{}; // Time since the message was posted
                 int attachmentWidth{}; // Attachment width
                 int attachmentHeight{}; // Attachment height
                 int attachmentSize{}; // Attachment file size
@@ -296,6 +296,26 @@ namespace leet {
             private:
             public:
                 std::string URL{};
+        };
+    }
+
+    namespace URL {
+        /**
+         * @brief  Class which represents a URL preview.
+         */
+        class urlPreview {
+            private:
+            public:
+                std::string URL{};
+                int64_t Time{};
+
+                int imageSize{};
+                int imageWidth{};
+                int imageHeight{};
+                std::string imageURL{};
+                std::string Title{};
+                std::string Description{};
+                std::string Type{};
         };
     }
 
@@ -450,7 +470,7 @@ namespace leet {
             private:
             public:
                 std::string eventID{}; // Event ID
-                int32_t Age{}; // Time since the event occured
+                int64_t Age{}; // Time since the event occured
         };
     }
 
@@ -851,6 +871,15 @@ namespace leet {
      * @return Returns true if it was downloaded successfully, otherwise false is returned.
      */
     const bool downloadFile(User::credentialsResponse* resp, Attachment::Attachment* Attachment, const std::string& outputFile);
+
+    /**
+     * @brief  Get a URL preview by calling a Matrix media endpoint. Do not call in encrypted rooms.
+     * @param  resp credentialsResponse object, required for authentication.
+     * @param  URL The URL to get a preview for.
+     * @param  time The point in time to get a preview for. Specify 0 if you want the latest preview.
+     * @return Returns a urlPreview object containing the response data.
+     */
+    URL::urlPreview getURLPreview(User::credentialsResponse* resp, const std::string& URL, int64_t time);
     /**
      * @brief  Gets a download link for an attachment from the Matrix server.
      * @param  resp credentialsResponse object, required for authentication.
@@ -863,7 +892,7 @@ namespace leet {
      * @brief  Gets the Unix timestamp
      * @return Returns a Unix timestamp (i.e. time since epoch)
      */
-    const int32_t returnUnixTimestamp();
+    const int64_t returnUnixTimestamp();
     /**
      * @brief  Get an event from a Unix timestamp.
      * @param  resp credentialsResponse object, required for authentication.
@@ -872,7 +901,7 @@ namespace leet {
      * @param  Direction Boolean which specifies which direction to search for events in. true means forward while false means backwards.
      * @return Returns the event. If none could be found, an empty object is simply returned instead.
      */
-    Event::Event returnEventFromTimestamp(User::credentialsResponse* resp, Room::Room* room, const int32_t Timestamp, const bool Direction);
+    Event::Event returnEventFromTimestamp(User::credentialsResponse* resp, Room::Room* room, const int64_t Timestamp, const bool Direction);
     /**
      * @brief  Gets the latest event sent in the room.
      * @param  resp credentialsResponse object, required for authentication.

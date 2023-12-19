@@ -6,11 +6,11 @@
  * https://git.speedie.site/speedie/libleet
  */
 
-const int32_t leet::returnUnixTimestamp() {
+const int64_t leet::returnUnixTimestamp() {
     return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
-leet::Event::Event leet::returnEventFromTimestamp(leet::User::credentialsResponse* resp, leet::Room::Room* room, const int32_t Timestamp, const bool Direction) {
+leet::Event::Event leet::returnEventFromTimestamp(leet::User::credentialsResponse* resp, leet::Room::Room* room, const int64_t Timestamp, const bool Direction) {
     leet::Event::Event event;
     std::string Dir = Direction ? "f" : "b";
 

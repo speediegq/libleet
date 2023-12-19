@@ -157,3 +157,31 @@ const bool leet::downloadFile(leet::User::credentialsResponse* resp, leet::Attac
 
     return request.downloadFile();
 }
+
+leet::URL::urlPreview leet::getURLPreview(leet::User::credentialsResponse* resp, const std::string& URL, int64_t time) {
+    leet::URL::urlPreview preview;
+    const std::string Output { leet::invokeRequest_Get(leet::getAPI("/_matrix/media/v3/preview_url?ts=" + std::to_string(time) + "&url=" + URL), resp->accessToken) };
+
+    nlohmann::json reqOutput;
+
+    try {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
+        return preview;
+    }
+
+    preview.URL = URL;
+    preview.Time = time;
+
+    for (auto& output : reqOutput) {
+        if (output["og:image"].is_string()) preview.imageURL = output["og:image"].get<std::string>();
+        if (output["og:image:type"].is_string()) preview.Type = output["og:image:type"].get<std::string>();
+        if (output["og:image:width"].is_number_integer()) preview.imageWidth = output["og:image:width"].get<int>();
+        if (output["og:image:height"].is_number_integer()) preview.imageHeight = output["og:image:height"].get<int>();
+        if (output["matrix:image:size"].is_number_integer()) preview.imageSize = output["matrix:image:size"].get<int>();
+        if (output["og:title"].is_string()) preview.Title = output["og:title"].get<std::string>();
+        if (output["og:description"].is_string()) preview.Description = output["og:description"].get<std::string>();
+    }
+
+    return preview;
+}
