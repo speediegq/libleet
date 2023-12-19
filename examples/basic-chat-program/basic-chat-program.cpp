@@ -136,7 +136,7 @@ int main() {
     /* Read user messages in a loop */
     for (;;) {
         std::cout << "\033[2J\033[1;1H"; // Clear the screen on UNIX-like operating systems
-        std::vector<leet::Message::Message> messages = leet::returnMessages(&resp, &room, 25);
+        std::vector<leet::Event::Message> messages = leet::returnMessages(&resp, &room, 25);
         std::reverse(messages.begin(), messages.end());
 
         int i{1};
@@ -160,7 +160,7 @@ int main() {
         }
 
         /* Message class, this will contain message information, and the message itself */
-        leet::Message::Message msg;
+        leet::Event::Message msg;
 
         msg.messageText = myMessage;
         msg.messageType = "m.text";

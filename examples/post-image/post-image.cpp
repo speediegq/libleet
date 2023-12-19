@@ -70,7 +70,7 @@ int main() {
         return false;
     }
 
-    leet::Message::Message msg;
+    leet::Event::Message msg;
 
     msg.messageText = "test.png";
     msg.messageType = "m.image";

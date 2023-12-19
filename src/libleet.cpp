@@ -33,7 +33,6 @@
 #include "Request.cpp"
 #include "User.cpp"
 #include "Room.cpp"
-#include "Message.cpp"
 #include "File.cpp"
 #include "Event.cpp"
 #include "Sync.cpp"
@@ -146,4 +145,3 @@ const bool leet::checkError() {
 void leet::invalidateAccessToken(const std::string& Token) {
     leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/logout"), Token);
 }
-

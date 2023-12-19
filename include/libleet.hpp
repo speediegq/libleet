@@ -249,45 +249,6 @@ namespace leet {
         };
     }
 
-    namespace Message {
-        /**
-         * @brief Class which represents a single message, along with its properties.
-         *
-         * This class represents a single message
-         * To represent several messages, one might consider using std::vector
-         */
-        class Message {
-            private:
-            public:
-                std::string messageText{}; // Message text
-                std::string formattedText{}; // Formatted message
-                std::string Format{}; // Message format
-                std::string Type{}; // Event type (i.e. m.room.message)
-                std::string messageType{}; // Message type (i.e. m.image, m.audio, m.video, m.file, m.text)
-                std::string eventID{}; // Event ID
-                std::string Sender{}; // The sender user ID
-                std::string mimeType{}; // Message mime type
-                int64_t Age{}; // Time since the message was posted
-                int attachmentWidth{}; // Attachment width
-                int attachmentHeight{}; // Attachment height
-                int attachmentSize{}; // Attachment file size
-                int attachmentLength{}; // Mainly applies for videos and music
-                std::string attachmentURL{}; // Attachment mxc:// URL
-                int thumbnailWidth{}; // Thumbnail width
-                int thumbnailHeight{}; // Thumbnail height
-                int thumbnailSize{}; // Thumbnail file size
-                std::string thumbnailMimeType{}; // Thumbnail mime type
-                std::string thumbnailURL{}; // Thumbnail mxc:// URL
-
-                bool Encrypted{false}; // Whether the message is encrypted or not
-                bool megolm{false};
-                std::string cipherText{}; // Encrypted message text
-                std::string senderKey{}; // Sender curve25519 key
-                std::string sessionID{}; // Sender session ID
-                std::string deviceID{}; // Sender device ID
-        };
-    }
-
     namespace Attachment {
         /**
          * @brief  Class which represents an uploaded attachment.
@@ -471,6 +432,43 @@ namespace leet {
             public:
                 std::string eventID{}; // Event ID
                 int64_t Age{}; // Time since the event occured
+        };
+
+        /**
+         * @brief Class which represents a single message, along with its properties.
+         *
+         * This class represents a single message
+         * To represent several messages, one might consider using std::vector
+         */
+        class Message {
+            private:
+            public:
+                std::string messageText{}; // Message text
+                std::string formattedText{}; // Formatted message
+                std::string Format{}; // Message format
+                std::string Type{}; // Event type (i.e. m.room.message)
+                std::string messageType{}; // Message type (i.e. m.image, m.audio, m.video, m.file, m.text)
+                std::string eventID{}; // Event ID
+                std::string Sender{}; // The sender user ID
+                std::string mimeType{}; // Message mime type
+                int64_t Age{}; // Time since the message was posted
+                int attachmentWidth{}; // Attachment width
+                int attachmentHeight{}; // Attachment height
+                int attachmentSize{}; // Attachment file size
+                int attachmentLength{}; // Mainly applies for videos and music
+                std::string attachmentURL{}; // Attachment mxc:// URL
+                int thumbnailWidth{}; // Thumbnail width
+                int thumbnailHeight{}; // Thumbnail height
+                int thumbnailSize{}; // Thumbnail file size
+                std::string thumbnailMimeType{}; // Thumbnail mime type
+                std::string thumbnailURL{}; // Thumbnail mxc:// URL
+
+                bool Encrypted{false}; // Whether the message is encrypted or not
+                bool megolm{false};
+                std::string cipherText{}; // Encrypted message text
+                std::string senderKey{}; // Sender curve25519 key
+                std::string sessionID{}; // Sender session ID
+                std::string deviceID{}; // Sender device ID
         };
     }
 
@@ -841,17 +839,17 @@ namespace leet {
      * @brief  Sends a plain text message to the specified room.
      * @param  resp credentialsResponse object, required for authentication.
      * @param  room Room object, room that the message should be sent in.
-     * @param  msg Message::Message object, the message that should be sent.
+     * @param  msg Event::Message object, the message that should be sent.
      */
-    void sendMessage(User::credentialsResponse* resp, Room::Room* room, Message::Message* msg);
+    void sendMessage(User::credentialsResponse* resp, Room::Room* room, Event::Message* msg);
     /**
-     * @brief  Returns a Message::Message vector from a room.
+     * @brief  Returns a Event::Message vector from a room.
      * @param  resp credentialsResponse object, required for authentication.
      * @param  room Room object, room that the messages should be retrieved from.
      * @param  messageCount Number of messages to retrieve from the room.
-     * @return Returns a Message::Message vector which represents the retrieved messages.
+     * @return Returns a Event::Message vector which represents the retrieved messages.
      */
-    const std::vector<Message::Message> returnMessages(User::credentialsResponse* resp, Room::Room* room, const int messageCount);
+    const std::vector<Event::Message> returnMessages(User::credentialsResponse* resp, Room::Room* room, const int messageCount);
 
     /**
      * @brief  Returns a filter ID which can be used when requesting data.
@@ -1114,7 +1112,7 @@ namespace leet {
      * @param  room Room to create a session in.
      * @param  msg Message to send.
      */
-    void sendEncryptedMessage(User::credentialsResponse* resp, Encryption* enc, Room::Room* room, Message::Message* msg);
+    void sendEncryptedMessage(User::credentialsResponse* resp, Encryption* enc, Room::Room* room, Event::Message* msg);
 
     #endif // #ifndef LEET_NO_ENCRYPTION
 }
