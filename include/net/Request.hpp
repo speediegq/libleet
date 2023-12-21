@@ -6,11 +6,7 @@
  * https://git.speedie.site/speedie/libleet
  */
 
-#ifndef REQUEST_HPP
-#define REQUEST_HPP
-
-#include <iostream>
-#include <string>
+#pragma once
 
 namespace leetRequest {
     enum { /* supported protocols */
@@ -102,9 +98,7 @@ namespace leetRequest {
             const bool downloadFile();
     };
 
-    std::string userCert{}; // User-specified root certificate string
+    inline std::string userCert{}; // User-specified root certificate string
 
     const std::string getRootCertificates();
 }
-
-#endif

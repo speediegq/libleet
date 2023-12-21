@@ -6,8 +6,7 @@
  * https://git.speedie.site/speedie/libleet
  */
 
-#ifndef LIBLEET_HPP
-#define LIBLEET_HPP
+#pragma once
 #ifndef LEET_NO_ENCRYPTION
 #include <random>
 #include <cstring>
@@ -1116,4 +1115,3 @@ namespace leet {
 
     #endif // #ifndef LEET_NO_ENCRYPTION
 }
-#endif

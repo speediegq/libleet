@@ -9,6 +9,7 @@ cc = meson.get_compiler('cpp')
 
 project_source_files = [
   'src/libleet.cpp',
+  'src/net/Request.cpp',
 ]
 
 project_dependencies = [

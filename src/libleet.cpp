@@ -27,7 +27,7 @@
 #endif
 
 #include "../include/libleet.hpp"
-#include "net/Request.cpp"
+#include "../include/net/Request.hpp"
 #include "Encryption.cpp"
 #include "Login.cpp"
 #include "Request.cpp"
