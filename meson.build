@@ -10,6 +10,7 @@ cc = meson.get_compiler('cpp')
 project_source_files = [
   'src/libleet.cpp',
   'src/net/Request.cpp',
+  'src/crypto/olm.cpp',
 ]
 
 project_dependencies = [
@@ -26,7 +27,8 @@ build_args = [
 so_version = meson.project_version()
 
 install_headers('include/libleet.hpp', subdir : 'libleet')
-install_headers('include/net/Request.hpp', subdir : 'libleet')
+install_headers('include/net/Request.hpp', subdir : 'libleet/net')
+install_headers('include/crypto/olm.hpp', subdir : 'libleet/olm')
 
 lib = static_library('leet',
   project_source_files,
