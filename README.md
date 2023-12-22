@@ -154,7 +154,7 @@ libleet is built.
 
 ## License
 
-The project is licensed under the GNU Affero General
+The project is licensed under the GNU Lesser General
 Public License version 3.0, which means it is
 free software as defined by the Free Software Foundation.
 
