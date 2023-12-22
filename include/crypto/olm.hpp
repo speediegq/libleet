@@ -24,6 +24,7 @@ namespace leetOlm {
     /**
      * @brief  Pickle an OlmAccount*
      * @param  pickleKey The key that should be used to pickle. The client should (must) store this safely. It is considered sensitive data.
+     * @param  acc The account to pickle.
      * @return Returns a pickle for an OlmAccount. The client should (must) store this safely. It is considered sensitive data.
      *
      * Returns a pickle for an OlmAccount
@@ -34,6 +35,7 @@ namespace leetOlm {
      * @brief  Unpickle an OlmAccount*
      * @param  pickleKey The key that should be used to unpickle. The client should (must) store this safely. It is considered sensitive data.
      * @param  pickleData The pickle data returned by a pickle() function.
+     * @param  acc The account to create from the pickle data.
      * @return Returns an OlmAccount*.
      *
      * Returns a pickle for an OlmAccount
@@ -43,6 +45,7 @@ namespace leetOlm {
     /**
      * @brief  Pickle an OlmInboundGroupSession*
      * @param  pickleKey The key that should be used to pickle. The client should (must) store this safely. It is considered sensitive data.
+     * @param  session The session to pickle.
      * @return Returns a pickle for an OlmInboundGroupSession. The client should (must) store this safely. It is considered sensitive data.
      *
      * Returns a pickle for an OlmInboundGroupSession
@@ -53,6 +56,7 @@ namespace leetOlm {
      * @brief  Unpickle an OlmInboundGroupSession*
      * @param  pickleKey The key that should be used to unpickle. The client should (must) store this safely. It is considered sensitive data.
      * @param  pickleData The pickle data returned by a pickle() function.
+     * @param  session The session to create from the pickle data.
      * @return Returns an OlmInboundGroupSession*.
      *
      * Returns a pickle for an OlmInboundGroupSession
@@ -62,6 +66,7 @@ namespace leetOlm {
     /**
      * @brief  Pickle an OlmOutboundGroupSession*
      * @param  pickleKey The key that should be used to pickle. The client should (must) store this safely. It is considered sensitive data.
+     * @param  session The session to pickle.
      * @return Returns a pickle for an OlmOutboundGroupSession. The client should (must) store this safely. It is considered sensitive data.
      *
      * Returns a pickle for an OlmOutboundGroupSession
@@ -72,6 +77,7 @@ namespace leetOlm {
      * @brief  Unpickle an OlmOutboundGroupSession*
      * @param  pickleKey The key that should be used to unpickle. The client should (must) store this safely. It is considered sensitive data.
      * @param  pickleData The pickle data returned by a pickle() function.
+     * @param  session The session to create from the pickle data.
      * @return Returns an OlmOutboundGroupSession*.
      *
      * Returns a pickle for an OlmOutboundGroupSession
@@ -81,6 +87,7 @@ namespace leetOlm {
     /**
      * @brief  Pickle an OlmSession*
      * @param  pickleKey The key that should be used to pickle. The client should (must) store this safely. It is considered sensitive data.
+     * @param  session The session to pickle.
      * @return Returns a pickle for an OlmSession. The client should (must) store this safely. It is considered sensitive data.
      *
      * Returns a pickle for an OlmSession
@@ -91,6 +98,7 @@ namespace leetOlm {
      * @brief  Unpickle an OlmSession*
      * @param  pickleKey The key that should be used to unpickle. The client should (must) store this safely. It is considered sensitive data.
      * @param  pickleData The pickle data returned by a pickle() function.
+     * @param  session The session to create from the pickle data.
      * @return Returns an OlmSession*.
      *
      * Returns a pickle for an OlmSession

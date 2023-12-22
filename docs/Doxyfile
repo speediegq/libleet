@@ -2695,7 +2695,7 @@ DIR_GRAPH_MAX_DEPTH    = 1
 # The default value is: png.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-DOT_IMAGE_FORMAT       = png
+DOT_IMAGE_FORMAT       = svg
 
 # If DOT_IMAGE_FORMAT is set to svg, then this option can be set to YES to
 # enable generation of interactive SVG images that allow zooming and panning.
@@ -2804,6 +2804,9 @@ GENERATE_LEGEND        = YES
 # The default value is: YES.
 
 DOT_CLEANUP            = YES
+
+# Transparent background
+DOT_TRANSPARENT        = YES
 
 # You can define message sequence charts within doxygen comments using the \msc
 # command. If the MSCGEN_TOOL tag is left empty (the default), then doxygen will

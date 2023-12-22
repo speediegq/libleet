@@ -14,7 +14,6 @@
 namespace leetCrypto {
     /**
      * @brief Simply fills a buffer with random bytes
-     * @return void
      */
     inline void fillWithRandomBytes(void* _data, size_t _length) {
         std::random_device rd;
