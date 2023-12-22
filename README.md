@@ -115,6 +115,9 @@ To use libleet in projects:
 #include <libleet/libleet.hpp>
 ```
 
+If you need to use the URL parser externally, also include
+libleet/net/Request.hpp.
+
 Due to rather large dependencies, it is not recommended that you
 statically link your program that depends on libleet. It's possible,
 but not ideal in my opinion.
