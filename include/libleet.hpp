@@ -737,12 +737,26 @@ namespace leet {
      */
     void unbanUserFromRoom(User::credentialsResponse* resp, Room::Room* room, User::Profile* profile, const std::string& Reason);
     /**
-     * @brief  Invite a user to a room,
+     * @brief  Invite a user to a room.
      * @param  resp credentialsResponse object, required for authentication.
      * @param  room Room object, this object should contain a room ID.
      * @param  Reason Reason for the invite being sent.
      */
     void inviteUserToRoom(User::credentialsResponse* resp, Room::Room* room, const std::string& Reason);
+    /**
+     * @brief  Gets the visibility of a room.
+     * @param  resp credentialsResponse object, required for authentication.
+     * @param  room Room object, this object should contain a room ID.
+     * @return Returns true if the room is visible, otherwise returns false.
+     */
+    const bool getVisibilityOfRoom(User::credentialsResponse* resp, Room::Room* room);
+    /**
+     * @brief  Sets the visibility of a room to Visibility
+     * @param  resp credentialsResponse object, required for authentication.
+     * @param  room Room object, this object should contain a room ID.
+     * @param  Visibility Boolean, true means visible, false means hidden.
+     */
+    void setVisibilityOfRoom(User::credentialsResponse* resp, Room::Room* room, const bool Visibility);
     /**
      * @brief  Returns a vector of all rooms your user has joined.
      * @param  resp credentialsResponse object, required for authentication.

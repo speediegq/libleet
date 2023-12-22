@@ -1681,7 +1681,7 @@ void leet::unbanUserFromRoom(leet::User::credentialsResponse* resp, leet::Room::
     }
 }
 
-const bool getVisibilityOfRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room) {
+const bool leet::getVisibilityOfRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room) {
     const std::string Output { leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/directory/list/room/" + room->roomID), resp->accessToken) };
 
     nlohmann::json reqOutput;
@@ -1712,7 +1712,7 @@ const bool getVisibilityOfRoom(leet::User::credentialsResponse* resp, leet::Room
     return false;
 }
 
-void setVisibilityOfRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room, const bool Visibility) {
+void leet::setVisibilityOfRoom(leet::User::credentialsResponse* resp, leet::Room::Room* room, const bool Visibility) {
     nlohmann::json body;
 
     body["visibility"] = Visibility ? "public" : "private";
