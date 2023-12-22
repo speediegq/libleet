@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <filesystem>
 #include <libleet/libleet.hpp>
-#include <libleet/Request.hpp>
+#include <libleet/net/Request.hpp>
 
 int main() {
     std::string targetURL{};
