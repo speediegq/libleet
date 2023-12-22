@@ -90,7 +90,7 @@ leetRequest::Response leetRequest::Request::makeRequest() {
     try {
         boost::asio::ssl::context ctx(boost::asio::ssl::context::tlsv12_client);
 
-        const std::string_view cert{leetRequest::getRootCertificates()};
+        const std::string cert = leetRequest::getRootCertificates();
 
         boost::system::error_code ec;
 
