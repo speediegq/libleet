@@ -2049,10 +2049,47 @@ void leet::sendMessage(leet::User::credentialsResponse* resp, leet::Room::Room* 
     const int transID { leet::transID };
     const std::string eventType { "m.room.message" };
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/send/" + eventType + "/" + std::to_string(transID) };
+    std::string messageType = msg->messageType;
+
+    switch (msg->msgType) {
+	    case leet::LEET_MESSAGETYPE_IMAGE:
+		    messageType = "m.image";
+		    break;
+	    case leet::LEET_MESSAGETYPE_AUDIO:
+		    messageType = "m.audio";
+		    break;
+	    case leet::LEET_MESSAGETYPE_VIDEO:
+		    messageType = "m.video";
+		    break;
+	    case leet::LEET_MESSAGETYPE_FILE:
+		    messageType = "m.file";
+		    break;
+	    case leet::LEET_MESSAGETYPE_NOTICE:
+		    messageType = "m.notice";
+		    break;
+	    case leet::LEET_MESSAGETYPE_EMOTE:
+		    messageType = "m.emote";
+		    break;
+	    case leet::LEET_MESSAGETYPE_STRING:
+		    messageType = msg->messageType;
+		    if (!messageType.compare("")) {
+			    messageType = "m.text";
+		    }
+		    break;
+	    default:
+		    messageType = "m.text";
+		    break;
+    }
+
+    if (msg->bodyType == leet::LEET_BODYTYPE_SLIM) {
+	    throw std::runtime_error{ "You seem like a funny guy." };
+    } else if (msg->bodyType == leet::LEET_BODYTYPE_SPEEDIE) {
+	    throw std::runtime_error{ "Why would you want to be a lazy fatass like me?" };
+    }
 
     nlohmann::json list;
 
-    if (!msg->messageType.compare("m.image") || !msg->messageType.compare("m.audio") || !msg->messageType.compare("m.video") || !msg->messageType.compare("m.file")) {
+    if (!messageType.compare("m.image") || !messageType.compare("m.audio") || !messageType.compare("m.video") || !messageType.compare("m.file")) {
         if (msg->attachmentURL[0] != 'm' || msg->attachmentURL[1] != 'x' || msg->attachmentURL[2] != 'c') {
             leet::errorCode = 1;
             return;
@@ -2060,14 +2097,44 @@ void leet::sendMessage(leet::User::credentialsResponse* resp, leet::Room::Room* 
 
         list["type"] = "m.room.message";
         list["room_id"] = room->roomID;
-        list["body"] = msg->messageText;
-        list["msgtype"] = msg->messageType;
+
+	if ((msg->bodyType == leet::LEET_BODYTYPE_BASIC) || (msg->bodyType == leet::LEET_BODYTYPE_BOTH)) {
+		list["body"] = msg->messageText;
+	}
+
+	if ((msg->bodyType == leet::LEET_BODYTYPE_FORMATTED) || (msg->bodyType == leet::LEET_BODYTYPE_BOTH)) {
+		list["formatted_body"] = msg->formattedText;
+
+		if (!msg->Format.compare("")) {
+			list["format"] = "org.matrix.custom.html";
+		} else {
+			list["format"] = msg->Format;
+		}
+	}
+
+        list["msgtype"] = messageType;
         list["url"] = msg->attachmentURL;
+	list["m.mentions"]["user_ids"] = msg->mentionedUserIDs;
     } else {
         list["type"] = "m.room.message";
         list["room_id"] = room->roomID;
         list["body"] = msg->messageText;
-        list["msgtype"] = msg->messageType;
+
+	if ((msg->bodyType == leet::LEET_BODYTYPE_BASIC) || (msg->bodyType == leet::LEET_BODYTYPE_BOTH)) {
+		list["body"] = msg->messageText;
+	}
+
+	if ((msg->bodyType == leet::LEET_BODYTYPE_FORMATTED) || (msg->bodyType == leet::LEET_BODYTYPE_BOTH)) {
+		list["formatted_body"] = msg->formattedText;
+
+		if (!msg->Format.compare("")) {
+			list["format"] = "org.matrix.custom.html";
+		} else {
+			list["format"] = msg->Format;
+		}
+	}
+
+	list["m.mentions"]["user_ids"] = msg->mentionedUserIDs;
     }
 
     const std::string Output { leet::invokeRequest_Put(leet::getAPI(APIUrl), list.dump(), resp->accessToken) };
@@ -2100,8 +2167,23 @@ void leet::sendEncryptedMessage(leet::User::credentialsResponse* resp, leet::Enc
 
     Body["type"] = "m.room.message";
     Body["room_id"] = room->roomID;
-    Body["content"]["body"] = msg->messageText;
+
+    if ((msg->bodyType == leet::LEET_BODYTYPE_BASIC) || (msg->bodyType == leet::LEET_BODYTYPE_BOTH)) {
+	    Body["body"] = msg->messageText;
+    }
+    
+    if ((msg->bodyType == leet::LEET_BODYTYPE_FORMATTED) || (msg->bodyType == leet::LEET_BODYTYPE_BOTH)) {
+	    Body["formatted_body"] = msg->formattedText;
+    
+	    if (!msg->Format.compare("")) {
+		    Body["format"] = "org.matrix.custom.html";
+	    } else {
+		    Body["format"] = msg->Format;
+	    }
+    }
+
     Body["content"]["msgtype"] = "m.text";
+    Body["m.mentions"]["user_ids"] = msg->mentionedUserIDs;
 
     const std::string Output { leet::invokeRequest_Put(leet::getAPI(APIUrl), enc->account.encryptMessage(resp, Body.dump()), resp->accessToken) };
 

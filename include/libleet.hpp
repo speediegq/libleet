@@ -81,6 +81,28 @@ namespace leet {
         LEET_PRESENCE_UNAVAILABLE,
     };
 
+    /* Message type */
+    enum {
+	LEET_MESSAGETYPE_TEXT,
+	LEET_MESSAGETYPE_IMAGE,
+	LEET_MESSAGETYPE_AUDIO,
+	LEET_MESSAGETYPE_VIDEO,
+	LEET_MESSAGETYPE_FILE,
+	LEET_MESSAGETYPE_NOTICE,
+	LEET_MESSAGETYPE_EMOTE,
+	LEET_MESSAGETYPE_LOCATION,
+	LEET_MESSAGETYPE_STRING,
+    };
+
+    /* Body type */
+    enum {
+	LEET_BODYTYPE_BASIC,
+	LEET_BODYTYPE_FORMATTED,
+	LEET_BODYTYPE_BOTH,
+	LEET_BODYTYPE_SLIM,
+	LEET_BODYTYPE_SPEEDIE,
+    };
+
     /* Errors */
     enum {
         LEET_ERROR_NONE,
@@ -196,6 +218,7 @@ namespace leet {
             public:
                 std::string roomID{}; // Room ID
                 std::string roomType{}; // Room type
+
                 std::string Name{}; // Room name
                 std::string avatarURL{}; // Avatar mxc:// URL
                 bool guestCanJoin{false}; // Whether guest accounts can join or not
@@ -227,23 +250,14 @@ namespace leet {
          * This class represents a space, which in
          * libleet is different from a room, for simplicity.
          * In reality, a space is almost identical to a room.
-         *
-         * TODO: Maybe we should inheret from rooms?
+	 *
          */
-        class Space {
+        class Space : public Room::Room {
             private:
             public:
                 std::string spaceID{}; // Space ID
                 std::string roomType{}; // Room type
-                std::string Name{}; // Space name
-                std::string avatarURL{}; // Avatar mxc:// URL
-                bool guestCanJoin{false}; // Whether guest accounts can join or not
-                bool worldReadable{false}; // Matrix speak for whether the space is public or not
-                std::string Alias{}; // Space room alias (i.e. #speediegq:matrix.org)
-                std::string Topic{}; // Space room topic
-                std::string joinRule{}; // Join rule
-                int memberCount{}; // Number of members in the space
-                std::vector<Room::Room> Rooms; // Rooms in the space
+                std::vector<leet::Room::Room> Rooms; // Rooms in the space
         };
     }
 
@@ -438,7 +452,7 @@ namespace leet {
          * This class represents a single message
          * To represent several messages, one might consider using std::vector
          */
-        class Message {
+        class Message : public Event {
             private:
             public:
                 std::string messageText{}; // Message text
@@ -446,10 +460,8 @@ namespace leet {
                 std::string Format{}; // Message format
                 std::string Type{}; // Event type (i.e. m.room.message)
                 std::string messageType{}; // Message type (i.e. m.image, m.audio, m.video, m.file, m.text)
-                std::string eventID{}; // Event ID
                 std::string Sender{}; // The sender user ID
                 std::string mimeType{}; // Message mime type
-                int64_t Age{}; // Time since the message was posted
                 int attachmentWidth{}; // Attachment width
                 int attachmentHeight{}; // Attachment height
                 int attachmentSize{}; // Attachment file size
@@ -460,6 +472,7 @@ namespace leet {
                 int thumbnailSize{}; // Thumbnail file size
                 std::string thumbnailMimeType{}; // Thumbnail mime type
                 std::string thumbnailURL{}; // Thumbnail mxc:// URL
+		std::vector<std::string> mentionedUserIDs; // Mentioned users	
 
                 bool Encrypted{false}; // Whether the message is encrypted or not
                 bool megolm{false};
@@ -467,6 +480,9 @@ namespace leet {
                 std::string senderKey{}; // Sender curve25519 key
                 std::string sessionID{}; // Sender session ID
                 std::string deviceID{}; // Sender device ID
+
+		int bodyType{LEET_BODYTYPE_BASIC};
+		int msgType{LEET_MESSAGETYPE_STRING};
         };
     }
 
