@@ -83,24 +83,24 @@ namespace leet {
 
     /* Message type */
     enum {
-	LEET_MESSAGETYPE_TEXT,
-	LEET_MESSAGETYPE_IMAGE,
-	LEET_MESSAGETYPE_AUDIO,
-	LEET_MESSAGETYPE_VIDEO,
-	LEET_MESSAGETYPE_FILE,
-	LEET_MESSAGETYPE_NOTICE,
-	LEET_MESSAGETYPE_EMOTE,
-	LEET_MESSAGETYPE_LOCATION,
-	LEET_MESSAGETYPE_STRING,
+        LEET_MESSAGETYPE_TEXT,
+        LEET_MESSAGETYPE_IMAGE,
+        LEET_MESSAGETYPE_AUDIO,
+        LEET_MESSAGETYPE_VIDEO,
+        LEET_MESSAGETYPE_FILE,
+        LEET_MESSAGETYPE_NOTICE,
+        LEET_MESSAGETYPE_EMOTE,
+        LEET_MESSAGETYPE_LOCATION,
+        LEET_MESSAGETYPE_STRING,
     };
 
     /* Body type */
     enum {
-	LEET_BODYTYPE_BASIC,
-	LEET_BODYTYPE_FORMATTED,
-	LEET_BODYTYPE_BOTH,
-	LEET_BODYTYPE_SLIM,
-	LEET_BODYTYPE_SPEEDIE,
+        LEET_BODYTYPE_BASIC,
+        LEET_BODYTYPE_FORMATTED,
+        LEET_BODYTYPE_BOTH,
+        LEET_BODYTYPE_SLIM,
+        LEET_BODYTYPE_SPEEDIE,
     };
 
     /* Errors */
@@ -250,7 +250,7 @@ namespace leet {
          * This class represents a space, which in
          * libleet is different from a room, for simplicity.
          * In reality, a space is almost identical to a room.
-	 *
+         *
          */
         class Space : public Room::Room {
             private:
@@ -472,8 +472,8 @@ namespace leet {
                 int thumbnailSize{}; // Thumbnail file size
                 std::string thumbnailMimeType{}; // Thumbnail mime type
                 std::string thumbnailURL{}; // Thumbnail mxc:// URL
-		std::vector<std::string> mentionedUserIDs; // Mentioned users	
-		leet::Event::Event replyEvent; // Event to reply to
+                std::vector<std::string> mentionedUserIDs; // Mentioned users
+                leet::Event::Event replyEvent; // Event to reply to
 
                 bool Encrypted{false}; // Whether the message is encrypted or not
                 bool megolm{false};
@@ -482,8 +482,8 @@ namespace leet {
                 std::string sessionID{}; // Sender session ID
                 std::string deviceID{}; // Sender device ID
 
-		int bodyType{LEET_BODYTYPE_BASIC};
-		int msgType{LEET_MESSAGETYPE_STRING};
+                int bodyType{LEET_BODYTYPE_BASIC};
+                int msgType{LEET_MESSAGETYPE_STRING};
         };
     }
 

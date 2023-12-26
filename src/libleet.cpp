@@ -1234,13 +1234,13 @@ const std::vector<std::string> leet::findRoomAliases(leet::User::credentialsResp
     for (auto& output : reqOutput) {
         if (!output["aliases"].is_null()) {
             leet::errorCode = 0;
-	        return output["aliases"].get<std::vector<std::string>>();
+            return output["aliases"].get<std::vector<std::string>>();
         } else if (!output["errcode"].is_null()) {
             leet::errorCode = 1;
             leet::Error = output["errcode"].get<std::string>();
             if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
 
-	        return ret;
+            return ret;
         }
     }
 
@@ -2080,39 +2080,39 @@ void leet::sendMessage(leet::User::credentialsResponse* resp, leet::Room::Room* 
     std::string messageType = msg->messageType;
 
     switch (msg->msgType) {
-	    case leet::LEET_MESSAGETYPE_IMAGE:
-		    messageType = "m.image";
-		    break;
-	    case leet::LEET_MESSAGETYPE_AUDIO:
-		    messageType = "m.audio";
-		    break;
-	    case leet::LEET_MESSAGETYPE_VIDEO:
-		    messageType = "m.video";
-		    break;
-	    case leet::LEET_MESSAGETYPE_FILE:
-		    messageType = "m.file";
-		    break;
-	    case leet::LEET_MESSAGETYPE_NOTICE:
-		    messageType = "m.notice";
-		    break;
-	    case leet::LEET_MESSAGETYPE_EMOTE:
-		    messageType = "m.emote";
-		    break;
-	    case leet::LEET_MESSAGETYPE_STRING:
-		    messageType = msg->messageType;
-		    if (!messageType.compare("")) {
-			    messageType = "m.text";
-		    }
-		    break;
-	    default:
-		    messageType = "m.text";
-		    break;
+        case leet::LEET_MESSAGETYPE_IMAGE:
+            messageType = "m.image";
+            break;
+        case leet::LEET_MESSAGETYPE_AUDIO:
+            messageType = "m.audio";
+            break;
+        case leet::LEET_MESSAGETYPE_VIDEO:
+            messageType = "m.video";
+            break;
+        case leet::LEET_MESSAGETYPE_FILE:
+            messageType = "m.file";
+            break;
+        case leet::LEET_MESSAGETYPE_NOTICE:
+            messageType = "m.notice";
+            break;
+        case leet::LEET_MESSAGETYPE_EMOTE:
+            messageType = "m.emote";
+            break;
+        case leet::LEET_MESSAGETYPE_STRING:
+            messageType = msg->messageType;
+            if (!messageType.compare("")) {
+                messageType = "m.text";
+            }
+            break;
+        default:
+            messageType = "m.text";
+            break;
     }
 
     if (msg->bodyType == leet::LEET_BODYTYPE_SLIM) {
-	    throw std::runtime_error{ "You seem like a funny guy." };
+        throw std::runtime_error{ "You seem like a funny guy." };
     } else if (msg->bodyType == leet::LEET_BODYTYPE_SPEEDIE) {
-	    throw std::runtime_error{ "Why would you want to be a lazy fatass like me?" };
+        throw std::runtime_error{ "Why would you want to be a lazy fatass like me?" };
     }
 
     nlohmann::json list;
@@ -2126,52 +2126,52 @@ void leet::sendMessage(leet::User::credentialsResponse* resp, leet::Room::Room* 
         list["type"] = "m.room.message";
         list["room_id"] = room->roomID;
 
-	if ((msg->bodyType == leet::LEET_BODYTYPE_BASIC) || (msg->bodyType == leet::LEET_BODYTYPE_BOTH)) {
-		list["body"] = msg->messageText;
-	}
+        if ((msg->bodyType == leet::LEET_BODYTYPE_BASIC) || (msg->bodyType == leet::LEET_BODYTYPE_BOTH)) {
+            list["body"] = msg->messageText;
+        }
 
-	if ((msg->bodyType == leet::LEET_BODYTYPE_FORMATTED) || (msg->bodyType == leet::LEET_BODYTYPE_BOTH)) {
-		list["formatted_body"] = msg->formattedText;
+        if ((msg->bodyType == leet::LEET_BODYTYPE_FORMATTED) || (msg->bodyType == leet::LEET_BODYTYPE_BOTH)) {
+            list["formatted_body"] = msg->formattedText;
 
-		if (!msg->Format.compare("")) {
-			list["format"] = "org.matrix.custom.html";
-		} else {
-			list["format"] = msg->Format;
-		}
-	}
+            if (!msg->Format.compare("")) {
+                list["format"] = "org.matrix.custom.html";
+            } else {
+                list["format"] = msg->Format;
+            }
+        }
 
         list["msgtype"] = messageType;
         list["url"] = msg->attachmentURL;
 
-	list["m.mentions"]["user_ids"] = msg->mentionedUserIDs;
+        list["m.mentions"]["user_ids"] = msg->mentionedUserIDs;
 
-	if (!msg->replyEvent.eventID.compare("")) {
-		list["m.relates_to"]["m.in_reply_to"]["event_id"] = msg->replyEvent.eventID;
-	}
+        if (!msg->replyEvent.eventID.compare("")) {
+            list["m.relates_to"]["m.in_reply_to"]["event_id"] = msg->replyEvent.eventID;
+        }
     } else {
         list["type"] = "m.room.message";
         list["room_id"] = room->roomID;
         list["body"] = msg->messageText;
 
-	if ((msg->bodyType == leet::LEET_BODYTYPE_BASIC) || (msg->bodyType == leet::LEET_BODYTYPE_BOTH)) {
-		list["body"] = msg->messageText;
-	}
+        if ((msg->bodyType == leet::LEET_BODYTYPE_BASIC) || (msg->bodyType == leet::LEET_BODYTYPE_BOTH)) {
+            list["body"] = msg->messageText;
+        }
 
-	if ((msg->bodyType == leet::LEET_BODYTYPE_FORMATTED) || (msg->bodyType == leet::LEET_BODYTYPE_BOTH)) {
-		list["formatted_body"] = msg->formattedText;
+        if ((msg->bodyType == leet::LEET_BODYTYPE_FORMATTED) || (msg->bodyType == leet::LEET_BODYTYPE_BOTH)) {
+            list["formatted_body"] = msg->formattedText;
 
-		if (!msg->Format.compare("")) {
-			list["format"] = "org.matrix.custom.html";
-		} else {
-			list["format"] = msg->Format;
-		}
-	}
+            if (!msg->Format.compare("")) {
+                list["format"] = "org.matrix.custom.html";
+            } else {
+                list["format"] = msg->Format;
+            }
+        }
 
-	list["m.mentions"]["user_ids"] = msg->mentionedUserIDs;
+        list["m.mentions"]["user_ids"] = msg->mentionedUserIDs;
 
-	if (!msg->replyEvent.eventID.compare("")) {
-		list["m.relates_to"]["m.in_reply_to"]["event_id"] = msg->replyEvent.eventID;
-	}
+        if (!msg->replyEvent.eventID.compare("")) {
+            list["m.relates_to"]["m.in_reply_to"]["event_id"] = msg->replyEvent.eventID;
+        }
     }
 
     const std::string Output { leet::invokeRequest_Put(leet::getAPI(APIUrl), list.dump(), resp->accessToken) };
@@ -2206,29 +2206,30 @@ void leet::sendEncryptedMessage(leet::User::credentialsResponse* resp, leet::Enc
     Body["room_id"] = room->roomID;
 
     if ((msg->bodyType == leet::LEET_BODYTYPE_BASIC) || (msg->bodyType == leet::LEET_BODYTYPE_BOTH)) {
-	    Body["body"] = msg->messageText;
+        Body["body"] = msg->messageText;
     }
-    
+
     if ((msg->bodyType == leet::LEET_BODYTYPE_FORMATTED) || (msg->bodyType == leet::LEET_BODYTYPE_BOTH)) {
-	    Body["formatted_body"] = msg->formattedText;
-    
-	    if (!msg->Format.compare("")) {
-		    Body["format"] = "org.matrix.custom.html";
-	    } else {
-		    Body["format"] = msg->Format;
-	    }
+        Body["formatted_body"] = msg->formattedText;
+
+        if (!msg->Format.compare("")) {
+            Body["format"] = "org.matrix.custom.html";
+        } else {
+            Body["format"] = msg->Format;
+        }
     }
 
     Body["content"]["msgtype"] = "m.text";
     Body["m.mentions"]["user_ids"] = msg->mentionedUserIDs;
 
     if (!msg->replyEvent.eventID.compare("")) {
-	    Body["m.relates_to"]["m.in_reply_to"]["event_id"] = msg->replyEvent.eventID;
+        Body["m.relates_to"]["m.in_reply_to"]["event_id"] = msg->replyEvent.eventID;
     }
 
     const std::string Output { leet::invokeRequest_Put(leet::getAPI(APIUrl), enc->account.encryptMessage(resp, Body.dump()), resp->accessToken) };
 
     nlohmann::json reqOutput;
+
     try {
         reqOutput = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
@@ -2395,7 +2396,7 @@ leet::Sync::Sync leet::returnSync(leet::User::credentialsResponse* resp, leet::S
 
     for (auto& it : theOutput) {
         leet::errorCode = 0;
-        
+
         if (it["next_batch"].is_string()) {
             sync.nextBatch = it["next_batch"].get<std::string>();
         }
@@ -2409,7 +2410,7 @@ leet::Sync::Sync leet::returnSync(leet::User::credentialsResponse* resp, leet::S
             if (itEvent["content"]["sender_key"].is_string()) {
                 megolmSession.senderKey = itEvent["content"]["sender_key"];
             }
-            
+
             if (itEvent["content"]["algorithm"].is_string()) {
                 megolmSession.Algorithm = itEvent["content"]["algorithm"];
             }
@@ -2426,7 +2427,7 @@ leet::Sync::Sync leet::returnSync(leet::User::credentialsResponse* resp, leet::S
             if (itEvent["sender"].is_string()) {
                 megolmSession.Sender = itEvent["sender"];
             }
-            
+
             if (itEvent["type"].is_string()) {
                 megolmSession.Type = itEvent["type"];
             }

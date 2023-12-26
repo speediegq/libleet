@@ -17,6 +17,7 @@ namespace leetRequest {
         LEET_REQUEST_REQTYPE_GET,
         LEET_REQUEST_REQTYPE_POST,
         LEET_REQUEST_REQTYPE_PUT,
+        LEET_REQUEST_REQTYPE_DELETE,
     };
     /**
      * @brief  Class representing a parsed URL

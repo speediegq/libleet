@@ -109,7 +109,7 @@ leetRequest::Response leetRequest::Request::makeRequest() {
         boost::beast::ssl_stream<boost::beast::tcp_stream> stream(ioc, ctx);
 
         if (!SSL_set_tlsext_host_name(stream.native_handle(), Host.c_str())) {
-		boost::system::error_code ssl_ec{static_cast<int>(::ERR_get_error()), boost::asio::error::get_ssl_category()};
+            boost::system::error_code ssl_ec{static_cast<int>(::ERR_get_error()), boost::asio::error::get_ssl_category()};
             throw boost::beast::system_error{ssl_ec};
         }
 
@@ -131,6 +131,9 @@ leetRequest::Response leetRequest::Request::makeRequest() {
             case leetRequest::LEET_REQUEST_REQTYPE_PUT:
                 theVerb = boost::beast::http::verb::put;
                 break;
+        case leetRequest::LEET_REQUEST_REQTYPE_DELETE:
+        theVerb = boost::beast::http::verb::delete_;
+        break;
             default:
                 break;
         }
