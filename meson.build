@@ -1,10 +1,4 @@
-project(
-  'libleet',
-  'cpp',
-  version : '0.1',
-  license : 'AGPL',
-)
-
+project('libleet', 'cpp', version : '0.1', license : 'LGPL')
 cc = meson.get_compiler('cpp')
 
 project_source_files = [
@@ -20,28 +14,16 @@ project_dependencies = [
   dependency('boost'),
 ]
 
-build_args = [
-  '-DLLEET_VERSION=' + meson.project_version(),
+project_build_args = [
+  '-DLEET_VERSION=' + meson.project_version(),
 ]
-
-so_version = meson.project_version()
 
 install_headers('include/libleet.hpp', subdir : 'libleet')
 install_headers('include/net/Request.hpp', subdir : 'libleet/net')
 install_headers('include/crypto/olm.hpp', subdir : 'libleet/olm')
 
-lib = static_library('leet',
-  project_source_files,
-  dependencies : project_dependencies,
-  install : true
-)
-
-lib_shared = shared_library('leet',
-  project_source_files,
-  dependencies : project_dependencies,
-  version : so_version,
-  install : true
-)
+lib = static_library('leet', project_source_files, dependencies : project_dependencies, install : true)
+lib_shared = shared_library('leet', project_source_files, dependencies : project_dependencies, version : meson.project_version(), install : true)
 
 pkgconfig = import('pkgconfig')
-pkgconfig.generate(libraries : '-lleet', subdirs : 'libleet', version : so_version, name : meson.project_name(), filebase : meson.project_name(), description : 'Matrix client library')
+pkgconfig.generate(libraries : '-lleet', subdirs : 'libleet', version : meson.project_version(), name : meson.project_name(), filebase : meson.project_name(), description : 'Matrix client library/SDK')
