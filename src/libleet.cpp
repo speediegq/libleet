@@ -2114,7 +2114,12 @@ void leet::sendMessage(leet::User::credentialsResponse* resp, leet::Room::Room* 
 
         list["msgtype"] = messageType;
         list["url"] = msg->attachmentURL;
+
 	list["m.mentions"]["user_ids"] = msg->mentionedUserIDs;
+
+	if (!msg->replyEvent.eventID.compare("")) {
+		list["m.relates_to"]["m.in_reply_to"]["event_id"] = msg->replyEvent.eventID;
+	}
     } else {
         list["type"] = "m.room.message";
         list["room_id"] = room->roomID;
@@ -2135,6 +2140,10 @@ void leet::sendMessage(leet::User::credentialsResponse* resp, leet::Room::Room* 
 	}
 
 	list["m.mentions"]["user_ids"] = msg->mentionedUserIDs;
+
+	if (!msg->replyEvent.eventID.compare("")) {
+		list["m.relates_to"]["m.in_reply_to"]["event_id"] = msg->replyEvent.eventID;
+	}
     }
 
     const std::string Output { leet::invokeRequest_Put(leet::getAPI(APIUrl), list.dump(), resp->accessToken) };
@@ -2184,6 +2193,10 @@ void leet::sendEncryptedMessage(leet::User::credentialsResponse* resp, leet::Enc
 
     Body["content"]["msgtype"] = "m.text";
     Body["m.mentions"]["user_ids"] = msg->mentionedUserIDs;
+
+    if (!msg->replyEvent.eventID.compare("")) {
+	    Body["m.relates_to"]["m.in_reply_to"]["event_id"] = msg->replyEvent.eventID;
+    }
 
     const std::string Output { leet::invokeRequest_Put(leet::getAPI(APIUrl), enc->account.encryptMessage(resp, Body.dump()), resp->accessToken) };
 

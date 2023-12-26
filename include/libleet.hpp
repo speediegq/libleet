@@ -473,6 +473,7 @@ namespace leet {
                 std::string thumbnailMimeType{}; // Thumbnail mime type
                 std::string thumbnailURL{}; // Thumbnail mxc:// URL
 		std::vector<std::string> mentionedUserIDs; // Mentioned users	
+		leet::Event::Event replyEvent; // Event to reply to
 
                 bool Encrypted{false}; // Whether the message is encrypted or not
                 bool megolm{false};
