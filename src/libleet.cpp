@@ -1219,6 +1219,34 @@ const std::vector<leet::User::Profile> leet::returnUsersInRoom(leet::User::crede
     return vector;
 }
 
+const std::vector<std::string> leet::findRoomAliases(leet::User::credentialsResponse* resp, const std::string& roomID) {
+    std::vector<std::string> ret;
+    const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/rooms/" + roomID + "/aliases"), resp->accessToken);
+
+    nlohmann::json reqOutput;
+
+    try {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
+        return ret;
+    }
+
+    for (auto& output : reqOutput) {
+        if (!output["aliases"].is_null()) {
+            leet::errorCode = 0;
+	        return output["aliases"].get<std::vector<std::string>>();
+        } else if (!output["errcode"].is_null()) {
+            leet::errorCode = 1;
+            leet::Error = output["errcode"].get<std::string>();
+            if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
+
+	        return ret;
+        }
+    }
+
+    return ret;
+}
+
 const std::string leet::findRoomID(std::string Alias) {
     leet::errorCode = 0;
 

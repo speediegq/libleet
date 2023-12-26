@@ -787,9 +787,16 @@ namespace leet {
      */
     const std::vector<Room::Room> returnRoomIDs(User::credentialsResponse* resp);
     /**
-     * @brief  Resolves a room alias and returns the room ID
+     * @brief  Returns room aliases from a room ID.
+     * @param  resp credentialsResponse object, required for authentication.
+     * @param  roomID The room to get aliases from.
+     * @return Returns an std::vector<std::string> containing room aliases.
+     */
+    const std::vector<std::string> findRoomAliases(User::credentialsResponse* resp, const std::string& roomID);
+    /**
+     * @brief  Resolves a room alias and returns the room ID.
      * @param  Alias Room alias to find the room ID from.
-     * @return Returns a room ID
+     * @return Returns a room ID.
      */
     const std::string findRoomID(std::string Alias);
 
@@ -816,9 +823,9 @@ namespace leet {
      */
     const std::string findUserID(const std::string& Alias, const std::string& Homeserver);
     /**
-     * @brief  Returns <name> from @<name>:<home server>
-     * @param  userID Full user ID
-     * @return Returns a string
+     * @brief  Returns <name> from @<name>:<home server>.
+     * @param  userID Full user ID.
+     * @return Returns a string.
      */
     const std::string returnUserName(const std::string& userID);
     /**
