@@ -10,13 +10,18 @@ project_source_files = [
 project_dependencies = [
   dependency('nlohmann_json', fallback : 'nlohmann_json'),
   dependency('openssl', fallback : 'openssl'),
-  dependency('olm', fallback : 'olm'),
   dependency('boost'),
 ]
 
 project_build_args = [
   '-DLEET_VERSION=' + meson.project_version(),
 ]
+
+if get_option('encryption')
+  project_dependencies += [ dependency('olm', fallback : 'olm') ]
+else
+  project_build_args += [ '-DLEET_NO_ENCRYPTION=1' ]
+endif
 
 install_headers('include/libleet.hpp', subdir : 'libleet')
 install_headers('include/net/Request.hpp', subdir : 'libleet/net')
