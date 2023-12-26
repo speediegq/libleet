@@ -1298,17 +1298,18 @@ const std::vector<std::string> leet::findRoomAliases(leet::User::credentialsResp
     return ret;
 }
 
-const std::string leet::findRoomID(std::string Alias) {
+const std::string leet::findRoomID(const std::string& Alias) {
+    std::string ret = Alias;
     leet::errorCode = 0;
 
-    if (Alias[0] == '!') { // It's a proper room ID already
-        return Alias;
+    if (ret[0] == '!') { // It's a proper room ID already
+        return ret;
     }
 
     // Replace the '#' character with '%23' so that Matrix is happy
-    Alias.replace(0, 1, "%23");
+    ret.replace(0, 1, "%23");
 
-    const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/directory/room/") + Alias);
+    const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/directory/room/") + ret);
     nlohmann::json reqOutput;
 
     try {
@@ -1331,6 +1332,44 @@ const std::string leet::findRoomID(std::string Alias) {
     }
 
     return "";
+}
+
+const bool leet::removeRoomAlias(leet::User::credentialsResponse* resp, const std::string& Alias) {
+    std::string ret = Alias;
+    leet::errorCode = 0;
+
+    if (ret[0] != '!') {
+        leet::errorCode = 1;
+        return false;
+    }
+
+    // Replace the '#' character with '%23' so that Matrix is happy
+    ret.replace(0, 1, "%23");
+
+    const std::string Output = leet::invokeRequest_Delete(leet::getAPI("/_matrix/client/v3/directory/room/" + ret), resp->accessToken);
+    nlohmann::json reqOutput;
+
+    try {
+        reqOutput = { nlohmann::json::parse(Output) };
+    } catch (const nlohmann::json::parse_error& e) {
+        return false;
+    }
+
+    if (leet::networkStatusCode == 200) {
+        return true;
+    }
+
+    for (auto& output : reqOutput) {
+        if (!output["errcode"].is_null()) {
+            leet::errorCode = 1;
+            leet::Error = output["errcode"].get<std::string>();
+            if (output["error"].is_string()) leet::friendlyError = output["error"].get<std::string>();
+
+            return false;
+        }
+    }
+
+    return false;
 }
 
 const std::vector<leet::Room::Room> leet::returnRooms(leet::User::credentialsResponse* resp, const int Limit) {

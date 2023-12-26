@@ -811,7 +811,14 @@ namespace leet {
      * @param  Alias Room alias to find the room ID from.
      * @return Returns a room ID.
      */
-    const std::string findRoomID(std::string Alias);
+    const std::string findRoomID(const std::string& Alias);
+    /**
+     * @brief  Removes a room alias from an undefined room ID.
+     * @param  resp credentialsResponse object, required for authentication.
+     * @param  Alias The room alias to remove. The server will determine the room ID from this alias.
+     * @return Returns a boolean, true if the room alias was successfully removed, otherwise false.
+     */
+    const bool removeRoomAlias(User::credentialsResponse* resp, const std::string& Alias);
 
     /**
      * @brief  Returns a vector of all spaces your user has joined.
