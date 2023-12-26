@@ -1,4 +1,4 @@
-project('libleet', 'cpp', version : '0.1', license : 'LGPL')
+project('libleet', 'cpp', version : '0.1.0', license : 'LGPL')
 cc = meson.get_compiler('cpp')
 
 project_source_files = [
