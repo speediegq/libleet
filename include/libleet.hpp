@@ -640,6 +640,13 @@ namespace leet {
      */
     const std::string invokeRequest_Get(const std::string& URL, const std::string& Authentication);
     /**
+     * @brief  Invokes a Delete request
+     * @param  URL URL to request.
+     * @param  Authentication Authentication that should be used. Often this is the access token.
+     * @return Returns the output from the request.
+     */
+    const std::string invokeRequest_Delete(const std::string& URL, const std::string& Authentication);
+    /**
      * @brief  Invokes a Put request
      * @param  URL URL to request.
      * @param  Data Data to Put.
@@ -661,6 +668,12 @@ namespace leet {
      * @return Returns the output from the request.
      */
     const std::string invokeRequest_Get(const std::string& URL);
+    /**
+     * @brief  Invokes a Delete request
+     * @param  URL URL to request.
+     * @return Returns the output from the request.
+     */
+    const std::string invokeRequest_Delete(const std::string& URL);
     /**
      * @brief  Invokes a Put request
      * @param  URL URL to request.
