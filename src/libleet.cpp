@@ -2338,6 +2338,37 @@ void leet::sendEncryptedMessage(leet::User::credentialsResponse* resp, leet::Enc
 }
 #endif
 
+leet::Event::Event leet::getStateFromType(leet::User::credentialsResponse* resp, leet::Room::Room* room, const std::string& eventType, const std::string& stateKey) {
+    leet::Event::Event event;
+    leet::errorCode = 0;
+    const std::string Output { leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/rooms/" + room->roomID + "/state/" + eventType + "/" + stateKey), resp->accessToken) };
+
+    nlohmann::json reqOutput;
+
+    try {
+        reqOutput = { nlohmann::json::parse(Output) };
+    }  catch (const nlohmann::json::parse_error& e) {
+        return event;
+    }
+
+    event.eventContent = Output;
+
+    for (auto& output : reqOutput) {
+        if (output["event_id"].is_string()) event.eventID = output["event_id"].get<std::string>();
+        if (output["origin_server_ts"].is_number_integer()) event.Age = output["origin_server_ts"].get<int>();
+
+        if (output["errcode"].is_string()) {
+            leet::Error = output["errcode"].get<std::string>();
+            leet::errorCode = 1;
+        }
+
+        if (output["error"].is_string())
+            leet::friendlyError = output["error"].get<std::string>();
+    }
+
+    return event;
+}
+
 const std::vector<leet::Event::Message> leet::returnMessages(leet::User::credentialsResponse* resp, leet::Room::Room* room, const int messageCount) {
     std::vector<leet::Event::Message> vector;
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + room->roomID + "/messages?dir=b&limit=" + std::to_string(messageCount) };

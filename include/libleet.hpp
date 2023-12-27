@@ -443,6 +443,7 @@ namespace leet {
             private:
             public:
                 std::string eventID{}; // Event ID
+                std::string eventContent{}; // Event contents in JSON format
                 int64_t Age{}; // Time since the event occured
         };
 
@@ -969,6 +970,15 @@ namespace leet {
      * Note that this function is just a convenient wrapper for returnEventFromTimestamp()
      */
     Event::Event returnLatestEvent(User::credentialsResponse* resp, Room::Room* room);
+    /**
+     * @brief  Get a state from a room ID, type and state key
+     * @param  resp credentialsResponse object, required for authentication.
+     * @param  room Room object to get an event from.
+     * @param  eventType Event type to get.
+     * @param  stateKey State key, most of the time you can just specify an empty string.
+     * @return Returns an Event object.
+     */
+    Event::Event getStateFromType(User::credentialsResponse* resp, Room::Room* room, const std::string& eventType, const std::string& stateKey);
 
     /**
      * @brief  Redact an event sent in a room.
