@@ -54,57 +54,45 @@ namespace leetCrypto {
 
 /* The main namespace, most functions and variables will be contained in this. */
 namespace leet {
-    /* Identifier */
     enum {
+        /* Identifiers */
         LEET_IDENTIFIER_USERID,
-        LEET_IDENTIFIER_THIRDPARTYID, /* Unsupported for now */
-        LEET_IDENTIFIER_PHONE, /* Unsupported for now */
-    };
+        LEET_IDENTIFIER_THIRDPARTYID, // Unsupported for now
+        LEET_IDENTIFIER_PHONE, // Unsupported for now
 
-    /* Type */
-    enum {
+        /* Login types */
         LEET_TYPE_PASSWORD,
         LEET_TYPE_TOKEN,
-    };
 
-    /* Preset */
-    enum {
+        /* Presets */
         LEET_PRESET_TRUSTED_PRIVATE, // Everyone becomes an administrator, otherwise same as LEET_PRESET_PRIVATE
         LEET_PRESET_PRIVATE, // Invite from an existing member of the room required to join
         LEET_PRESET_PUBLIC, // Invite not required, users can just join (except guests)
-    };
 
-    /* Presence */
-    enum {
+        /* Presence */
         LEET_PRESENCE_OFFLINE,
         LEET_PRESENCE_ONLINE,
         LEET_PRESENCE_UNAVAILABLE,
-    };
 
-    /* Message type */
-    enum {
+        /* Message types */
         LEET_MESSAGETYPE_TEXT,
         LEET_MESSAGETYPE_IMAGE,
         LEET_MESSAGETYPE_AUDIO,
         LEET_MESSAGETYPE_VIDEO,
         LEET_MESSAGETYPE_FILE,
-        LEET_MESSAGETYPE_NOTICE,
-        LEET_MESSAGETYPE_EMOTE,
-        LEET_MESSAGETYPE_LOCATION,
-        LEET_MESSAGETYPE_STRING,
-    };
+        LEET_MESSAGETYPE_NOTICE, // Not implemented
+        LEET_MESSAGETYPE_EMOTE, // Not implemented
+        LEET_MESSAGETYPE_LOCATION, // Not implemented
+        LEET_MESSAGETYPE_STRING, // This means the user enters his own type
 
-    /* Body type */
-    enum {
+        /* Body types */
         LEET_BODYTYPE_BASIC,
         LEET_BODYTYPE_FORMATTED,
         LEET_BODYTYPE_BOTH,
         LEET_BODYTYPE_SLIM,
         LEET_BODYTYPE_SPEEDIE,
-    };
 
-    /* Errors */
-    enum {
+        /* All the available errors */
         LEET_ERROR_NONE,
         LEET_ERROR_MSG_IS_NOT_AN_ENCRYPTED_MSG,
         LEET_ERROR_SESSION_FOR_MSG_WAS_NOT_RETRIEVED,
@@ -979,6 +967,16 @@ namespace leet {
      * @return Returns an Event object.
      */
     Event::Event getStateFromType(User::credentialsResponse* resp, Room::Room* room, const std::string& eventType, const std::string& stateKey);
+    /**
+     * @brief  Set a state from a room ID, type and state key. If a state already exists, it will be replaced.
+     * @param  resp credentialsResponse object, required for authentication.
+     * @param  room Room object to get an event from.
+     * @param  eventType Event type to get.
+     * @param  stateKey State key, most of the time you can just specify an empty string.
+     * @param  Body The body to include in the state.
+     * @return Returns an Event object.
+     */
+    Event::Event setStateFromType(User::credentialsResponse* resp, Room::Room* room, const std::string& eventType, const std::string& stateKey, const std::string& Body);
 
     /**
      * @brief  Redact an event sent in a room.
