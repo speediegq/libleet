@@ -6,19 +6,13 @@
  * https://git.speedie.site/speedie/libleet
  */
 
-#include <iostream>
 #include <fstream>
-#include <sstream>
-#include <future>
 #include <vector>
 #include <regex>
 #include <filesystem>
 #include <chrono>
 #include <string>
-#include <string_view>
 #include <ctime>
-#include <exception>
-#include <map>
 #include <nlohmann/json.hpp>
 
 #include "../include/libleet.hpp"
@@ -2551,8 +2545,11 @@ leet::Sync::Sync leet::returnSync(leet::User::credentialsResponse* resp, leet::S
         }
 
         // ToDevice
-        if (it["to_device"]["events"].is_array())
         for (auto& itEvent : it["to_device"]["events"]) {
+            if (!it["to_device"]["events"].is_array()) {
+                break;
+            }
+
             leet::errorCode = 0;
             leet::Sync::megolmSession megolmSession;
 
@@ -2586,9 +2583,15 @@ leet::Sync::Sync leet::returnSync(leet::User::credentialsResponse* resp, leet::S
 
         // Room related events
         // TODO: Broken, fix it
-        if (it["rooms"].is_object())
         for (auto& itEvent : it["rooms"]) {
-            if (itEvent["invite"].is_object())
+            if (!it["rooms"].is_object())  {
+                break;
+            }
+
+            if (!itEvent["invite"].is_object()) {
+                break;
+            }
+
             for (auto& inviteIt : itEvent["invite"]) {
                 leet::Sync::roomEvent::inviteEvent theInviteEvent;
 
