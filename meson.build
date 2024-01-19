@@ -25,6 +25,7 @@ endif
 
 install_headers('include/libleet.hpp', subdir : 'libleet')
 install_headers('include/net/Request.hpp', subdir : 'libleet/net')
+install_headers('include/crypto/olm.hpp', subdir : 'libleet/crypto')
 
 lib = static_library('leet', project_source_files, dependencies : project_dependencies, install : true)
 lib_shared = shared_library('leet', project_source_files, dependencies : project_dependencies, version : meson.project_version(), install : true)
