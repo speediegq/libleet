@@ -1,16 +1,6 @@
 #include <iostream>
 #include <string>
-#include <algorithm>
-#include <filesystem>
 #include <libleet/libleet.hpp>
-
-int checkError() {
-    if (leet::errorCode != 0) {
-        std::cerr << "Failed. " << leet::friendlyError << " (" << leet::Error << ")\n";
-        return 1;
-    }
-    return 0;
-}
 
 int main() {
     leet::User::Credentials cred;
@@ -39,8 +29,8 @@ int main() {
 
     cred.clearCredentials();
 
-    if (checkError() == true) {
-        return false;
+    if (!leet::checkError()) { // Yeah, appears something went wrong.
+        return 1;
     }
 
     leet::transID = leet::returnUnixTimestamp();
@@ -65,9 +55,9 @@ int main() {
 
     room = leet::returnRoom(&resp, &room);
 
-    if (checkError() == true) {
+    if (!leet::checkError()) { // Yeah, appears something went wrong.
         std::cout << "Are you stupid? That isn't a valid channel... I think.\n";
-        return false;
+        return 1;
     }
 
     leet::Event::Message msg;

@@ -49,7 +49,7 @@ int main() {
     cred.clearCredentials();
 
     if (!leet::checkError()) { // Yeah, appears something went wrong.
-        return false;
+        return 1;
     }
 
     /* While libleet provides functions for saving a transaction ID to file and loading it:
@@ -119,7 +119,7 @@ int main() {
 
     if (!leet::checkError()) { // Yeah, appears something went wrong.
         std::cout << "Are you stupid? That isn't a valid channel... I think.\n";
-        return false;
+        return 1;
     }
 
 #ifndef NO_ENCRYPTION

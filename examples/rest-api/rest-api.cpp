@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <memory>
 #include <vector>
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
