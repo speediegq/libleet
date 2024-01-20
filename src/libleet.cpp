@@ -7,7 +7,6 @@
  */
 
 #include <fstream>
-#include <vector>
 #include <regex>
 #include <filesystem>
 #include <chrono>
@@ -15,10 +14,10 @@
 #include <ctime>
 #include <nlohmann/json.hpp>
 
-#include "../include/libleet.hpp"
-#include "../include/net/Request.hpp"
+#include <libleet.hpp>
+#include <net/Request.hpp>
 #ifndef LEET_NO_ENCRYPTION
-#include "../include/crypto/olm.hpp"
+#include <crypto/olm.hpp>
 
 void leet::olmAccount::createAccount() {
     if (!accountMemoryAllocated) {

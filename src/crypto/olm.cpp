@@ -7,13 +7,11 @@
  */
 
 #ifndef LEET_NO_ENCRYPTION
-#include <iostream>
-#include <string>
 #include <olm/error.h>
 #include <olm/olm.h>
 #include <olm/sas.h>
 
-#include "../../include/crypto/olm.hpp"
+#include <crypto/olm.hpp>
 
 const std::string leetOlm::pickle(const std::string& pickleKey, OlmAccount* acc) {
     std::size_t pickleLength = olm_pickle_account_length(acc);

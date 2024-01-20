@@ -23,7 +23,7 @@
 #include <boost/asio/ssl/rfc2818_verification.hpp>
 #include <boost/asio/ssl/host_name_verification.hpp>
 #include <openssl/ssl.h>
-#include "../../include/net/Request.hpp"
+#include <net/Request.hpp>
 
 void leetRequest::URL::parseURLFromString(const std::string& URL) {
     std::regex urlReg("(http|https)://([^/ :]+):?([^/ ]*)(/?[^ #?]*)\\x3f?([^ #]*)#?([^ ]*)");

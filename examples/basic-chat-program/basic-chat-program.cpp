@@ -5,7 +5,7 @@
 #include <libleet/libleet.hpp>
 
 int main() {
-    leet::User::Credentials cred; // Create a credentials object which we'll pass to the login functionm.
+    leet::User::Credentials cred; // Create a credentials object which we'll pass to the login function.
 
     cred.Identifier = leet::LEET_IDENTIFIER_USERID; // Our identifier. We're using a user ID, not a third party ID or phone number.
     cred.Type = leet::LEET_TYPE_PASSWORD; // Our type. We're authenticating using a password, and that's the only supported method as of now.
@@ -150,8 +150,8 @@ int main() {
         std::getline(std::cin, myMessage);
 
         /* Exiting, so we need to save the transaction ID. Vim-style keybinds are cool, so we'll use them for this example.
-	     * And, you know, if you have no quit key, bad things will occur and you might have to unplug your computer.
-	     */
+         * And, you know, if you have no quit key, bad things will occur and you might have to unplug your computer.
+         */
         if (!myMessage.compare(":q")) {
 #ifndef NO_ENCRYPTION
             enc.destroy(); // We're done with encryption now
@@ -187,13 +187,13 @@ int main() {
         }
 
         /* Example of uploading a file embedded as a video.
-	     * The main difference is, when you specify 'm.video' or any other more specific type, clients will
-	     * treat the file differently. For example, on Element a .mp4 file will be displayed as a generic file if 'm.file'
-	     * is used as a type, but if a more specific type such as 'm.video' in this case is used then it will attempt to embed and
-	     * preview the video for users.
-	     *
-	     * Below is an example of a video file with 'm.video' rather than 'm.file'.
-	     *
+         * The main difference is, when you specify 'm.video' or any other more specific type, clients will
+         * treat the file differently. For example, on Element a .mp4 file will be displayed as a generic file if 'm.file'
+         * is used as a type, but if a more specific type such as 'm.video' in this case is used then it will attempt to embed and
+         * preview the video for users.
+         *
+         * Below is an example of a video file with 'm.video' rather than 'm.file'.
+         *
          * msg.messageText = "test.mp4"; // Text, doesn't matter that much but Element does this so we'll copy it
          * msg.messageType = "m.video"; // m.audio, m.video, m.image, m.text, m.file, ...
          *
@@ -207,8 +207,8 @@ int main() {
 
         /* Send the encrypted message
          * You can use leet::sendMessage() to send plain text messages. leet::sendEncryptedMessage() should be used if you need to send an encrypted message.
-	     * In a proper client, you'd check events to determine whether or not the room is encrypted or not, but that takes effort and I am a lazy programmer, just like you
-	     * so I will only put in the bare minimum amount of effort into this example.
+         * In a proper client, you'd check events to determine whether or not the room is encrypted or not, but that takes effort and I am a lazy programmer, just like you
+         * so I will only put in the bare minimum amount of effort into this example.
          */
 #ifndef NO_ENCRYPTION
         leet::sendEncryptedMessage(&resp, &enc, &room, &msg);
