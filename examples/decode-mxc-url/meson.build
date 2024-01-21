@@ -1,11 +1,9 @@
 project(
   'decode-mxc-url',
   'cpp',
-  version : '"0.1"',
+  version : '0.1',
   default_options : ['warning_level=3']
 )
-
-cc = meson.get_compiler('cpp')
 
 project_source_files = [
   'decode-mxc-url.cpp',
@@ -26,4 +24,4 @@ project_target = executable(
   c_args : build_args,
 )
 
-test('decode-mxc-url', project_target)
+test(meson.project_name(), project_target)
