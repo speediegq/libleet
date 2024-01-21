@@ -19,6 +19,12 @@
 #ifndef LEET_NO_ENCRYPTION
 #include <crypto/olm.hpp>
 
+namespace leetFunction { // contains functions that are used in libleet API functions
+    void getSessionsFromSync(const leet::User::credentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it);
+    void getRoomEventsFromSync(const leet::User::credentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it);
+    void getInvitesFromSync(const leet::User::credentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it);
+}
+
 void leet::olmAccount::createAccount() {
     if (!accountMemoryAllocated) {
         accountMemory = malloc(olm_account_size());
@@ -59,7 +65,7 @@ void leet::olmAccount::createMegolmSession() {
         free(megolmSessionMemory);
         megolmSessionMemoryAllocated = false;
         throw std::runtime_error("olm_init_outbound_group_session()");
-    }
+}
 
     if (!megolmSessionIDMemoryAllocated) {
         megolmSessionIDLength = olm_outbound_group_session_id_length(leetOlm::megolmSession);
@@ -2495,8 +2501,135 @@ leet::Filter::Filter leet::returnFilter(const leet::User::credentialsResponse& r
     return retFilter;
 }
 
+void leetFunction::getSessionsFromSync(const leet::User::credentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it) {
+    if (!it["to_device"]["events"].is_array()) {
+        return;
+    }
+
+    for (auto& itEvent : it["to_device"]["events"]) {
+        leet::errorCode = 0;
+        leet::Sync::megolmSession megolmSession;
+
+        if (itEvent["content"]["sender_key"].is_string()) {
+            megolmSession.senderKey = itEvent["content"]["sender_key"];
+        }
+
+        if (itEvent["content"]["algorithm"].is_string()) {
+            megolmSession.Algorithm = itEvent["content"]["algorithm"];
+        }
+
+        if (megolmSession.senderKey.compare("")) {
+            if (!itEvent["content"]["ciphertext"][megolmSession.senderKey]["body"].is_null()) {
+                megolmSession.cipherText = itEvent["content"]["ciphertext"][megolmSession.senderKey]["body"];
+            }
+
+            if (!itEvent["content"]["ciphertext"][megolmSession.senderKey]["type"].is_null()) {
+                megolmSession.cipherType = itEvent["content"]["ciphertext"][megolmSession.senderKey]["type"];
+            }
+        }
+
+        if (itEvent["sender"].is_string()) {
+            megolmSession.Sender = itEvent["sender"];
+        }
+
+        if (itEvent["type"].is_string()) {
+            megolmSession.Type = itEvent["type"];
+        }
+
+        sync.megolmSessions.push_back(megolmSession);
+    }
+}
+
+void leetFunction::getInvitesFromSync(const leet::User::credentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it) {
+    if (it["invite"].is_null()) {
+        return;
+    }
+
+    for (auto& inviteIt : it["invite"]) {
+        if (inviteIt["invite_state"]["events"].is_null()) {
+            continue;
+        }
+
+        leet::Sync::roomEvent::inviteEvent theInviteEvent{};
+
+        theInviteEvent.Encrypted = false; // sane default
+
+        for (auto& eventIt : inviteIt["invite_state"]["events"]) {
+            if (!eventIt["type"].is_string()) { // not valid
+                continue;
+            }
+
+            const std::string theType{eventIt["type"].get<std::string>()};
+
+            if (!theType.compare("m.room.encryption")) {
+                theInviteEvent.Encrypted = true;
+            }
+
+            if (!theType.compare("m.room.create")) {
+                if (eventIt["content"]["creator"].is_string()) {
+                    theInviteEvent.Creator = eventIt["content"]["creator"].get<std::string>();
+                }
+                if (eventIt["content"]["room_version"].is_number_integer()) {
+                    theInviteEvent.roomVersion = eventIt["content"]["room_version"].get<int>();
+                }
+            }
+
+            if (!theType.compare("m.room.member")) {
+                if (eventIt["state_key"].is_string()) if (eventIt["state_key"].get<std::string>().compare(resp.userID)) {
+                    if (eventIt["content"]["displayname"].is_string()) {
+                        theInviteEvent.displayName = eventIt["content"]["displayname"].get<std::string>();
+                    }
+                    if (eventIt["content"]["avatar_url"].is_string()) {
+                        theInviteEvent.avatarURL = eventIt["content"]["avatar_url"].get<std::string>();
+                    }
+                }
+
+                if (eventIt["sender"].is_string()) {
+                    theInviteEvent.userID = eventIt["sender"].get<std::string>();
+                }
+            }
+
+            if (!theType.compare("m.room.name")) {
+                if (eventIt["content"]["name"].is_string()) {
+                    theInviteEvent.roomName = eventIt["content"]["name"].get<std::string>();
+                }
+            }
+
+            if (!theType.compare("m.room.topic")) {
+                if (eventIt["content"]["topic"].is_string()) {
+                    theInviteEvent.roomTopic = eventIt["content"]["topic"].get<std::string>();
+                }
+            }
+
+            if (!theType.compare("m.room.join_rules")) {
+                if (eventIt["content"]["join_rule"].is_string()) {
+                    theInviteEvent.joinRule = eventIt["content"]["join_rule"].get<std::string>();
+                }
+
+                if (eventIt["content"]["allow"][0]["room_id"].is_string()) {
+                    theInviteEvent.roomID = eventIt["content"]["allow"][0]["room_id"].get<std::string>();
+                }
+            }
+
+            if (eventIt["event_id"].is_string()) {
+                theInviteEvent.eventID = eventIt["event_id"].get<std::string>();
+            }
+        }
+
+        sync.roomEvents.Invites.push_back(theInviteEvent);
+    }
+}
+
+void leetFunction::getRoomEventsFromSync(const leet::User::credentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it) {
+    if (it["rooms"].is_null())  {
+        return;
+    }
+
+    leetFunction::getInvitesFromSync(resp, sync, it["rooms"]);
+}
+
 leet::Sync::Sync leet::returnSync(const leet::User::credentialsResponse& resp, const leet::Sync::syncConfiguration& conf) {
-    leet::Sync::Sync sync;
+    leet::Sync::Sync sync{};
     std::string presenceString{"offline"};
 
     switch(conf.Presence) {
@@ -2537,121 +2670,8 @@ leet::Sync::Sync leet::returnSync(const leet::User::credentialsResponse& resp, c
             sync.nextBatch = it["next_batch"].get<std::string>();
         }
 
-        // ToDevice
-        for (auto& itEvent : it["to_device"]["events"]) {
-            if (!it["to_device"]["events"].is_array()) {
-                break;
-            }
-
-            leet::errorCode = 0;
-            leet::Sync::megolmSession megolmSession;
-
-            if (itEvent["content"]["sender_key"].is_string()) {
-                megolmSession.senderKey = itEvent["content"]["sender_key"];
-            }
-
-            if (itEvent["content"]["algorithm"].is_string()) {
-                megolmSession.Algorithm = itEvent["content"]["algorithm"];
-            }
-
-            if (megolmSession.senderKey.compare("")) {
-                if (!itEvent["content"]["ciphertext"][megolmSession.senderKey]["body"].is_null()) {
-                    megolmSession.cipherText = itEvent["content"]["ciphertext"][megolmSession.senderKey]["body"];
-                }
-                if (!itEvent["content"]["ciphertext"][megolmSession.senderKey]["type"].is_null()) {
-                    megolmSession.cipherType = itEvent["content"]["ciphertext"][megolmSession.senderKey]["type"];
-                }
-            }
-
-            if (itEvent["sender"].is_string()) {
-                megolmSession.Sender = itEvent["sender"];
-            }
-
-            if (itEvent["type"].is_string()) {
-                megolmSession.Type = itEvent["type"];
-            }
-
-            sync.megolmSessions.push_back(megolmSession);
-        }
-
-        // Room related events
-        // TODO: Broken, fix it
-        for (auto& itEvent : it["rooms"]) {
-            if (!it["rooms"].is_object())  {
-                break;
-            }
-
-            if (!itEvent["invite"].is_object()) {
-                break;
-            }
-
-            for (auto& inviteIt : itEvent["invite"]) {
-                leet::Sync::roomEvent::inviteEvent theInviteEvent;
-
-                if (!inviteIt["invite_state"]["events"].is_array()) {
-                    continue;
-                }
-
-                for (auto& eventIt : inviteIt["invite_state"]["events"]) {
-                    if (!eventIt["type"].is_string()) {
-                        continue;
-                    }
-
-                    const std::string theType{eventIt["type"].get<std::string>()};
-
-                    if (!theType.compare("m.room.encryption")) {
-                        theInviteEvent.Encrypted = true;
-                    }
-
-                    if (!theType.compare("m.room.create")) {
-                        if (eventIt["content"]["creator"].is_string())
-                            theInviteEvent.Creator = eventIt["content"]["creator"].get<std::string>();
-                        if (eventIt["content"]["room_version"].is_number_integer())
-                            theInviteEvent.roomVersion = eventIt["content"]["room_version"].get<int>();
-                    }
-                    if (!theType.compare("m.room.member")) {
-                        // check if the event is a member event for us, if it isn't we will treat it as the creator of the room
-                        if (eventIt["state_key"].is_string()) if (eventIt["state_key"].get<std::string>().compare(resp.userID)) {
-                            if (eventIt["content"]["displayname"].is_string()) {
-                                theInviteEvent.displayName = eventIt["content"]["displayname"].get<std::string>();
-                            }
-                            if (eventIt["content"]["avatar_url"].is_string()) {
-                                theInviteEvent.avatarURL = eventIt["content"]["avatar_url"].get<std::string>();
-                            }
-                            continue;
-                        }
-
-                        if (eventIt["sender"].is_string()) {
-                            theInviteEvent.userID = eventIt["sender"].get<std::string>();
-                        }
-
-                        if (eventIt["content"]["allow"]["room_id"].is_string()) {
-                            theInviteEvent.roomID = eventIt["content"]["allow"]["room_id"].get<std::string>();
-                        }
-                    }
-
-                    if (!theType.compare("m.room.name")) {
-                        if (eventIt["content"]["name"].is_string()) {
-                            theInviteEvent.roomName = eventIt["content"]["name"].get<std::string>();
-                        }
-                    }
-
-                    if (!theType.compare("m.room.topic")) {
-                        if (eventIt["content"]["topic"].is_string()) {
-                            theInviteEvent.roomTopic = eventIt["content"]["topic"].get<std::string>();
-                        }
-                    }
-
-                    if (!theType.compare("m.room.join_rules")) {
-                        if (eventIt["type"].is_string()) {
-                            theInviteEvent.joinRule = eventIt["type"].get<std::string>();
-                        }
-                    }
-                }
-
-                sync.roomEvents.Invites.push_back(theInviteEvent);
-            }
-        }
+        leetFunction::getSessionsFromSync(resp, sync, it);
+        leetFunction::getRoomEventsFromSync(resp, sync, it);
     }
 
     return sync;

@@ -2,3 +2,4 @@ subprojects/*-*
 subprojects/packagecache
 build
 return-sync
+output.json

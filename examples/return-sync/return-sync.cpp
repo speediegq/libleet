@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <nlohmann/json.hpp>
 #include <libleet/libleet.hpp>
@@ -33,5 +34,9 @@ int main() {
 
     nlohmann::json obj = nlohmann::json::parse(sync.theRequest);
 
-    std::cout << obj.dump(2) << "\n";
+    std::ofstream file("output.json");
+
+    file << obj.dump(2);
+
+    file.close();
 }

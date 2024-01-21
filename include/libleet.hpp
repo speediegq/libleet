@@ -344,17 +344,16 @@ namespace leet {
                     public:
                         std::string roomID{}; // room id to join
                         std::string userID{}; // inviter
-                        std::string inviteID{}; // id of the actual invite
+                        std::string eventID{}; // id of the actual invite
                         std::string avatarURL{}; // avatar of the inviter
                         std::string displayName{}; // display name of the inviter
-                        std::string Creator{};
-                        std::string Type{};
-                        std::string joinRule{};
-                        std::string roomName{};
-                        std::string roomTopic{};
-                        int roomVersion{};
+                        std::string Creator{}; // creator of the room
+                        std::string joinRule{}; // join rule
+                        std::string roomName{}; // room name
+                        std::string roomTopic{}; // room topic
+                        int roomVersion{}; // room version
 
-                        bool Encrypted{false};
+                        bool Encrypted{false}; // encrypted bool
                 };
                 /**
                  * @brief Class that represents a join event.
