@@ -31,7 +31,7 @@ int main() {
 
     leet::User::credentialsResponse resp;
 
-    resp = leet::loginAccount(&cred);
+    resp = leet::loginAccount(cred);
 
     cred.clearCredentials();
 
@@ -41,7 +41,7 @@ int main() {
 
     leet::transID = leet::returnUnixTimestamp();
 
-    if (leet::downloadFile(&resp, &attachment, outputPath)) {
+    if (leet::downloadFile(resp, attachment, outputPath)) {
         std::cout << "File downloaded and saved to '" << outputPath << "'\n";
         return 0;
     } else {

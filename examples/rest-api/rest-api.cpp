@@ -70,7 +70,7 @@ class Session : public std::enable_shared_from_this<Session> {
         void onWrite(boost::beast::error_code ec) {
             if (!ec) {
                 boost::beast::error_code close_ec;
-                exampleAPISocket.shutdown(boost::asio::ip::tcp::socket::shutdown_send, close_ec);
+                (void)exampleAPISocket.shutdown(boost::asio::ip::tcp::socket::shutdown_send, close_ec);
             }
         }
 };
@@ -153,7 +153,7 @@ const std::string returnRooms(const std::string& Body) {
         return ErrorResponse.dump();
     }
 
-    std::vector<leet::Room::Room> vector = leet::returnRooms(&resp, 9999);
+    std::vector<leet::Room::Room> vector = leet::returnRooms(resp, 9999);
 
     if (leet::errorCode != 0 || leet::friendlyError.compare("") || leet::Error.compare("")) {
         nlohmann::json ErrorResponse;
@@ -230,7 +230,7 @@ const std::string attemptLogin(const std::string& Body) {
     }
 
     leet::User::credentialsResponse resp;
-    resp = leet::loginAccount(&cred);
+    resp = leet::loginAccount(cred);
 
     nlohmann::json jsonResponse;
 

@@ -27,9 +27,9 @@ int main() {
     leet::User::credentialsResponse resp;
 
     if (leet::checkIfUsernameIsAvailable(cred.Username)) {
-        resp = leet::registerAccount(&cred);
+        resp = leet::registerAccount(cred);
     } else {
-        resp = leet::loginAccount(&cred);
+        resp = leet::loginAccount(cred);
     }
 
     cred.clearCredentials();
@@ -40,7 +40,7 @@ int main() {
 
     leet::transID = leet::returnUnixTimestamp();
 
-    leet::URL::urlPreview prev = leet::getURLPreview(&resp, URL, 0);
+    leet::URL::urlPreview prev = leet::getURLPreview(resp, URL, 0);
     std::cout << "\033[2J\033[1;1H";
 
     std::cout << "URL:          " << prev.URL << "\n";

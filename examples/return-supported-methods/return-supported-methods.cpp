@@ -17,7 +17,7 @@ int main() {
 
     std::vector<std::string> supportedTypes = leet::returnSupportedLoginTypes();
 
-    for (const auto& it : supportedTypes) {
+    for (auto it : supportedTypes) {
     	std::cout << it << "\n";
     }
 }

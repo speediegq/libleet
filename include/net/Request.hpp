@@ -40,7 +40,7 @@ namespace leetRequest {
              * @brief  Assemble a URL from specified parts
              * @return Returns a full URL based on the parts
              */
-            const std::string assembleURLFromParts();
+            std::string assembleURLFromParts();
     };
     /**
      * @brief  Class representing the response after making a network request
@@ -101,5 +101,5 @@ namespace leetRequest {
 
     inline std::string userCert{}; // User-specified root certificate string
 
-    const std::string getRootCertificates();
+    std::string getRootCertificates();
 }

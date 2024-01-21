@@ -52,7 +52,7 @@ void leetRequest::URL::parseURLFromString(const std::string& URL) {
     }
 }
 
-const std::string leetRequest::URL::assembleURLFromParts() {
+std::string leetRequest::URL::assembleURLFromParts() {
     std::string ret{};
     if (Protocol == leetRequest::LEET_REQUEST_PROTOCOL_HTTPS) {
         ret += "https://" + Host;
@@ -221,7 +221,7 @@ const bool leetRequest::Request::downloadFile() {
 /* Added 13/12/2023
  * Should ideally be swapped out 5 or so years after
  */
-const std::string leetRequest::getRootCertificates() {
+std::string leetRequest::getRootCertificates() {
     std::string cert =
         "-----BEGIN CERTIFICATE-----\n"
         "MIIDdTCCAl2gAwIBAgILBAAAAAABFUtaw5QwDQYJKoZIhvcNAQEFBQAwVzELMAkGA1UEBhMCQkUx\n"

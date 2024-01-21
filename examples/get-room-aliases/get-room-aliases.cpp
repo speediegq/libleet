@@ -26,17 +26,17 @@ int main() {
 
     leet::User::credentialsResponse resp;
 
-    resp = leet::loginAccount(&cred);
+    resp = leet::loginAccount(cred);
 
     cred.clearCredentials();
 
     if (roomID[0] == '#') {
 	    std::cout << "Room aliases: " << roomID << "\n";
     } else {
-	    std::vector<std::string> Aliases = leet::findRoomAliases(&resp, roomID);
+	    std::vector<std::string> Aliases = leet::findRoomAliases(resp, roomID);
 	    std::cout << "Room aliases:\n";
 
-	    for (const auto& it : Aliases) {
+	    for (auto it : Aliases) {
 		    std::cout << it << "\n";
 	    }
     }

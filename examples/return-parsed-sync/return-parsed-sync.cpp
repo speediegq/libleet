@@ -22,17 +22,17 @@ int main() {
 
     leet::User::credentialsResponse resp;
 
-    resp = leet::loginAccount(&cred);
+    resp = leet::loginAccount(cred);
 
     cred.clearCredentials();
 
     leet::transID = leet::returnUnixTimestamp();
 
     leet::Sync::syncConfiguration conf;
-    leet::Sync::Sync sync = leet::returnSync(&resp, &conf);
+    leet::Sync::Sync sync = leet::returnSync(resp, conf);
 
     /*
-    for (const auto& it : sync.megolmSessions) {
+    for (auto it : sync.megolmSessions) {
         std::cout << "Algorithm:   " << it.Algorithm << "\n";
         std::cout << "Sender Key:  " << it.senderKey << "\n";
         std::cout << "Sender:      " << it.Sender << "\n";
@@ -43,7 +43,7 @@ int main() {
     }
     */
 
-    for (const auto& it : sync.roomEvents.Invites) {
+    for (auto it : sync.roomEvents.Invites) {
 	    std::cout << "Room ID:      " << it.roomID << "\n";
 	    std::cout << "User ID:      " << it.userID << "\n";
 	    std::cout << "Invite ID:    " << it.inviteID << "\n";

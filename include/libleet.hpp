@@ -179,7 +179,7 @@ namespace leet {
                 std::string userID{}; // His user ID
                 std::string displayName{}; // His display name
                 std::string avatarURL{}; // His avatar mxc:// URL
-                std::vector<User::Device> Devices; // All of his devices
+                std::vector<User::Device> Devices{}; // All of his devices
         }; /* https://spec.matrix.org/v1.8/client-server-api/#profiles */
     }
 
@@ -193,7 +193,7 @@ namespace leet {
                 std::string Username{}; // The TURN server username
                 std::string Password{}; // The TURN server password
                 int timeToLiveIn{};
-                std::vector<std::string> URI;
+                std::vector<std::string> URI{};
         };
     }
 
@@ -245,7 +245,7 @@ namespace leet {
             public:
                 std::string spaceID{}; // Space ID
                 std::string roomType{}; // Room type
-                std::vector<leet::Room::Room> Rooms; // Rooms in the space
+                std::vector<leet::Room::Room> Rooms{}; // Rooms in the space
         };
     }
 
@@ -378,7 +378,7 @@ namespace leet {
                     public:
                 };
 
-                std::vector<inviteEvent> Invites;
+                std::vector<inviteEvent> Invites{};
         };
         /**
          * @brief Class that represents a Megolm session sent in the room */
@@ -398,10 +398,10 @@ namespace leet {
         class Sync {
             private:
             public:
-                userEvent userEvents;
-                nameEvent nameEvents;
-                roomEvent roomEvents;
-                std::vector<megolmSession> megolmSessions;
+                userEvent userEvents{};
+                nameEvent nameEvents{};
+                roomEvent roomEvents{};
+                std::vector<megolmSession> megolmSessions{};
                 std::string nextBatch{};
                 std::string theRequest{};
         };
@@ -413,7 +413,7 @@ namespace leet {
             private:
             public:
                 std::string Since{};
-                leet::Filter::Filter Filter;
+                leet::Filter::Filter Filter{};
                 bool fullState{false};
                 int Presence{LEET_PRESENCE_OFFLINE};
                 int Timeout{30000};
@@ -461,8 +461,8 @@ namespace leet {
                 int thumbnailSize{}; // Thumbnail file size
                 std::string thumbnailMimeType{}; // Thumbnail mime type
                 std::string thumbnailURL{}; // Thumbnail mxc:// URL
-                std::vector<std::string> mentionedUserIDs; // Mentioned users
-                leet::Event::Event replyEvent; // Event to reply to
+                std::vector<std::string> mentionedUserIDs{}; // Mentioned users
+                leet::Event::Event replyEvent{}; // Event to reply to
 
                 bool Encrypted{false}; // Whether the message is encrypted or not
                 bool megolm{false};
@@ -498,7 +498,7 @@ namespace leet {
      * If you use an ID that has been used before, the action will be considered a duplicate by
      * the server, and most likely ignored.
      */
-    const int generateTransID();
+    int generateTransID();
     /**
      * @brief  Saves the stored transaction ID to a file.
      * @param  File String path to the file.
@@ -510,7 +510,7 @@ namespace leet {
      *
      * NOTE: The transaction ID does not need to be encrypted, because it is not sensitive data.
      */
-    const bool saveTransID(const std::string& File);
+    bool saveTransID(const std::string& File);
     /**
      * @brief  Loads the stored transaction ID from a file.
      * @param  File String path to the file.
@@ -523,7 +523,7 @@ namespace leet {
      *
      * NOTE: The transaction ID does not need to be encrypted, because it is not sensitive data.
      */
-    const bool loadTransID(const std::string& File);
+    bool loadTransID(const std::string& File);
     /**
      * @brief  Saves data to a file.
      * @param  File String path to the file.
@@ -542,13 +542,13 @@ namespace leet {
      * @param  Server URL to check for discovery at.
      * @return Returns the home server if it can be found. If there's no .well-known/matrix/client file on the server, the server URL passed will be returned.
      */
-    const std::string returnServerDiscovery(std::string Server);
+    std::string returnServerDiscovery(const std::string& Server);
     /**
      * @brief  Returns a home server (matrix.org) from a user ID (@speedie:matrix.org)
      * @param  userID The user ID to extract the home server from.
      * @return Home server string
      */
-    const std::string returnHomeServerFromString(const std::string& userID);
+    std::string returnHomeServerFromString(const std::string& userID);
 
     /**
      * @brief  Get login types supported by the Matrix home server.
@@ -565,20 +565,20 @@ namespace leet {
      * @param  credentialsResponse object, used for authentication.
      * @return Max upload size limit in bytes.
      */
-    const int returnMaxUploadLimit(User::credentialsResponse* resp);
+    int returnMaxUploadLimit(const User::credentialsResponse& resp);
 
     /**
      * @brief  Check if an error occured.
      * @return Returns false if an error occured, otherwise returns true;
      */
-    const bool checkError();
+    bool checkError();
 
     /**
      * @brief  Attempts to create an account on the home server.
      * @param  cred Credentials object to use for registering
      * @return credentialsResponse object, containing the access token among other variables.
      */
-    User::credentialsResponse registerAccount(User::Credentials* cred);
+    User::credentialsResponse registerAccount(const User::Credentials& cred);
     /**
      * @brief  Check if a registration token is still valid or not.
      * @param  Token The token that should be validated.
@@ -591,13 +591,13 @@ namespace leet {
      * @param  cred Credentials object to use for login
      * @return credentialsResponse object, containing the access token among other variables.
      */
-    User::credentialsResponse loginAccount(User::Credentials* cred);
+    User::credentialsResponse loginAccount(const User::Credentials& cred);
     /**
      * @brief  Refresh an old access token (if a refresh token is available in the object)
      * @param  resp credentialsResponse object, required for authentication.
      * @return Returns a new User::credentialsResponse object based on the parameter.
      */
-    User::credentialsResponse refreshAccessToken(User::credentialsResponse* resp);
+    User::credentialsResponse refreshAccessToken(User::credentialsResponse& resp);
     /**
      * @brief  Invalidate an access token
      * @param  Token Token to invalidate.
@@ -609,7 +609,7 @@ namespace leet {
      * @param  userID User to get data for.
      * @return Returns a User::Profile object containing the user data.
      */
-    User::Profile getUserData(User::credentialsResponse* resp, const std::string& userID);
+    User::Profile getUserData(const User::credentialsResponse& resp, const std::string& userID);
 
     /**
      * @brief  Returns a full API URL from a Matrix endpoint.
@@ -619,7 +619,7 @@ namespace leet {
      * Returns a full API URL from a Matrix endpoint. This uses the leet::Homeserver variable and the passed API.
      * In other words, it returns https://example.com/_matrix/... from the passed API (_matrix/...)
      */
-    const std::string getAPI(const std::string& API);
+    std::string getAPI(const std::string& API);
 
     /**
      * @brief  Invokes a Get request
@@ -627,14 +627,14 @@ namespace leet {
      * @param  Authentication Authentication that should be used. Often this is the access token.
      * @return Returns the output from the request.
      */
-    const std::string invokeRequest_Get(const std::string& URL, const std::string& Authentication);
+    std::string invokeRequest_Get(const std::string& URL, const std::string& Authentication);
     /**
      * @brief  Invokes a Delete request
      * @param  URL URL to request.
      * @param  Authentication Authentication that should be used. Often this is the access token.
      * @return Returns the output from the request.
      */
-    const std::string invokeRequest_Delete(const std::string& URL, const std::string& Authentication);
+    std::string invokeRequest_Delete(const std::string& URL, const std::string& Authentication);
     /**
      * @brief  Invokes a Put request
      * @param  URL URL to request.
@@ -642,7 +642,7 @@ namespace leet {
      * @param  Authentication Authentication that should be used. Often this is the access token.
      * @return Returns the output from the request.
      */
-    const std::string invokeRequest_Put(const std::string& URL, const std::string& Data, const std::string& Authentication);
+    std::string invokeRequest_Put(const std::string& URL, const std::string& Data, const std::string& Authentication);
     /**
      * @brief  Invokes a Post request
      * @param  URL URL to request.
@@ -650,40 +650,40 @@ namespace leet {
      * @param  Authentication Authentication that should be used. Often this is the access token.
      * @return Returns the output from the request.
      */
-    const std::string invokeRequest_Post(const std::string& URL, const std::string& Data, const std::string& Authentication);
+    std::string invokeRequest_Post(const std::string& URL, const std::string& Data, const std::string& Authentication);
     /**
      * @brief  Invokes a Get request
      * @param  URL URL to request.
      * @return Returns the output from the request.
      */
-    const std::string invokeRequest_Get(const std::string& URL);
+    std::string invokeRequest_Get(const std::string& URL);
     /**
      * @brief  Invokes a Delete request
      * @param  URL URL to request.
      * @return Returns the output from the request.
      */
-    const std::string invokeRequest_Delete(const std::string& URL);
+    std::string invokeRequest_Delete(const std::string& URL);
     /**
      * @brief  Invokes a Put request
      * @param  URL URL to request.
      * @param  Data Data to Put.
      * @return Returns the output from the request.
      */
-    const std::string invokeRequest_Put(const std::string& URL, const std::string& Data);
+    std::string invokeRequest_Put(const std::string& URL, const std::string& Data);
     /**
      * @brief  Invokes a Post request
      * @param  URL URL to request.
      * @param  Data Data to Post.
      * @return Returns the output from the request.
      */
-    const std::string invokeRequest_Post(const std::string& URL, const std::string& Data);
+    std::string invokeRequest_Post(const std::string& URL, const std::string& Data);
     /**
      * @brief  Invokes a Post request
      * @param  URL URL to request.
      * @param  File Path to a file which should be uploaded.
      * @return Returns the output from the request.
      */
-    const std::string invokeRequest_Post_File(const std::string& URL, const std::string& File);
+    std::string invokeRequest_Post_File(const std::string& URL, const std::string& File);
     /**
      * @brief  Invokes a Post request
      * @param  URL URL to request.
@@ -691,7 +691,7 @@ namespace leet {
      * @param  Authentication Authentication that should be used. Often this is the access token.
      * @return Returns the output from the request.
      */
-    const std::string invokeRequest_Post_File(const std::string& URL, const std::string& File, const std::string& Authentication);
+    std::string invokeRequest_Post_File(const std::string& URL, const std::string& File, const std::string& Authentication);
 
     /**
      * @brief  Gets information about a room based on a room ID.
@@ -699,7 +699,7 @@ namespace leet {
      * @param  room Room object, this object should contain a room ID.
      * @return Returns a Room object containing room data.
      */
-    Room::Room returnRoom(User::credentialsResponse* resp, Room::Room* room);
+    Room::Room returnRoom(const User::credentialsResponse& resp, const Room::Room& room);
     /**
      * @brief  Upgrades a room to a specific room version.
      * @param  resp credentialsResponse object, required for authentication.
@@ -707,14 +707,14 @@ namespace leet {
      * @param  Version Version integer.
      * @return Returns a room with a new room ID.
      */
-    Room::Room upgradeRoom(User::credentialsResponse* resp, Room::Room* room, const int Version);
+    Room::Room upgradeRoom(const User::credentialsResponse& resp, const Room::Room& room, const int Version);
     /**
      * @brief  Create a room from a Room::roomConfiguration object.
      * @param  resp credentialsResponse object, required for authentication.
      * @parma  conf Room configuration object, this object should contain room information.
      * @return Returns a Room object containing room data.
      */
-    Room::Room createRoom(User::credentialsResponse* resp, Room::roomConfiguration* conf);
+    Room::Room createRoom(const User::credentialsResponse& resp, const Room::roomConfiguration& conf);
 
     /**
      * @brief  Join a public room or a room that you have been invited to.
@@ -722,14 +722,14 @@ namespace leet {
      * @param  room Room object, this object should contain a room ID.
      * @param  Reason Reason for wanting to join.
      */
-    void joinRoom(User::credentialsResponse* resp, Room::Room* room, const std::string& Reason);
+    void joinRoom(const User::credentialsResponse& resp, const Room::Room& room, const std::string& Reason);
     /**
      * @brief  Leave a room you're part of.
      * @param  resp credentialsResponse object, required for authentication.
      * @param  room Room object, this object should contain a room ID.
      * @param  Reason Reason for leaving.
      */
-    void leaveRoom(User::credentialsResponse* resp, Room::Room* room, const std::string& Reason);
+    void leaveRoom(const User::credentialsResponse& resp, const Room::Room& room, const std::string& Reason);
     /**
      * @brief  Kick a user from a room.
      * @param  resp credentialsResponse object, required for authentication.
@@ -737,7 +737,7 @@ namespace leet {
      * @param  profile Profile object, this object should contain a user ID for the user to kick.
      * @param  Reason Reason for kicking the user.
      */
-    void kickUserFromRoom(User::credentialsResponse* resp, Room::Room* room, User::Profile* profile, const std::string& Reason);
+    void kickUserFromRoom(const User::credentialsResponse& resp, const Room::Room& room, const User::Profile& profile, const std::string& Reason);
     /**
      * @brief  Ban a user from a room.
      * @param  resp credentialsResponse object, required for authentication.
@@ -745,7 +745,7 @@ namespace leet {
      * @param  profile Profile object, this object should contain a user ID for the user to ban.
      * @param  Reason Reason for banning the user.
      */
-    void banUserFromRoom(User::credentialsResponse* resp, Room::Room* room, User::Profile* profile, const std::string& Reason);
+    void banUserFromRoom(const User::credentialsResponse& resp, const Room::Room& room, const User::Profile& profile, const std::string& Reason);
     /**
      * @brief  Unban a user from a room.
      * @param  resp credentialsResponse object, required for authentication.
@@ -753,61 +753,61 @@ namespace leet {
      * @param  profile Profile object, this object should contain a user ID for the user to unban.
      * @param  Reason Reason for unbanning the user.
      */
-    void unbanUserFromRoom(User::credentialsResponse* resp, Room::Room* room, User::Profile* profile, const std::string& Reason);
+    void unbanUserFromRoom(const User::credentialsResponse& resp, const Room::Room& room, const User::Profile& profile, const std::string& Reason);
     /**
      * @brief  Invite a user to a room.
      * @param  resp credentialsResponse object, required for authentication.
      * @param  room Room object, this object should contain a room ID.
      * @param  Reason Reason for the invite being sent.
      */
-    void inviteUserToRoom(User::credentialsResponse* resp, Room::Room* room, const std::string& Reason);
+    void inviteUserToRoom(const User::credentialsResponse& resp, const Room::Room& room, const std::string& Reason);
     /**
      * @brief  Gets the visibility of a room.
      * @param  resp credentialsResponse object, required for authentication.
      * @param  room Room object, this object should contain a room ID.
      * @return Returns true if the room is visible, otherwise returns false.
      */
-    const bool getVisibilityOfRoom(User::credentialsResponse* resp, Room::Room* room);
+    bool getVisibilityOfRoom(const User::credentialsResponse& resp, const Room::Room& room);
     /**
      * @brief  Sets the visibility of a room to Visibility
      * @param  resp credentialsResponse object, required for authentication.
      * @param  room Room object, this object should contain a room ID.
      * @param  Visibility Boolean, true means visible, false means hidden.
      */
-    void setVisibilityOfRoom(User::credentialsResponse* resp, Room::Room* room, const bool Visibility);
+    void setVisibilityOfRoom(const User::credentialsResponse& resp, const Room::Room& room, const bool Visibility);
     /**
      * @brief  Returns a vector of all rooms your user has joined.
      * @param  resp credentialsResponse object, required for authentication.
      * @param  Limit Max number of rooms to return.
      * @return Returns a vector of all rooms your user has joined.
      */
-    const std::vector<Room::Room> returnRooms(User::credentialsResponse* resp, const int Limit);
+    std::vector<Room::Room> returnRooms(const User::credentialsResponse& resp, const int Limit);
     /**
      * @brief  Returns room IDs for all the rooms your user has joined.
      * @param  resp credentialsResponse object, required for authentication.
      * @return Returns room IDs for all the rooms your user has joined.
      */
-    const std::vector<Room::Room> returnRoomIDs(User::credentialsResponse* resp);
+    std::vector<Room::Room> returnRoomIDs(const User::credentialsResponse& resp);
     /**
      * @brief  Returns room aliases from a room ID.
      * @param  resp credentialsResponse object, required for authentication.
      * @param  roomID The room to get aliases from.
      * @return Returns an std::vector<std::string> containing room aliases.
      */
-    const std::vector<std::string> findRoomAliases(User::credentialsResponse* resp, const std::string& roomID);
+    std::vector<std::string> findRoomAliases(const User::credentialsResponse& resp, const std::string& roomID);
     /**
      * @brief  Resolves a room alias and returns the room ID.
      * @param  Alias Room alias to find the room ID from.
      * @return Returns a room ID.
      */
-    const std::string findRoomID(const std::string& Alias);
+    std::string findRoomID(const std::string& Alias);
     /**
      * @brief  Removes a room alias from an undefined room ID.
      * @param  resp credentialsResponse object, required for authentication.
      * @param  Alias The room alias to remove. The server will determine the room ID from this alias.
      * @return Returns a boolean, true if the room alias was successfully removed, otherwise false.
      */
-    const bool removeRoomAlias(User::credentialsResponse* resp, const std::string& Alias);
+    bool removeRoomAlias(const User::credentialsResponse& resp, const std::string& Alias);
 
     /**
      * @brief  Returns a vector of all spaces your user has joined.
@@ -815,14 +815,14 @@ namespace leet {
      * @param  Limit Max number of spaces to return.
      * @return Returns a vector of all spaces, along with all child rooms your user has joined.
      */
-    const std::vector<Space::Space> returnSpaces(User::credentialsResponse* resp, const int Limit);
+    std::vector<Space::Space> returnSpaces(const User::credentialsResponse& resp, const int Limit);
     /**
      * @brief  Returns a vector of all rooms in a space.
      * @param  resp credentialsResponse object, required for authentication.
      * @param  spaceID Space ID to get rooms from.
      * @return Returns a vector of all rooms in the space.
      */
-    const std::vector<Room::Room> returnRoomsInSpace(User::credentialsResponse* resp, const std::string& spaceID, const int Limit);
+    const std::vector<Room::Room> returnRoomsInSpace(const User::credentialsResponse& resp, const std::string& spaceID, const int Limit);
 
     /**
      * @brief  Converts an incomplete user ID to a full user ID. (i.e. speedie is converted to @speedie:matrix.org)
@@ -830,20 +830,20 @@ namespace leet {
      * @param  Homeserver Home server to use.
      * @return Returns a full user ID. You should make sure the home server is actually correct and validate the return value of this function.
      */
-    const std::string findUserID(const std::string& Alias, const std::string& Homeserver);
+    std::string findUserID(const std::string& Alias, const std::string& Homeserver);
     /**
      * @brief  Returns <name> from @<name>:<home server>.
      * @param  userID Full user ID.
      * @return Returns a string.
      */
-    const std::string returnUserName(const std::string& userID);
+    std::string returnUserName(const std::string& userID);
     /**
      * @brief  Returns a vector of all users in a room.
      * @param  resp credentialsResponse object, required for authentication.
      * @param  room Room object, the function uses the room ID, which must be set.
      * @return Returns a vector of all users in a room.
      */
-    const std::vector<User::Profile> returnUsersInRoom(User::credentialsResponse* resp, Room::Room* room);
+    std::vector<User::Profile> returnUsersInRoom(const User::credentialsResponse& resp, const Room::Room& room);
 
     /**
      * @brief  Returns a vector of all devices for a specific user.
@@ -851,14 +851,14 @@ namespace leet {
      * @param  user User vector, each User must have the user ID set.
      * @return Returns a vector of all devices for a specific user.
      */
-    const std::vector<User::Device> returnDevicesFromUser(User::credentialsResponse* resp, const std::vector<User::Profile>& user);
+    std::vector<User::Device> returnDevicesFromUser(const User::credentialsResponse& resp, const std::vector<User::Profile>& user);
 
     /**
      * @brief  Returns a boolean for whether a username is available on the home server or not.
      * @param  Username String to check for.
      * @return Returns true if the username is available, returns false otherwise.
      */
-    const bool checkIfUsernameIsAvailable(const std::string& Username);
+    bool checkIfUsernameIsAvailable(const std::string& Username);
 
     /**
      * @brief  Toggles typing in a room.
@@ -867,7 +867,7 @@ namespace leet {
      * @param  Typing Boolean, whether or not we should be typing or not.
      * @param  room Room to send the event in.
      */
-    void toggleTyping(User::credentialsResponse* resp, const int Timeout, const bool Typing, Room::Room* room);
+    void toggleTyping(const User::credentialsResponse& resp, const int Timeout, const bool Typing, const Room::Room& room);
 
     /**
      * @brief  Sets the read marker position to a specific event
@@ -877,8 +877,8 @@ namespace leet {
      * @param  readEvent Event to set the read receipt at.
      * @param  privateReadEvent Event to set the private read receipt at.
      */
-    void setReadMarkerPosition(User::credentialsResponse* resp, Room::Room* room,
-        Event::Event* fullyReadEvent, Event::Event* readEvent, Event::Event* privateReadEvent);
+    void setReadMarkerPosition(const User::credentialsResponse& resp, const Room::Room& room,
+        const Event::Event& fullyReadEvent, const Event::Event& readEvent, const Event::Event& privateReadEvent);
 
     /**
      * @brief  Sends a plain text message to the specified room.
@@ -886,7 +886,7 @@ namespace leet {
      * @param  room Room object, room that the message should be sent in.
      * @param  msg Event::Message object, the message that should be sent.
      */
-    void sendMessage(User::credentialsResponse* resp, Room::Room* room, Event::Message* msg);
+    void sendMessage(const User::credentialsResponse& resp, const Room::Room& room, const Event::Message& msg);
     /**
      * @brief  Returns a Event::Message vector from a room.
      * @param  resp credentialsResponse object, required for authentication.
@@ -894,7 +894,7 @@ namespace leet {
      * @param  messageCount Number of messages to retrieve from the room.
      * @return Returns a Event::Message vector which represents the retrieved messages.
      */
-    const std::vector<Event::Message> returnMessages(User::credentialsResponse* resp, Room::Room* room, const int messageCount);
+    std::vector<Event::Message> returnMessages(const User::credentialsResponse& resp, const Room::Room& room, const int messageCount);
 
     /**
      * @brief  Returns a filter ID which can be used when requesting data.
@@ -902,7 +902,7 @@ namespace leet {
      * @param  filter Filter configuration.
      * @return Returns a filter ID which can be used when requesting data.
      */
-    Filter::Filter returnFilter(User::credentialsResponse* resp, Filter::filterConfiguration *filter);
+    Filter::Filter returnFilter(const User::credentialsResponse& resp, const Filter::filterConfiguration& filter);
 
     /**
      * @brief  Uploads a file to the Matrix server(s).
@@ -910,7 +910,7 @@ namespace leet {
      * @param  File Path to the file which should be uploaded.
      * @return Returns an Attachment::Attachment object containing an mxc:// Matrix URL.
      */
-    Attachment::Attachment uploadFile(User::credentialsResponse* resp, const std::string& File);
+    Attachment::Attachment uploadFile(const User::credentialsResponse& resp, const std::string& File);
     /**
      * @brief  Downloads a file from the Matrix server.
      * @param  resp credentialsResponse object, required for authentication.
@@ -918,7 +918,7 @@ namespace leet {
      * @param  outputFile Output file path.
      * @return Returns true if it was downloaded successfully, otherwise false is returned.
      */
-    const bool downloadFile(User::credentialsResponse* resp, Attachment::Attachment* Attachment, const std::string& outputFile);
+    bool downloadFile(const User::credentialsResponse& resp, const Attachment::Attachment& Attachment, const std::string& outputFile);
 
     /**
      * @brief  Get a URL preview by calling a Matrix media endpoint. Do not call in encrypted rooms.
@@ -927,20 +927,20 @@ namespace leet {
      * @param  time The point in time to get a preview for. Specify 0 if you want the latest preview.
      * @return Returns a urlPreview object containing the response data.
      */
-    URL::urlPreview getURLPreview(User::credentialsResponse* resp, const std::string& URL, int64_t time);
+    URL::urlPreview getURLPreview(const User::credentialsResponse& resp, const std::string& URL, const int64_t time);
     /**
      * @brief  Gets a download link for an attachment from the Matrix server.
      * @param  resp credentialsResponse object, required for authentication.
      * @param  File Attachment object containing an mxc:// URL to download from.
      * @return Returns a URL in the form of an std::string
      */
-    const std::string decodeFile(User::credentialsResponse* resp, Attachment::Attachment* Attachment);
+    std::string decodeFile(const User::credentialsResponse& resp, const Attachment::Attachment& Attachment);
 
     /**
      * @brief  Gets the Unix timestamp
      * @return Returns a Unix timestamp (i.e. time since epoch)
      */
-    const int64_t returnUnixTimestamp();
+    int64_t returnUnixTimestamp();
     /**
      * @brief  Get an event from a Unix timestamp.
      * @param  resp credentialsResponse object, required for authentication.
@@ -949,7 +949,7 @@ namespace leet {
      * @param  Direction Boolean which specifies which direction to search for events in. true means forward while false means backwards.
      * @return Returns the event. If none could be found, an empty object is simply returned instead.
      */
-    Event::Event returnEventFromTimestamp(User::credentialsResponse* resp, Room::Room* room, const int64_t Timestamp, const bool Direction);
+    Event::Event returnEventFromTimestamp(const User::credentialsResponse& resp, const Room::Room& room, const int64_t Timestamp, const bool Direction);
     /**
      * @brief  Gets the latest event sent in the room.
      * @param  resp credentialsResponse object, required for authentication.
@@ -957,7 +957,7 @@ namespace leet {
      *
      * Note that this function is just a convenient wrapper for returnEventFromTimestamp()
      */
-    Event::Event returnLatestEvent(User::credentialsResponse* resp, Room::Room* room);
+    Event::Event returnLatestEvent(const User::credentialsResponse& resp, const Room::Room& room);
     /**
      * @brief  Get a state from a room ID, type and state key
      * @param  resp credentialsResponse object, required for authentication.
@@ -966,7 +966,7 @@ namespace leet {
      * @param  stateKey State key, most of the time you can just specify an empty string.
      * @return Returns an Event object.
      */
-    Event::Event getStateFromType(User::credentialsResponse* resp, Room::Room* room, const std::string& eventType, const std::string& stateKey);
+    Event::Event getStateFromType(const User::credentialsResponse& resp, const Room::Room& room, const std::string& eventType, const std::string& stateKey);
     /**
      * @brief  Set a state from a room ID, type and state key. If a state already exists, it will be replaced.
      * @param  resp credentialsResponse object, required for authentication.
@@ -976,7 +976,7 @@ namespace leet {
      * @param  Body The body to include in the state.
      * @return Returns an Event object.
      */
-    Event::Event setStateFromType(User::credentialsResponse* resp, Room::Room* room, const std::string& eventType, const std::string& stateKey, const std::string& Body);
+    Event::Event setStateFromType(const User::credentialsResponse& resp, const Room::Room& room, const std::string& eventType, const std::string& stateKey, const std::string& Body);
 
     /**
      * @brief  Redact an event sent in a room.
@@ -985,7 +985,7 @@ namespace leet {
      * @param  event The event to redact.
      * @param  Reason Reason for the redaction.
      */
-    void redactEvent(User::credentialsResponse* resp, Room::Room* room, Event::Event* event, const std::string& Reason);
+    void redactEvent(const User::credentialsResponse& resp, const Room::Room& room, const Event::Event& event, const std::string& Reason);
     /**
      * @brief  Report an event to the home server owner.
      * @param  resp credentialsResponse object, required for authentication.
@@ -994,21 +994,21 @@ namespace leet {
      * @param  Reason Reason for the report being made.
      * @param  Score A score between -100 and 0 with -100 being the most offensive and 0 is inoffensive. If the integer is not in this range 0 will be used.
      */
-    void reportEvent(User::credentialsResponse* resp, Room::Room* room, Event::Event* event, const std::string& Reason, const int Score);
+    void reportEvent(const User::credentialsResponse& resp, const Room::Room& room, const Event::Event& event, const std::string& Reason, const int Score);
 
     /**
      * @brief  Get sync information from the server.
      * @param  resp credentialsResponse object, required for authentication.
      * @return Returns a Sync object with the fields.
      */
-    Sync::Sync returnSync(User::credentialsResponse* resp, Sync::syncConfiguration* conf);
+    Sync::Sync returnSync(const User::credentialsResponse& resp, const Sync::syncConfiguration& conf);
 
     /**
      * @brief  Get TURN server credentials
      * @param  resp credentialsResponse object, required for authentication.
      * @return Returns a VOIP::Credentials object.
      */
-    VOIP::Credentials returnTurnCredentials(User::credentialsResponse* resp);
+    VOIP::Credentials returnTurnCredentials(const User::credentialsResponse& resp);
 
     #ifndef LEET_NO_ENCRYPTION
     /**
@@ -1094,7 +1094,7 @@ namespace leet {
             * @brief Uploads the device keys
             * @param  resp credentialsResponse object, required for authentication.
             */
-            void upload(leet::User::credentialsResponse* resp);
+            void upload(const leet::User::credentialsResponse& resp);
 
             /**
             * @brief Creates a session with one or more users in the current room.
@@ -1102,7 +1102,7 @@ namespace leet {
             * @param  room The room to send and create the event in.
             * @param  users Vector of users to create a session with.
             */
-            void createSession(leet::User::credentialsResponse* resp, leet::Room::Room* room, const std::vector<leet::User::Profile>& users);
+            void createSession(const leet::User::credentialsResponse& resp, const leet::Room::Room& room, const std::vector<leet::User::Profile>& users);
 
             /**
             * @brief  Encrypt a message.
@@ -1112,7 +1112,7 @@ namespace leet {
             *
             * Returns string json containing encrypted cipher text, which can then be uploaded to the server as an event
             */
-            const std::string encryptMessage(leet::User::credentialsResponse* resp, const std::string& message);
+            std::string encryptMessage(const leet::User::credentialsResponse& resp, const std::string& message);
 
             /**
             * @brief  Clean up by clearing the Olm account.
@@ -1160,7 +1160,7 @@ namespace leet {
      * @param  enc Encryption object.
      * @return Returns an Encryption object.
      */
-    Encryption uploadKeys(User::credentialsResponse* resp, Encryption* enc);
+    Encryption uploadKeys(const User::credentialsResponse& resp, Encryption& enc);
     /**
      * @brief  Creates a session in a room.
      * @param  resp credentialsResponse object, required for authentication.
@@ -1168,7 +1168,7 @@ namespace leet {
      * @param  room Room to create a session in.
      * @return Returns an Encryption object.
      */
-    Encryption createSessionInRoom(User::credentialsResponse* resp, Encryption* enc, Room::Room* room);
+    Encryption createSessionInRoom(const User::credentialsResponse& resp, Encryption& enc, const Room::Room& room);
     /**
      * @brief  Sends an encrypted message to a room.
      * @param  resp credentialsResponse object, required for authentication.
@@ -1176,7 +1176,7 @@ namespace leet {
      * @param  room Room to create a session in.
      * @param  msg Message to send.
      */
-    void sendEncryptedMessage(User::credentialsResponse* resp, Encryption* enc, Room::Room* room, Event::Message* msg);
+    void sendEncryptedMessage(const User::credentialsResponse& resp, Encryption& enc, const Room::Room& room, const Event::Message& msg);
 
     #endif // #ifndef LEET_NO_ENCRYPTION
 }

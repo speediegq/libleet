@@ -22,9 +22,9 @@ int main() {
     leet::User::credentialsResponse resp;
 
     if (leet::checkIfUsernameIsAvailable(cred.Username)) {
-        resp = leet::registerAccount(&cred);
+        resp = leet::registerAccount(cred);
     } else {
-        resp = leet::loginAccount(&cred);
+        resp = leet::loginAccount(cred);
     }
 
     cred.clearCredentials();
@@ -37,9 +37,9 @@ int main() {
 
     std::string myRoom{""};
     std::cout << "\033[2J\033[1;1H\n";
-    std::vector<leet::Room::Room> vector = leet::returnRooms(&resp, 9999);
+    std::vector<leet::Room::Room> vector = leet::returnRooms(resp, 9999);
 
-    for (auto& it : vector) {
+    for (auto it : vector) {
         const std::string Alias = it.Alias.compare("") ? it.Alias : it.roomID;
         const std::string Topic = it.Topic.compare("") ? it.Topic : "No room topic specified.";
         std::cout << Alias << " - " << Topic << "\n";
@@ -53,7 +53,7 @@ int main() {
     leet::Room::Room room;
     room.roomID = leet::findRoomID(myRoom);
 
-    room = leet::returnRoom(&resp, &room);
+    room = leet::returnRoom(resp, room);
 
     if (!leet::checkError()) { // Yeah, appears something went wrong.
         std::cout << "Are you stupid? That isn't a valid channel... I think.\n";
@@ -65,13 +65,13 @@ int main() {
     msg.messageText = "test.png";
     msg.messageType = "m.image";
 
-    leet::Attachment::Attachment attachment = leet::uploadFile(&resp, "test.png");
+    leet::Attachment::Attachment attachment = leet::uploadFile(resp, "test.png");
 
     msg.attachmentURL = attachment.URL;
 
     leet::transID = leet::returnUnixTimestamp();
 
-    leet::sendMessage(&resp, &room, &msg);
+    leet::sendMessage(resp, room, msg);
 
     if (leet::errorCode != 0) {
         std::exit(1);

@@ -22,14 +22,14 @@ int main() {
 
     leet::User::credentialsResponse resp;
 
-    resp = leet::loginAccount(&cred);
+    resp = leet::loginAccount(cred);
 
     cred.clearCredentials();
 
     leet::transID = leet::returnUnixTimestamp();
 
     leet::Sync::syncConfiguration conf;
-    leet::Sync::Sync sync = leet::returnSync(&resp, &conf);
+    leet::Sync::Sync sync = leet::returnSync(resp, conf);
 
     nlohmann::json obj = nlohmann::json::parse(sync.theRequest);
 

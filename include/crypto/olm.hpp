@@ -8,7 +8,6 @@
 
 #pragma once
 #ifndef LEET_NO_ENCRYPTION
-#include <iostream>
 #include <string>
 #include <map>
 #include <olm/error.h>

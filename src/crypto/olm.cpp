@@ -7,6 +7,7 @@
  */
 
 #ifndef LEET_NO_ENCRYPTION
+#include <stdexcept>
 #include <olm/error.h>
 #include <olm/olm.h>
 #include <olm/sas.h>

@@ -4,8 +4,10 @@
 #include <filesystem>
 #include <libleet/libleet.hpp>
 
+#define NO_ENCRYPTION // encryption is in very early stages, so probably disable it
+
 int main() {
-    leet::User::Credentials cred; // Create a credentials object which we'll pass to the login function.
+    leet::User::Credentials cred{}; // Create a credentials object which we'll pass to the login function.
 
     cred.Identifier = leet::LEET_IDENTIFIER_USERID; // Our identifier. We're using a user ID, not a third party ID or phone number.
     cred.Type = leet::LEET_TYPE_PASSWORD; // Our type. We're authenticating using a password, and that's the only supported method as of now.
@@ -34,21 +36,22 @@ int main() {
 
     cred.Homeserver = leet::returnServerDiscovery(leet::returnHomeServerFromString(cred.Username));
 
-    leet::User::credentialsResponse resp;
+    leet::User::credentialsResponse resp{};
 
     /* Check if we should consider this an attempt to register. Then we will
      * either log in or register.
      */
     if (leet::checkIfUsernameIsAvailable(cred.Username)) {
-        resp = leet::registerAccount(&cred);
+        resp = leet::registerAccount(cred);
     } else {
-        resp = leet::loginAccount(&cred);
+        resp = leet::loginAccount(cred);
     }
 
     /* Now that we don't need the credentials anymore, let's get rid of them for security reasons */
     cred.clearCredentials();
 
     if (!leet::checkError()) { // Yeah, appears something went wrong.
+        std::cout << leet::friendlyError;
         return 1;
     }
 
@@ -84,7 +87,7 @@ int main() {
      * should support spaces, because they are a basic feature of the Matrix spec.
      */
 
-    std::vector<leet::Room::Room> vector = leet::returnRooms(&resp, 9999);
+    std::vector<leet::Room::Room> vector = leet::returnRooms(resp, 9999);
 
     std::cout << "\n";
 
@@ -92,7 +95,7 @@ int main() {
      * but let's just present the room alias (or ID if no alias is specified)
      * and the topic. (if one is specified)
      */
-    for (auto& it : vector) {
+    for (auto it : vector) {
         const std::string Alias = it.Alias.compare("") ? it.Alias : it.roomID;
         const std::string Topic = it.Topic.compare("") ? it.Topic : "No room topic specified.";
         std::cout << Alias << " - " << Topic << "\n";
@@ -111,11 +114,11 @@ int main() {
     room.roomID = leet::findRoomID(myRoom);
 
     /* Now let's fill it with room properties */
-    room = leet::returnRoom(&resp, &room);
+    room = leet::returnRoom(resp, room);
 
     /* Set read marker */
-    leet::Event::Event event = leet::returnLatestEvent(&resp, &room);
-    leet::setReadMarkerPosition(&resp, &room, &event, &event, &event);
+    leet::Event::Event event = leet::returnLatestEvent(resp, room);
+    leet::setReadMarkerPosition(resp, room, event, event, event);
 
     if (!leet::checkError()) { // Yeah, appears something went wrong.
         std::cout << "Are you stupid? That isn't a valid channel... I think.\n";
@@ -127,20 +130,20 @@ int main() {
     leet::Encryption enc = leet::initEncryption();
 
     /* Now let's create and upload our device keys */
-    enc = leet::uploadKeys(&resp, &enc);
+    enc = leet::uploadKeys(resp, enc);
 
     /* Now let's create an Olm session with each device in the room and upload our new Megolm session */
-    enc = leet::createSessionInRoom(&resp, &enc, &room);
+    enc = leet::createSessionInRoom(resp, enc, room);
 #endif
 
     /* Read user messages in a loop */
     for (;;) {
         std::cout << "\033[2J\033[1;1H"; // Clear the screen on UNIX-like operating systems
-        std::vector<leet::Event::Message> messages = leet::returnMessages(&resp, &room, 25);
+        std::vector<leet::Event::Message> messages = leet::returnMessages(resp, room, 25);
         std::reverse(messages.begin(), messages.end());
 
         int i{1};
-        for (auto &message : messages) {
+        for (auto message : messages) {
             std::cout << "\033[0;31m" << i << ". \033[0m" << message.Sender << " - " << message.messageText << "\n";
             ++i;
         }
@@ -177,7 +180,7 @@ int main() {
             msg.messageType = "m.file";
             msg.messageText = file.filename();
 
-            leet::Attachment::Attachment attachment = leet::uploadFile(&resp, myMessage);
+            leet::Attachment::Attachment attachment = leet::uploadFile(resp, myMessage);
 
             msg.attachmentURL = attachment.URL;
 
@@ -197,7 +200,7 @@ int main() {
          * msg.messageText = "test.mp4"; // Text, doesn't matter that much but Element does this so we'll copy it
          * msg.messageType = "m.video"; // m.audio, m.video, m.image, m.text, m.file, ...
          *
-         * leet::Attachment::Attachment attachment = leet::uploadFile(&resp, "/home/speedie/test.mp4"); // This uploads the file from our computer to the Matrix home server(s).
+         * leet::Attachment::Attachment attachment = leet::uploadFile(resp, "/home/speedie/test.mp4"); // This uploads the file from our computer to the Matrix home server(s).
          *
          * msg.attachmentURL = attachment.URL; // Now our message has an attachment.
          */
@@ -211,9 +214,9 @@ int main() {
          * so I will only put in the bare minimum amount of effort into this example.
          */
 #ifndef NO_ENCRYPTION
-        leet::sendEncryptedMessage(&resp, &enc, &room, &msg);
+        leet::sendEncryptedMessage(resp, enc, room, msg);
 #else
-        leet::sendMessage(&resp, &room, &msg);
+        leet::sendMessage(resp, room, msg);
 #endif
 
         if (leet::errorCode != 0) {

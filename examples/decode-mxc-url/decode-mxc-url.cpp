@@ -3,8 +3,8 @@
 #include <libleet/libleet.hpp>
 
 int main() {
-    leet::User::Credentials cred;
-    leet::Attachment::Attachment attachment;
+    leet::User::Credentials cred{};
+    leet::Attachment::Attachment attachment{};
 
     cred.Identifier = leet::LEET_IDENTIFIER_USERID;
     cred.Type = leet::LEET_TYPE_PASSWORD;
@@ -26,7 +26,7 @@ int main() {
 
     leet::User::credentialsResponse resp;
 
-    resp = leet::loginAccount(&cred);
+    resp = leet::loginAccount(cred);
 
     cred.clearCredentials();
 
@@ -36,7 +36,7 @@ int main() {
 
     leet::transID = leet::returnUnixTimestamp();
 
-    std::cout << leet::decodeFile(&resp, &attachment) << "\n";
+    std::cout << leet::decodeFile(resp, attachment) << "\n";
 
     if (leet::errorCode != 0) {
         std::exit(1);
