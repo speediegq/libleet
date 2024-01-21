@@ -175,11 +175,12 @@ leetRequest::Response leetRequest::Request::makeRequest() {
         boost::beast::http::write(stream, httpRequest);
 
         boost::beast::flat_buffer flat_buffer;
-        boost::beast::http::response<boost::beast::http::dynamic_body> res;
+        boost::beast::http::response_parser<boost::beast::http::dynamic_body> res;
+        res.body_limit((std::numeric_limits<std::uint64_t>::max)());
         boost::beast::http::read(stream, flat_buffer, res);
 
-        resp.statusCode = res.result_int();
-        resp.Body = boost::beast::buffers_to_string(res.body().data());
+        resp.statusCode = res.get().result_int();
+        resp.Body = boost::beast::buffers_to_string(res.get().body().data());
 
         stream.next_layer().cancel();
         stream.shutdown(ec);
