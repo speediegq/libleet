@@ -1096,8 +1096,7 @@ leet::User::Profile leet::getUserData(const leet::User::credentialsResponse& res
         return profile;
     }
 
-    const std::string API { leet::getAPI("/_matrix/client/v3/profile/" + profile.userID) };
-    const std::string Output = invokeRequest_Get(API);
+    const std::string Output = invokeRequest_Get(leet::getAPI("/_matrix/client/v3/profile/" + profile.userID));
 
     nlohmann::json reqOutput;
 
