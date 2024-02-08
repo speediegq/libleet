@@ -12,5 +12,11 @@ ninja:
 install: ninja
 	meson install -C build/
 
+install_doas: ninja
+	doas meson install -C build/
+
+install_sudo: ninja
+	sudo meson install -C build/
+
 clean:
 	[ -d "build" ] && rm -rf build/ || :
