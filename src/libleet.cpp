@@ -20,9 +20,9 @@
 #include <crypto/olm.hpp>
 
 namespace leetFunction { // contains functions that are used in libleet API functions
-    void getSessionsFromSync(const leet::User::credentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it);
-    void getRoomEventsFromSync(const leet::User::credentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it);
-    void getInvitesFromSync(const leet::User::credentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it);
+    void getSessionsFromSync(const leet::User::CredentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it);
+    void getRoomEventsFromSync(const leet::User::CredentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it);
+    void getInvitesFromSync(const leet::User::CredentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it);
 }
 
 void leet::olmAccount::createAccount() {
@@ -34,9 +34,9 @@ void leet::olmAccount::createAccount() {
         throw std::runtime_error{ "createAccount(): Cannot allocate memory because it is already allocated." };
     }
 
-    leetCrypto::randomBytes randomBytes(olm_create_account_random_length(leetOlm::Account));
+    leetCrypto::RandomBytes RandomBytes(olm_create_account_random_length(leetOlm::Account));
 
-    if (olm_create_account(leetOlm::Account, randomBytes.data(), randomBytes.length()) == olm_error()) {
+    if (olm_create_account(leetOlm::Account, RandomBytes.data(), RandomBytes.length()) == olm_error()) {
         throw std::runtime_error("olm_create_account()");
     }
 }
@@ -59,9 +59,9 @@ void leet::olmAccount::createMegolmSession() {
     } else {
         throw std::runtime_error{ "createMegolmSession(): Cannot allocate memory because it is already allocated. (1)" };
     }
-    leetCrypto::randomBytes randomBytesSession(olm_init_outbound_group_session_random_length(leetOlm::megolmSession));
+    leetCrypto::RandomBytes RandomBytesSession(olm_init_outbound_group_session_random_length(leetOlm::megolmSession));
 
-    if (olm_init_outbound_group_session(leetOlm::megolmSession, static_cast<uint8_t* >(randomBytesSession.data()), randomBytesSession.length()) == olm_error()) {
+    if (olm_init_outbound_group_session(leetOlm::megolmSession, static_cast<uint8_t* >(RandomBytesSession.data()), RandomBytesSession.length()) == olm_error()) {
         free(megolmSessionMemory);
         megolmSessionMemoryAllocated = false;
         throw std::runtime_error("olm_init_outbound_group_session()");
@@ -152,7 +152,7 @@ void leet::olmAccount::createIdentity() {
     identityMemoryAllocated = false;
 }
 
-void leet::olmAccount::upload(const leet::User::credentialsResponse& resp) {
+void leet::olmAccount::upload(const leet::User::CredentialsResponse& resp) {
     if (!curve25519.compare("")) {
         throw std::runtime_error{ "upload(): Identity not allocated." };
     }
@@ -248,9 +248,9 @@ void leet::olmAccount::upload(const leet::User::credentialsResponse& resp) {
         if (keysNeeded > keysAvailable) {
             int keysToGenerate = keysNeeded - keysAvailable;
             std::size_t otkRandomLength = olm_account_generate_one_time_keys_random_length(leetOlm::Account, keysToGenerate);
-            leetCrypto::randomBytes randomBytes(otkRandomLength);
+            leetCrypto::RandomBytes RandomBytes(otkRandomLength);
 
-            if (olm_account_generate_one_time_keys(leetOlm::Account, keysToGenerate, randomBytes.data(), randomBytes.length()) == olm_error()) {
+            if (olm_account_generate_one_time_keys(leetOlm::Account, keysToGenerate, RandomBytes.data(), RandomBytes.length()) == olm_error()) {
                 throw std::runtime_error("olm_account_generate_one_time_keys()");
             }
 
@@ -317,7 +317,7 @@ void leet::olmAccount::upload(const leet::User::credentialsResponse& resp) {
     }
 }
 
-void leet::olmAccount::createSession(const leet::User::credentialsResponse& resp, const leet::Room::Room& room, const std::vector<leet::User::Profile>& users) {
+void leet::olmAccount::createSession(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const std::vector<leet::User::Profile>& users) {
     if (!megolmSessionMemoryAllocated) {
         throw std::runtime_error{ "createSession(): Megolm session not allocated." };
     }
@@ -427,9 +427,9 @@ void leet::olmAccount::createSession(const leet::User::credentialsResponse& resp
             // Store the session
             leetOlm::olmSessions[output.userID+output.curve25519Key+output.deviceID] = Session;
 
-            leetCrypto::randomBytes randomBytes(olm_create_outbound_session_random_length(Session));
+            leetCrypto::RandomBytes RandomBytes(olm_create_outbound_session_random_length(Session));
 
-            if (olm_create_outbound_session(Session, leetOlm::Account, output.curve25519Key.data(), output.curve25519Key.length(), Otk.data(), Otk.length(), randomBytes.data(), randomBytes.length()) == olm_error()) {
+            if (olm_create_outbound_session(Session, leetOlm::Account, output.curve25519Key.data(), output.curve25519Key.length(), Otk.data(), Otk.length(), RandomBytes.data(), RandomBytes.length()) == olm_error()) {
                 throw std::runtime_error("olm_create_outbound_session()");
             }
 
@@ -452,11 +452,11 @@ void leet::olmAccount::createSession(const leet::User::credentialsResponse& resp
 
             const std::string roomKeyMsg = roomKey.dump();
 
-            leetCrypto::randomBytes randomBytesEncrypt(olm_encrypt_random_length(Session));
+            leetCrypto::RandomBytes RandomBytesEncrypt(olm_encrypt_random_length(Session));
             std::size_t cipherTextLength = olm_encrypt_message_length(Session, roomKeyMsg.length());
             char* cipherText = (char* )malloc(cipherTextLength + 1);
 
-            tSize = olm_encrypt(Session, roomKeyMsg.data(), roomKeyMsg.length(), randomBytesEncrypt.data(), randomBytesEncrypt.length(), cipherText, cipherTextLength);
+            tSize = olm_encrypt(Session, roomKeyMsg.data(), roomKeyMsg.length(), RandomBytesEncrypt.data(), RandomBytesEncrypt.length(), cipherText, cipherTextLength);
 
             if (tSize == olm_error()) {
                 free(cipherText);
@@ -490,7 +490,7 @@ void leet::olmAccount::createSession(const leet::User::credentialsResponse& resp
     utilityMemoryAllocated = false;
 }
 
-std::string leet::olmAccount::encryptMessage(const leet::User::credentialsResponse& resp, const std::string& message) {
+std::string leet::olmAccount::encryptMessage(const leet::User::CredentialsResponse& resp, const std::string& message) {
     std::size_t cipherTextLength = olm_group_encrypt_message_length(leetOlm::megolmSession, message.length());
     char* cipherText = (char* )malloc(cipherTextLength + 1);
     std::size_t tSize = olm_group_encrypt(leetOlm::megolmSession, (uint8_t* )message.data(), message.length(), (uint8_t* )cipherText, cipherTextLength);
@@ -563,7 +563,7 @@ leet::Encryption leet::initEncryptionFromPickle(const std::string& pickleKey, co
     return enc;
 }
 
-leet::Encryption leet::uploadKeys(const leet::User::credentialsResponse& resp, leet::Encryption& enc) {
+leet::Encryption leet::uploadKeys(const leet::User::CredentialsResponse& resp, leet::Encryption& enc) {
     if (!enc.hasCreatedAccount) {
         throw std::runtime_error{ "olmAccount: Account has not been created." };
     }
@@ -578,7 +578,7 @@ leet::Encryption leet::uploadKeys(const leet::User::credentialsResponse& resp, l
     return enc;
 }
 
-leet::Encryption leet::createSessionInRoom(const leet::User::credentialsResponse& resp, leet::Encryption& enc, const leet::Room::Room& room) {
+leet::Encryption leet::createSessionInRoom(const leet::User::CredentialsResponse& resp, leet::Encryption& enc, const leet::Room::Room& room) {
     if (!enc.hasCreatedAccount) {
         throw std::runtime_error{ "olmAccount: Account has not been created." };
     }
@@ -630,7 +630,7 @@ void leet::invalidateAccessToken(const std::string& Token) {
     leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/logout"), Token);
 }
 
-leet::User::credentialsResponse leet::refreshAccessToken(leet::User::credentialsResponse& resp) {
+leet::User::CredentialsResponse leet::refreshAccessToken(leet::User::CredentialsResponse& resp) {
     if (!resp.refreshToken.compare("")) {
         return resp;
     }
@@ -690,8 +690,8 @@ bool leet::checkRegistrationTokenValidity(const std::string& Token) {
     return false;
 }
 
-leet::User::credentialsResponse leet::registerAccount(const leet::User::Credentials& cred) {
-    leet::User::credentialsResponse resp;
+leet::User::CredentialsResponse leet::registerAccount(const leet::User::Credentials& cred) {
+    leet::User::CredentialsResponse resp;
 
     std::string theUsername = cred.Username;
 
@@ -745,8 +745,8 @@ leet::User::credentialsResponse leet::registerAccount(const leet::User::Credenti
     return resp;
 }
 
-leet::User::credentialsResponse leet::loginAccount(const leet::User::Credentials& cred) {
-    leet::User::credentialsResponse resp;
+leet::User::CredentialsResponse leet::loginAccount(const leet::User::Credentials& cred) {
+    leet::User::CredentialsResponse resp;
     nlohmann::json list;
 
     std::string actualType{};
@@ -1080,7 +1080,7 @@ std::string leet::returnUserName(const std::string& userID) {
     return str;
 }
 
-leet::User::Profile leet::getUserData(const leet::User::credentialsResponse& resp, const std::string& userID) {
+leet::User::Profile leet::getUserData(const leet::User::CredentialsResponse& resp, const std::string& userID) {
     leet::errorCode = 0;
     leet::User::Profile profile;
 
@@ -1126,7 +1126,7 @@ leet::User::Profile leet::getUserData(const leet::User::credentialsResponse& res
     return profile;
 }
 
-std::vector<leet::User::Device> leet::returnDevicesFromUser(const leet::User::credentialsResponse& resp, const std::vector<leet::User::Profile>& user) {
+std::vector<leet::User::Device> leet::returnDevicesFromUser(const leet::User::CredentialsResponse& resp, const std::vector<leet::User::Profile>& user) {
     std::vector<leet::User::Device> devices;
 
     nlohmann::json Body;
@@ -1229,7 +1229,7 @@ bool leet::checkIfUsernameIsAvailable(const std::string& Username) {
     return false;
 }
 
-std::vector<leet::User::Profile> leet::returnUsersInRoom(const leet::User::credentialsResponse& resp, const leet::Room::Room& room) {
+std::vector<leet::User::Profile> leet::returnUsersInRoom(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room) {
     std::vector<leet::User::Profile> vector;
 
     const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/rooms/" + room.roomID + "/joined_members"), resp.accessToken);
@@ -1262,7 +1262,7 @@ std::vector<leet::User::Profile> leet::returnUsersInRoom(const leet::User::crede
     return vector;
 }
 
-std::vector<std::string> leet::findRoomAliases(const leet::User::credentialsResponse& resp, const std::string& roomID) {
+std::vector<std::string> leet::findRoomAliases(const leet::User::CredentialsResponse& resp, const std::string& roomID) {
     std::vector<std::string> ret;
     const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/rooms/" + roomID + "/aliases"), resp.accessToken);
 
@@ -1326,7 +1326,7 @@ std::string leet::findRoomID(const std::string& Alias) {
     return "";
 }
 
-bool leet::removeRoomAlias(const leet::User::credentialsResponse& resp, const std::string& Alias) {
+bool leet::removeRoomAlias(const leet::User::CredentialsResponse& resp, const std::string& Alias) {
     std::string ret = Alias;
     leet::errorCode = 0;
 
@@ -1364,7 +1364,7 @@ bool leet::removeRoomAlias(const leet::User::credentialsResponse& resp, const st
     return false;
 }
 
-std::vector<leet::Room::Room> leet::returnRooms(const leet::User::credentialsResponse& resp, const int Limit) {
+std::vector<leet::Room::Room> leet::returnRooms(const leet::User::CredentialsResponse& resp, const int Limit) {
     std::vector<leet::Room::Room> vector;
     std::vector<leet::Room::Room> vectorWithVal;
 
@@ -1394,7 +1394,7 @@ std::vector<leet::Room::Room> leet::returnRooms(const leet::User::credentialsRes
     return vectorWithVal;
 }
 
-leet::Room::Room leet::returnRoom(const leet::User::credentialsResponse& resp, const leet::Room::Room& room) {
+leet::Room::Room leet::returnRoom(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room) {
     leet::Room::Room theRoom;
     nlohmann::json returnOutput;
 
@@ -1422,7 +1422,7 @@ leet::Room::Room leet::returnRoom(const leet::User::credentialsResponse& resp, c
     return theRoom;
 }
 
-leet::Room::Room leet::upgradeRoom(const leet::User::credentialsResponse& resp, const leet::Room::Room& room, const int Version) {
+leet::Room::Room leet::upgradeRoom(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const int Version) {
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + room.roomID + "/upgrade" };
 
     nlohmann::json body;
@@ -1457,7 +1457,7 @@ leet::Room::Room leet::upgradeRoom(const leet::User::credentialsResponse& resp, 
     return room;
 }
 
-leet::Room::Room leet::createRoom(const leet::User::credentialsResponse& resp, const leet::Room::roomConfiguration& conf) {
+leet::Room::Room leet::createRoom(const leet::User::CredentialsResponse& resp, const leet::Room::RoomConfiguration& conf) {
     leet::Room::Room theRoom;
     nlohmann::json theJson;
 
@@ -1495,7 +1495,7 @@ leet::Room::Room leet::createRoom(const leet::User::credentialsResponse& resp, c
     return leet::returnRoom(resp, theRoom);
 }
 
-std::vector<leet::Room::Room> leet::returnRoomIDs(const leet::User::credentialsResponse& resp) {
+std::vector<leet::Room::Room> leet::returnRoomIDs(const leet::User::CredentialsResponse& resp) {
     std::vector<leet::Room::Room> vector;
 
     const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/joined_rooms"), resp.accessToken);
@@ -1518,7 +1518,7 @@ std::vector<leet::Room::Room> leet::returnRoomIDs(const leet::User::credentialsR
     return vector;
 }
 
-const std::vector<leet::Room::Room> leet::returnRoomsInSpace(const leet::User::credentialsResponse& resp, const std::string& spaceID, const int Limit) {
+const std::vector<leet::Room::Room> leet::returnRoomsInSpace(const leet::User::CredentialsResponse& resp, const std::string& spaceID, const int Limit) {
     std::vector<leet::Room::Room> rooms;
     if (spaceID[0] != '!') {
         return rooms;
@@ -1555,7 +1555,7 @@ const std::vector<leet::Room::Room> leet::returnRoomsInSpace(const leet::User::c
     return rooms;
 }
 
-std::vector<leet::Space::Space> leet::returnSpaces(const leet::User::credentialsResponse& resp, const int Limit) {
+std::vector<leet::Space::Space> leet::returnSpaces(const leet::User::CredentialsResponse& resp, const int Limit) {
     std::vector<leet::Space::Space> spaces;
     std::vector<leet::Room::Room> rooms = leet::returnRoomIDs(resp);
 
@@ -1590,7 +1590,7 @@ std::vector<leet::Space::Space> leet::returnSpaces(const leet::User::credentials
     return spaces;
 }
 
-void leet::toggleTyping(const leet::User::credentialsResponse& resp, const int Timeout, const bool Typing, const leet::Room::Room& room) {
+void leet::toggleTyping(const leet::User::CredentialsResponse& resp, const int Timeout, const bool Typing, const leet::Room::Room& room) {
     nlohmann::json list;
 
     list["timeout"] = Timeout;
@@ -1617,7 +1617,7 @@ void leet::toggleTyping(const leet::User::credentialsResponse& resp, const int T
     }
 }
 
-void leet::inviteUserToRoom(const leet::User::credentialsResponse& resp, const leet::Room::Room& room, const std::string& Reason) {
+void leet::inviteUserToRoom(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const std::string& Reason) {
     nlohmann::json request;
 
     request["reason"] = Reason;
@@ -1643,7 +1643,7 @@ void leet::inviteUserToRoom(const leet::User::credentialsResponse& resp, const l
     }
 }
 
-void leet::joinRoom(const leet::User::credentialsResponse& resp, const leet::Room::Room& room, const std::string& Reason) {
+void leet::joinRoom(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const std::string& Reason) {
     nlohmann::json body;
 
     if (!Reason.compare("")) {
@@ -1673,7 +1673,7 @@ void leet::joinRoom(const leet::User::credentialsResponse& resp, const leet::Roo
     // You may want to refresh your room list and call /sync after this
 }
 
-void leet::leaveRoom(const leet::User::credentialsResponse& resp, const leet::Room::Room& room, const std::string& Reason) {
+void leet::leaveRoom(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const std::string& Reason) {
     nlohmann::json body;
 
     if (!Reason.compare("")) {
@@ -1701,7 +1701,7 @@ void leet::leaveRoom(const leet::User::credentialsResponse& resp, const leet::Ro
     }
 }
 
-void leet::kickUserFromRoom(const leet::User::credentialsResponse& resp, const leet::Room::Room& room, const leet::User::Profile& profile, const std::string& Reason) {
+void leet::kickUserFromRoom(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const leet::User::Profile& profile, const std::string& Reason) {
     nlohmann::json body;
 
     if (!Reason.compare("")) {
@@ -1731,7 +1731,7 @@ void leet::kickUserFromRoom(const leet::User::credentialsResponse& resp, const l
     }
 }
 
-void leet::banUserFromRoom(const leet::User::credentialsResponse& resp, const leet::Room::Room& room, const leet::User::Profile& profile, const std::string& Reason) {
+void leet::banUserFromRoom(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const leet::User::Profile& profile, const std::string& Reason) {
     nlohmann::json body;
 
     if (!Reason.compare("")) {
@@ -1761,7 +1761,7 @@ void leet::banUserFromRoom(const leet::User::credentialsResponse& resp, const le
     }
 }
 
-void leet::unbanUserFromRoom(const leet::User::credentialsResponse& resp, const leet::Room::Room& room, const leet::User::Profile& profile, const std::string& Reason) {
+void leet::unbanUserFromRoom(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const leet::User::Profile& profile, const std::string& Reason) {
     nlohmann::json body;
 
     if (!Reason.compare("")) {
@@ -1791,7 +1791,7 @@ void leet::unbanUserFromRoom(const leet::User::credentialsResponse& resp, const 
     }
 }
 
-bool leet::getVisibilityOfRoom(const leet::User::credentialsResponse& resp, const leet::Room::Room& room) {
+bool leet::getVisibilityOfRoom(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room) {
     const std::string Output { leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/directory/list/room/" + room.roomID), resp.accessToken) };
 
     nlohmann::json reqOutput;
@@ -1822,7 +1822,7 @@ bool leet::getVisibilityOfRoom(const leet::User::credentialsResponse& resp, cons
     return false;
 }
 
-void leet::setVisibilityOfRoom(const leet::User::credentialsResponse& resp, const leet::Room::Room& room, const bool Visibility) {
+void leet::setVisibilityOfRoom(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const bool Visibility) {
     nlohmann::json body;
 
     body["visibility"] = Visibility ? "public" : "private";
@@ -1848,7 +1848,7 @@ void leet::setVisibilityOfRoom(const leet::User::credentialsResponse& resp, cons
     }
 }
 
-void leet::setReadMarkerPosition(const leet::User::credentialsResponse& resp, const leet::Room::Room& room,
+void leet::setReadMarkerPosition(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room,
         const leet::Event::Event& fullyReadEvent, const leet::Event::Event& readEvent, const leet::Event::Event& privateReadEvent) {
     nlohmann::json body;
 
@@ -1924,7 +1924,7 @@ bool leet::loadTransID(const std::string& File) {
     return (leet::transID = leet::loadFromFile<int>(File));
 }
 
-leet::Attachment::Attachment leet::uploadFile(const leet::User::credentialsResponse& resp, const std::string& File) {
+leet::Attachment::Attachment leet::uploadFile(const leet::User::CredentialsResponse& resp, const std::string& File) {
     leet::Attachment::Attachment theAttachment;
     const std::string Output = leet::invokeRequest_Post_File(leet::getAPI("/_matrix/media/v3/upload"), File, resp.accessToken);
 
@@ -1955,7 +1955,7 @@ leet::Attachment::Attachment leet::uploadFile(const leet::User::credentialsRespo
     return theAttachment;
 }
 
-std::string leet::decodeFile(const leet::User::credentialsResponse& resp, const leet::Attachment::Attachment& Attachment) {
+std::string leet::decodeFile(const leet::User::CredentialsResponse& resp, const leet::Attachment::Attachment& Attachment) {
     std::string Server{};
     std::string ID{};
     std::string File{Attachment.URL};
@@ -1977,7 +1977,7 @@ std::string leet::decodeFile(const leet::User::credentialsResponse& resp, const 
     return leet::getAPI("/_matrix/media/v3/download/" + Server + "/" + ID + "?allow_redirect=false");
 }
 
-bool leet::downloadFile(const leet::User::credentialsResponse& resp, const leet::Attachment::Attachment& Attachment, const std::string& outputFile) {
+bool leet::downloadFile(const leet::User::CredentialsResponse& resp, const leet::Attachment::Attachment& Attachment, const std::string& outputFile) {
     std::string Server{};
     std::string ID{};
     std::string File{Attachment.URL};
@@ -2029,8 +2029,8 @@ bool leet::downloadFile(const leet::User::credentialsResponse& resp, const leet:
     return request.downloadFile();
 }
 
-leet::URL::urlPreview leet::getURLPreview(const leet::User::credentialsResponse& resp, const std::string& URL, const int64_t time) {
-    leet::URL::urlPreview preview;
+leet::URL::URLPreview leet::getURLPreview(const leet::User::CredentialsResponse& resp, const std::string& URL, const int64_t time) {
+    leet::URL::URLPreview preview;
     const std::string Output { leet::invokeRequest_Get(leet::getAPI("/_matrix/media/v3/preview_url?ts=" + std::to_string(time) + "&url=" + URL), resp.accessToken) };
 
     nlohmann::json reqOutput;
@@ -2061,7 +2061,7 @@ int64_t leet::returnUnixTimestamp() {
     return std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
-leet::Event::Event leet::returnEventFromTimestamp(const leet::User::credentialsResponse& resp, const leet::Room::Room& room, const int64_t Timestamp, const bool Direction) {
+leet::Event::Event leet::returnEventFromTimestamp(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const int64_t Timestamp, const bool Direction) {
     leet::Event::Event event;
     std::string Dir = Direction ? "f" : "b";
 
@@ -2091,11 +2091,11 @@ leet::Event::Event leet::returnEventFromTimestamp(const leet::User::credentialsR
     return event;
 }
 
-leet::Event::Event leet::returnLatestEvent(const leet::User::credentialsResponse& resp, const leet::Room::Room& room) {
+leet::Event::Event leet::returnLatestEvent(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room) {
     return leet::returnEventFromTimestamp(resp, room, leet::returnUnixTimestamp(), true);
 }
 
-void leet::redactEvent(const leet::User::credentialsResponse& resp, const leet::Room::Room& room, const leet::Event::Event& event, const std::string& Reason) {
+void leet::redactEvent(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const leet::Event::Event& event, const std::string& Reason) {
 
     nlohmann::json body;
 
@@ -2125,7 +2125,7 @@ void leet::redactEvent(const leet::User::credentialsResponse& resp, const leet::
 
 }
 
-void leet::reportEvent(const leet::User::credentialsResponse& resp, const leet::Room::Room& room, const leet::Event::Event& event, const std::string& Reason, const int Score) {
+void leet::reportEvent(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const leet::Event::Event& event, const std::string& Reason, const int Score) {
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + room.roomID + "/report/" + event.eventID };
 
     nlohmann::json body;
@@ -2155,7 +2155,7 @@ void leet::reportEvent(const leet::User::credentialsResponse& resp, const leet::
     }
 }
 
-void leet::sendMessage(const leet::User::credentialsResponse& resp, const leet::Room::Room& room, const leet::Event::Message& msg) {
+void leet::sendMessage(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const leet::Event::Message& msg) {
     const int transID { leet::transID };
     const std::string eventType { "m.room.message" };
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + room.roomID + "/send/" + eventType + "/" + std::to_string(transID) };
@@ -2277,7 +2277,7 @@ void leet::sendMessage(const leet::User::credentialsResponse& resp, const leet::
 }
 
 #ifndef LEET_NO_ENCRYPTION
-void leet::sendEncryptedMessage(const leet::User::credentialsResponse& resp, leet::Encryption& enc, const leet::Room::Room& room, const leet::Event::Message& msg) {
+void leet::sendEncryptedMessage(const leet::User::CredentialsResponse& resp, leet::Encryption& enc, const leet::Room::Room& room, const leet::Event::Message& msg) {
     const int transID { leet::transID };
     const std::string eventType { "m.room.encrypted" };
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + room.roomID + "/send/" + eventType + "/" + std::to_string(transID) };
@@ -2330,7 +2330,7 @@ void leet::sendEncryptedMessage(const leet::User::credentialsResponse& resp, lee
 }
 #endif
 
-leet::Event::Event leet::getStateFromType(const leet::User::credentialsResponse& resp, const leet::Room::Room& room, const std::string& eventType, const std::string& stateKey) {
+leet::Event::Event leet::getStateFromType(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const std::string& eventType, const std::string& stateKey) {
     leet::Event::Event event;
     leet::errorCode = 0;
     const std::string Output { leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/rooms/" + room.roomID + "/state/" + eventType + "/" + stateKey), resp.accessToken) };
@@ -2361,7 +2361,7 @@ leet::Event::Event leet::getStateFromType(const leet::User::credentialsResponse&
     return event;
 }
 
-leet::Event::Event leet::setStateFromType(const leet::User::credentialsResponse& resp, const leet::Room::Room& room, const std::string& eventType, const std::string& stateKey, const std::string& Body) {
+leet::Event::Event leet::setStateFromType(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const std::string& eventType, const std::string& stateKey, const std::string& Body) {
     leet::Event::Event event;
     leet::errorCode = 0;
     const std::string Output { leet::invokeRequest_Put(leet::getAPI("/_matrix/client/v3/rooms/" + room.roomID + "/state/" + eventType + "/" + stateKey), Body, resp.accessToken) };
@@ -2389,7 +2389,7 @@ leet::Event::Event leet::setStateFromType(const leet::User::credentialsResponse&
     return event;
 }
 
-std::vector<leet::Event::Message> leet::returnMessages(const leet::User::credentialsResponse& resp, const leet::Room::Room& room, const int messageCount) {
+std::vector<leet::Event::Message> leet::returnMessages(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const int messageCount) {
     std::vector<leet::Event::Message> vector;
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + room.roomID + "/messages?dir=b&limit=" + std::to_string(messageCount) };
 
@@ -2455,7 +2455,7 @@ std::vector<leet::Event::Message> leet::returnMessages(const leet::User::credent
     return vector;
 }
 
-leet::Filter::Filter leet::returnFilter(const leet::User::credentialsResponse& resp, const leet::Filter::filterConfiguration& filter) {
+leet::Filter::Filter leet::returnFilter(const leet::User::CredentialsResponse& resp, const leet::Filter::FilterConfiguration& filter) {
     leet::Filter::Filter retFilter;
     const std::string APIUrl { "/_matrix/client/v3/user/" + resp.userID + "/filter" };
 
@@ -2500,14 +2500,14 @@ leet::Filter::Filter leet::returnFilter(const leet::User::credentialsResponse& r
     return retFilter;
 }
 
-void leetFunction::getSessionsFromSync(const leet::User::credentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it) {
+void leetFunction::getSessionsFromSync(const leet::User::CredentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it) {
     if (!it["to_device"]["events"].is_array()) {
         return;
     }
 
     for (auto& itEvent : it["to_device"]["events"]) {
         leet::errorCode = 0;
-        leet::Sync::megolmSession megolmSession;
+        leet::Sync::MegolmSession megolmSession;
 
         if (itEvent["content"]["sender_key"].is_string()) {
             megolmSession.senderKey = itEvent["content"]["sender_key"];
@@ -2539,7 +2539,7 @@ void leetFunction::getSessionsFromSync(const leet::User::credentialsResponse& re
     }
 }
 
-void leetFunction::getInvitesFromSync(const leet::User::credentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it) {
+void leetFunction::getInvitesFromSync(const leet::User::CredentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it) {
     if (it["invite"].is_null()) {
         return;
     }
@@ -2549,7 +2549,7 @@ void leetFunction::getInvitesFromSync(const leet::User::credentialsResponse& res
             continue;
         }
 
-        leet::Sync::roomEvent::inviteEvent theInviteEvent{};
+        leet::Sync::RoomEvent::InviteEvent theInviteEvent{};
 
         theInviteEvent.Encrypted = false; // sane default
 
@@ -2619,7 +2619,7 @@ void leetFunction::getInvitesFromSync(const leet::User::credentialsResponse& res
     }
 }
 
-void leetFunction::getRoomEventsFromSync(const leet::User::credentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it) {
+void leetFunction::getRoomEventsFromSync(const leet::User::CredentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it) {
     if (it["rooms"].is_null())  {
         return;
     }
@@ -2627,7 +2627,7 @@ void leetFunction::getRoomEventsFromSync(const leet::User::credentialsResponse& 
     leetFunction::getInvitesFromSync(resp, sync, it["rooms"]);
 }
 
-leet::Sync::Sync leet::returnSync(const leet::User::credentialsResponse& resp, const leet::Sync::syncConfiguration& conf) {
+leet::Sync::Sync leet::returnSync(const leet::User::CredentialsResponse& resp, const leet::Sync::SyncConfiguration& conf) {
     leet::Sync::Sync sync{};
     std::string presenceString{"offline"};
 
@@ -2676,7 +2676,7 @@ leet::Sync::Sync leet::returnSync(const leet::User::credentialsResponse& resp, c
     return sync;
 }
 
-leet::VOIP::Credentials leet::returnTurnCredentials(const leet::User::credentialsResponse& resp) {
+leet::VOIP::Credentials leet::returnTurnCredentials(const leet::User::CredentialsResponse& resp) {
     leet::VOIP::Credentials cred;
 
     const std::string Output { leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/voip/turnServer"), resp.accessToken) };
@@ -2777,7 +2777,7 @@ std::vector<std::string> leet::returnSupportedSpecs() {
     return vector;
 }
 
-int leet::returnMaxUploadLimit(const leet::User::credentialsResponse& resp) {
+int leet::returnMaxUploadLimit(const leet::User::CredentialsResponse& resp) {
     const std::string APIUrl { "/_matrix/media/v3/config" };
     const std::string Output { leet::invokeRequest_Get(leet::getAPI(APIUrl), resp.accessToken) };
 

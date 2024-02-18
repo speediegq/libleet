@@ -24,7 +24,7 @@ int main() {
     cred.deviceID = "libleet test client";
     cred.Homeserver = leet::returnServerDiscovery(leet::returnHomeServerFromString(cred.Username));
 
-    leet::User::credentialsResponse resp;
+    leet::User::CredentialsResponse resp;
 
     if (leet::checkIfUsernameIsAvailable(cred.Username)) {
         resp = leet::registerAccount(cred);
@@ -40,7 +40,7 @@ int main() {
 
     leet::transID = leet::returnUnixTimestamp();
 
-    leet::URL::urlPreview prev = leet::getURLPreview(resp, URL, 0);
+    leet::URL::URLPreview prev = leet::getURLPreview(resp, URL, 0);
     std::cout << "\033[2J\033[1;1H";
 
     std::cout << "URL:          " << prev.URL << "\n";

@@ -20,7 +20,7 @@ int main() {
     cred.deviceID = "libleet test client";
     cred.Homeserver = leet::returnServerDiscovery(leet::returnHomeServerFromString(cred.Username));
 
-    leet::User::credentialsResponse resp;
+    leet::User::CredentialsResponse resp;
 
     resp = leet::loginAccount(cred);
 
@@ -28,7 +28,7 @@ int main() {
 
     leet::transID = leet::returnUnixTimestamp();
 
-    leet::Sync::syncConfiguration conf;
+    leet::Sync::SyncConfiguration conf;
     leet::Sync::Sync sync = leet::returnSync(resp, conf);
 
     for (auto it : sync.megolmSessions) {

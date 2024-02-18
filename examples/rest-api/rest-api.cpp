@@ -77,6 +77,8 @@ class Session : public std::enable_shared_from_this<Session> {
 
 class Listener {
     public:
+        boost::asio::io_context& apiIoc; // only made public to silence a warning
+
         explicit Listener(boost::asio::io_context& ioc, boost::asio::ip::tcp::endpoint Endpoint)
             : apiIoc(ioc), apiAcceptor(ioc, Endpoint) {}
 
@@ -85,7 +87,6 @@ class Listener {
         }
 
     private:
-        boost::asio::io_context& apiIoc;
         boost::asio::ip::tcp::acceptor apiAcceptor;
 
         void acceptReq() {
@@ -117,7 +118,7 @@ const std::string returnRooms(const std::string& Body) {
         return ErrorResponse.dump();
     }
 
-    leet::User::credentialsResponse resp;
+    leet::User::CredentialsResponse resp;
 
     if (nlohmann::json::accept(Body)) {
         for (auto& it : Incoming) {
@@ -229,7 +230,7 @@ const std::string attemptLogin(const std::string& Body) {
         cred.Homeserver = leet::returnServerDiscovery(leet::returnHomeServerFromString(cred.Username));
     }
 
-    leet::User::credentialsResponse resp;
+    leet::User::CredentialsResponse resp;
     resp = leet::loginAccount(cred);
 
     nlohmann::json jsonResponse;

@@ -24,7 +24,7 @@ int main() {
     cred.deviceID = "libleet test client";
     cred.Homeserver = leet::returnServerDiscovery(leet::returnHomeServerFromString(cred.Username));
 
-    leet::User::credentialsResponse resp;
+    leet::User::CredentialsResponse resp;
 
     resp = leet::loginAccount(cred);
 

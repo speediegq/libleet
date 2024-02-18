@@ -1,5 +1,5 @@
 /* libleet parse URL
- * ======================
+ *
  * This is a simple libleet example, which allows you to simply parse a URL.
  * It is quite useless, and only really serves as a test for the network request
  * wrapper.

@@ -36,7 +36,7 @@ int main() {
 
     cred.Homeserver = leet::returnServerDiscovery(leet::returnHomeServerFromString(cred.Username));
 
-    leet::User::credentialsResponse resp{};
+    leet::User::CredentialsResponse resp{};
 
     /* Check if we should consider this an attempt to register. Then we will
      * either log in or register.
