@@ -89,8 +89,6 @@ namespace leet {
         LEET_BODYTYPE_BASIC,
         LEET_BODYTYPE_FORMATTED,
         LEET_BODYTYPE_BOTH,
-        LEET_BODYTYPE_SLIM,
-        LEET_BODYTYPE_SPEEDIE,
 
         /* All the available errors */
         LEET_ERROR_NONE,

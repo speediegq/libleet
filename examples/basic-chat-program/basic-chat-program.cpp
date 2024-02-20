@@ -51,7 +51,7 @@ int main() {
     cred.clearCredentials();
 
     if (!leet::checkError()) { // Yeah, appears something went wrong.
-        std::cout << leet::friendlyError;
+        std::cerr << leet::friendlyError;
         return 1;
     }
 
@@ -159,7 +159,7 @@ int main() {
 #ifndef NO_ENCRYPTION
             enc.destroy(); // We're done with encryption now
 #endif
-            std::exit(0);
+            return 0;
         }
 
         /* Message class, this will contain message information, and the message itself */
@@ -184,7 +184,7 @@ int main() {
 
             msg.attachmentURL = attachment.URL;
 
-            if (leet::errorCode != 0) { /* Something went wrong */
+            if (!leet::checkError()) { /* Something went wrong */
                 continue;
             }
         }
@@ -219,11 +219,12 @@ int main() {
         leet::sendMessage(resp, room, msg);
 #endif
 
-        if (leet::errorCode != 0) {
+        if (!leet::checkError()) {
 #ifndef NO_ENCRYPTION
             enc.destroy(); // We're done with encryption now
 #endif
-            std::exit(1);
+            std::cerr << leet::friendlyError;
+            return 1;
         }
     }
 

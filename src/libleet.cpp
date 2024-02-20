@@ -2159,7 +2159,7 @@ void leet::sendMessage(const leet::User::CredentialsResponse& resp, const leet::
     const int transID { leet::transID };
     const std::string eventType { "m.room.message" };
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + room.roomID + "/send/" + eventType + "/" + std::to_string(transID) };
-    std::string messageType = msg.messageType;
+    std::string messageType = "m.text";
 
     switch (msg.msgType) {
         case leet::LEET_MESSAGETYPE_IMAGE:
@@ -2191,14 +2191,9 @@ void leet::sendMessage(const leet::User::CredentialsResponse& resp, const leet::
             break;
     }
 
-    if (msg.bodyType == leet::LEET_BODYTYPE_SLIM) {
-        throw std::runtime_error{ "You seem like a funny guy." };
-    } else if (msg.bodyType == leet::LEET_BODYTYPE_SPEEDIE) {
-        throw std::runtime_error{ "Why would you want to be a lazy fatass like me?" };
-    }
-
     nlohmann::json list;
 
+    // attachment
     if (!messageType.compare("m.image") || !messageType.compare("m.audio") || !messageType.compare("m.video") || !messageType.compare("m.file")) {
         if (msg.attachmentURL[0] != 'm' || msg.attachmentURL[1] != 'x' || msg.attachmentURL[2] != 'c') {
             leet::errorCode = 1;
@@ -2230,10 +2225,11 @@ void leet::sendMessage(const leet::User::CredentialsResponse& resp, const leet::
         if (!msg.replyEvent.eventID.compare("")) {
             list["m.relates_to"]["m.in_reply_to"]["event_id"] = msg.replyEvent.eventID;
         }
-    } else {
+    } else { // plain text/formatted text
         list["type"] = "m.room.message";
         list["room_id"] = room.roomID;
         list["body"] = msg.messageText;
+        list["msgtype"] = messageType;
 
         if ((msg.bodyType == leet::LEET_BODYTYPE_BASIC) || (msg.bodyType == leet::LEET_BODYTYPE_BOTH)) {
             list["body"] = msg.messageText;
@@ -2276,6 +2272,7 @@ void leet::sendMessage(const leet::User::CredentialsResponse& resp, const leet::
     }
 }
 
+// TODO: support other message types than m.text
 #ifndef LEET_NO_ENCRYPTION
 void leet::sendEncryptedMessage(const leet::User::CredentialsResponse& resp, leet::Encryption& enc, const leet::Room::Room& room, const leet::Event::Message& msg) {
     const int transID { leet::transID };
