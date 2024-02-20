@@ -483,7 +483,7 @@ void leet::olmAccount::createSession(const leet::User::CredentialsResponse& resp
     }
 
     const std::string putOutput {
-        leet::invokeRequest_Put(leet::getAPI("/_matrix/client/v3/sendToDevice/m.room.encrypted/" + std::to_string(transID)), eventToSend.dump(), resp.accessToken)
+        leet::invokeRequest_Put(leet::getAPI("/_matrix/client/v3/sendToDevice/m.room.encrypted/" + std::to_string(leet::transID)), eventToSend.dump(), resp.accessToken)
     };
 
     free(utilityMemory);
@@ -607,15 +607,15 @@ std::vector<std::string> leet::returnSupportedLoginTypes() {
 
     std::string Output { leet::invokeRequest_Get(leet::getAPI(APIUrl)) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = nlohmann::json::parse(Output);
+        requestResponse = nlohmann::json::parse(Output);
     } catch (const nlohmann::json::parse_error& e) {
         return vector;
     }
 
-    auto& messages = reqOutput["flows"];
+    auto& messages = requestResponse["flows"];
 
     for (auto it = messages.begin(); it != messages.end(); ++it) {
         std::string theString{};
@@ -1098,15 +1098,15 @@ leet::User::Profile leet::getUserData(const leet::User::CredentialsResponse& res
 
     const std::string Output = invokeRequest_Get(leet::getAPI("/_matrix/client/v3/profile/" + profile.userID));
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return profile;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         if (output["avatar_url"].is_string()) profile.avatarURL = output["avatar_url"].get<std::string>();
         if (output["displayname"].is_string()) profile.displayName = output["displayname"].get<std::string>();
 
@@ -1205,15 +1205,15 @@ bool leet::checkIfUsernameIsAvailable(const std::string& Username) {
     const std::string API { leet::getAPI("/_matrix/client/v3/register/available?username=" + theUsername) };
     const std::string Output = invokeRequest_Get(API);
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return false; // fallback to false is probably safest?
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         if (output["errcode"].is_string()) {
             leet::errorCode = 1;
             leet::Error = output["errcode"].get<std::string>();
@@ -1266,15 +1266,15 @@ std::vector<std::string> leet::findRoomAliases(const leet::User::CredentialsResp
     std::vector<std::string> ret;
     const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/rooms/" + roomID + "/aliases"), resp.accessToken);
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return ret;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         if (!output["aliases"].is_null()) {
             leet::errorCode = 0;
             return output["aliases"].get<std::vector<std::string>>();
@@ -1302,15 +1302,15 @@ std::string leet::findRoomID(const std::string& Alias) {
     ret.replace(0, 1, "%23");
 
     const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/directory/room/") + ret);
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return "";
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         if (output["room_id"].is_string()) {
             leet::errorCode = 0;
             return output["room_id"].get<std::string>();
@@ -1339,10 +1339,10 @@ bool leet::removeRoomAlias(const leet::User::CredentialsResponse& resp, const st
     ret.replace(0, 1, "%23");
 
     const std::string Output = leet::invokeRequest_Delete(leet::getAPI("/_matrix/client/v3/directory/room/" + ret), resp.accessToken);
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return false;
     }
@@ -1351,7 +1351,7 @@ bool leet::removeRoomAlias(const leet::User::CredentialsResponse& resp, const st
         return true;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         if (!output["errcode"].is_null()) {
             leet::errorCode = 1;
             leet::Error = output["errcode"].get<std::string>();
@@ -1431,16 +1431,16 @@ leet::Room::Room leet::upgradeRoom(const leet::User::CredentialsResponse& resp, 
 
     const std::string Output { leet::invokeRequest_Post(leet::getAPI(APIUrl), body.dump(), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     }  catch (const nlohmann::json::parse_error& e) {
         return room;
     }
 
     std::string theRoomID{""};
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["replacement_room"].is_string()) theRoomID = output["replacement_room"].get<std::string>();
@@ -1476,15 +1476,15 @@ leet::Room::Room leet::createRoom(const leet::User::CredentialsResponse& resp, c
     }
 
     const std::string Output = leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/createRoom"), theJson.dump(), resp.accessToken);
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return theRoom;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["room_id"].is_string()) theRoom.roomID = output["room_id"].get<std::string>();
@@ -1598,15 +1598,15 @@ void leet::toggleTyping(const leet::User::CredentialsResponse& resp, const int T
 
     const std::string Output { leet::invokeRequest_Put(leet::getAPI("/_matrix/client/v3/rooms/" + room.roomID + "/typing/" + resp.userID), list.dump(), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["errcode"].is_string()) {
@@ -1624,15 +1624,15 @@ void leet::inviteUserToRoom(const leet::User::CredentialsResponse& resp, const l
     request["user_id"] = resp.userID;
 
     const std::string Output { leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/rooms/" + room.roomID + "/invite"), request.dump(), resp.accessToken) };
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["errcode"].is_string()) {
@@ -1652,15 +1652,15 @@ void leet::joinRoom(const leet::User::CredentialsResponse& resp, const leet::Roo
 
     const std::string Output { leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/rooms/" + room.roomID + "/join"), body.dump(), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["errcode"].is_string()) {
@@ -1682,15 +1682,15 @@ void leet::leaveRoom(const leet::User::CredentialsResponse& resp, const leet::Ro
 
     const std::string Output { leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/rooms/" + room.roomID + "/leave"), body.dump(), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["errcode"].is_string()) {
@@ -1712,15 +1712,15 @@ void leet::kickUserFromRoom(const leet::User::CredentialsResponse& resp, const l
 
     const std::string Output { leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/rooms/" + room.roomID + "/kick"), body.dump(), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["errcode"].is_string()) {
@@ -1742,15 +1742,15 @@ void leet::banUserFromRoom(const leet::User::CredentialsResponse& resp, const le
 
     const std::string Output { leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/rooms/" + room.roomID + "/ban"), body.dump(), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["errcode"].is_string()) {
@@ -1772,15 +1772,15 @@ void leet::unbanUserFromRoom(const leet::User::CredentialsResponse& resp, const 
 
     const std::string Output { leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/rooms/" + room.roomID + "/unban"), body.dump(), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["errcode"].is_string()) {
@@ -1794,15 +1794,15 @@ void leet::unbanUserFromRoom(const leet::User::CredentialsResponse& resp, const 
 bool leet::getVisibilityOfRoom(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room) {
     const std::string Output { leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/directory/list/room/" + room.roomID), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return false;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["errcode"].is_string()) {
@@ -1829,15 +1829,15 @@ void leet::setVisibilityOfRoom(const leet::User::CredentialsResponse& resp, cons
 
     const std::string Output { leet::invokeRequest_Put(leet::getAPI("/_matrix/client/v3/directory/list/room/" + room.roomID), body.dump(), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["errcode"].is_string()) {
@@ -1858,15 +1858,15 @@ void leet::setReadMarkerPosition(const leet::User::CredentialsResponse& resp, co
 
     const std::string Output { leet::invokeRequest_Post(leet::getAPI("/_matrix/client/v3/rooms/" + room.roomID + "/read_markers"), body.dump(), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["errcode"].is_string()) {
@@ -2033,10 +2033,10 @@ leet::URL::URLPreview leet::getURLPreview(const leet::User::CredentialsResponse&
     leet::URL::URLPreview preview;
     const std::string Output { leet::invokeRequest_Get(leet::getAPI("/_matrix/media/v3/preview_url?ts=" + std::to_string(time) + "&url=" + URL), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return preview;
     }
@@ -2044,7 +2044,7 @@ leet::URL::URLPreview leet::getURLPreview(const leet::User::CredentialsResponse&
     preview.URL = URL;
     preview.Time = time;
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         if (output["og:image"].is_string()) preview.imageURL = output["og:image"].get<std::string>();
         if (output["og:image:type"].is_string()) preview.Type = output["og:image:type"].get<std::string>();
         if (output["og:image:width"].is_number_integer()) preview.imageWidth = output["og:image:width"].get<int>();
@@ -2066,15 +2066,15 @@ leet::Event::Event leet::returnEventFromTimestamp(const leet::User::CredentialsR
     std::string Dir = Direction ? "f" : "b";
 
     const std::string Output = leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v1/rooms/" + room.roomID + "/timestamp_to_event" + "?ts=" + std::to_string(Timestamp) + "&dir=" + Dir), resp.accessToken);
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return event;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["event_id"].is_string()) event.eventID = output["event_id"].get<std::string>();
@@ -2105,15 +2105,15 @@ void leet::redactEvent(const leet::User::CredentialsResponse& resp, const leet::
 
     const std::string Output { leet::invokeRequest_Put(leet::getAPI("/_matrix/client/v3/rooms/" + room.roomID + "/redact/" + event.eventID + "/" + std::to_string(leet::transID)), body.dump(), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["errcode"].is_string()) {
@@ -2139,15 +2139,15 @@ void leet::reportEvent(const leet::User::CredentialsResponse& resp, const leet::
 
     const std::string Output { leet::invokeRequest_Post(leet::getAPI(APIUrl), body.dump(), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     }  catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["errcode"].is_string()) leet::Error = output["errcode"].get<std::string>();
@@ -2156,7 +2156,6 @@ void leet::reportEvent(const leet::User::CredentialsResponse& resp, const leet::
 }
 
 void leet::sendMessage(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const leet::Event::Message& msg) {
-    const int transID { leet::transID };
     const std::string eventType { "m.room.message" };
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + room.roomID + "/send/" + eventType + "/" + std::to_string(transID) };
     std::string messageType = "m.text";
@@ -2254,14 +2253,14 @@ void leet::sendMessage(const leet::User::CredentialsResponse& resp, const leet::
 
     const std::string Output { leet::invokeRequest_Put(leet::getAPI(APIUrl), list.dump(), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["errcode"].is_string()) {
@@ -2275,11 +2274,10 @@ void leet::sendMessage(const leet::User::CredentialsResponse& resp, const leet::
 // TODO: support other message types than m.text
 #ifndef LEET_NO_ENCRYPTION
 void leet::sendEncryptedMessage(const leet::User::CredentialsResponse& resp, leet::Encryption& enc, const leet::Room::Room& room, const leet::Event::Message& msg) {
-    const int transID { leet::transID };
-    const std::string eventType { "m.room.encrypted" };
-    const std::string APIUrl { "/_matrix/client/v3/rooms/" + room.roomID + "/send/" + eventType + "/" + std::to_string(transID) };
+    std::string eventType { "m.room.encrypted" };
+    const std::string APIUrl { "/_matrix/client/v3/rooms/" + room.roomID + "/send/" + eventType + "/" + std::to_string(leet::transID) };
 
-    nlohmann::json Body;
+    nlohmann::json Body{};
 
     Body["type"] = "m.room.message";
     Body["room_id"] = room.roomID;
@@ -2307,15 +2305,15 @@ void leet::sendEncryptedMessage(const leet::User::CredentialsResponse& resp, lee
 
     const std::string Output { leet::invokeRequest_Put(leet::getAPI(APIUrl), enc.account.encryptMessage(resp, Body.dump()), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["errcode"].is_string()) {
@@ -2332,17 +2330,17 @@ leet::Event::Event leet::getStateFromType(const leet::User::CredentialsResponse&
     leet::errorCode = 0;
     const std::string Output { leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/rooms/" + room.roomID + "/state/" + eventType + "/" + stateKey), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     }  catch (const nlohmann::json::parse_error& e) {
         return event;
     }
 
     event.eventContent = Output;
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         if (output["event_id"].is_string()) event.eventID = output["event_id"].get<std::string>();
         if (output["origin_server_ts"].is_number_integer()) event.Age = output["origin_server_ts"].get<int>();
 
@@ -2363,15 +2361,15 @@ leet::Event::Event leet::setStateFromType(const leet::User::CredentialsResponse&
     leet::errorCode = 0;
     const std::string Output { leet::invokeRequest_Put(leet::getAPI("/_matrix/client/v3/rooms/" + room.roomID + "/state/" + eventType + "/" + stateKey), Body, resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return event;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         if (output["event_id"].is_string()) event.eventID = output["event_id"].get<std::string>();
 
         if (output["errcode"].is_string()) {
@@ -2392,14 +2390,14 @@ std::vector<leet::Event::Message> leet::returnMessages(const leet::User::Credent
 
     std::string Output { leet::invokeRequest_Get(leet::getAPI(APIUrl), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
     try {
-        reqOutput = nlohmann::json::parse(Output);
+        requestResponse = nlohmann::json::parse(Output);
     } catch (const nlohmann::json::parse_error& e) {
         return vector;
     }
 
-    auto& messages = reqOutput["chunk"];
+    auto& messages = requestResponse["chunk"];
 
     for (auto it = messages.begin(); it != messages.end(); ++it) {
         leet::Event::Message message;
@@ -2478,14 +2476,14 @@ leet::Filter::Filter leet::returnFilter(const leet::User::CredentialsResponse& r
 
     std::string Output { leet::invokeRequest_Post(leet::getAPI(APIUrl), list.dump(), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
     try {
-        reqOutput = nlohmann::json::parse(Output);
+        requestResponse = nlohmann::json::parse(Output);
     } catch (const nlohmann::json::parse_error& e) {
         return retFilter;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["filter_id"].is_string()) {
@@ -2678,15 +2676,15 @@ leet::VOIP::Credentials leet::returnTurnCredentials(const leet::User::Credential
 
     const std::string Output { leet::invokeRequest_Get(leet::getAPI("/_matrix/client/v3/voip/turnServer"), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     }  catch (const nlohmann::json::parse_error& e) {
         return cred;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["uris"].is_array()) cred.URI = output["uris"];
@@ -2719,15 +2717,15 @@ std::string leet::returnServerDiscovery(const std::string& Server) {
     const std::string Output = leet::invokeRequest_Get(ret + "/.well-known/matrix/client");
 
     if (nlohmann::json::accept(Output)) {
-        nlohmann::json reqOutput;
+        nlohmann::json requestResponse;
 
         try {
-            reqOutput = { nlohmann::json::parse(Output) };
+            requestResponse = { nlohmann::json::parse(Output) };
         } catch (const nlohmann::json::parse_error& e) {
             return ret;
         }
 
-        for (auto& output : reqOutput)
+        for (auto& output : requestResponse)
             if (output["m.homeserver"]["base_url"].is_string())
                 return output["m.homeserver"]["base_url"].get<std::string>();
     }
@@ -2754,15 +2752,15 @@ std::vector<std::string> leet::returnSupportedSpecs() {
 
     std::string Output { leet::invokeRequest_Get(leet::getAPI(APIUrl)) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     } catch (const nlohmann::json::parse_error& e) {
         return vector;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["versions"].is_array()) {
@@ -2778,15 +2776,15 @@ int leet::returnMaxUploadLimit(const leet::User::CredentialsResponse& resp) {
     const std::string APIUrl { "/_matrix/media/v3/config" };
     const std::string Output { leet::invokeRequest_Get(leet::getAPI(APIUrl), resp.accessToken) };
 
-    nlohmann::json reqOutput;
+    nlohmann::json requestResponse;
 
     try {
-        reqOutput = { nlohmann::json::parse(Output) };
+        requestResponse = { nlohmann::json::parse(Output) };
     }  catch (const nlohmann::json::parse_error& e) {
         return 0;
     }
 
-    for (auto& output : reqOutput) {
+    for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
         if (output["m.upload.size"].is_number_integer()) return output["m.upload.size"].get<int>();
