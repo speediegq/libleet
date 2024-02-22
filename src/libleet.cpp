@@ -398,7 +398,7 @@ void leet::olmAccount::createSession(const leet::User::CredentialsResponse& resp
 
             megolmSessionKey[tSize] = '\0';
 
-            std::string Otk{""};
+            std::string Otk{};
 
             nlohmann::json Signed = claimedKeys["one_time_keys"][output.userID][output.deviceID];
             for (auto& signedOtk : Signed.items()) {
@@ -1439,7 +1439,7 @@ leet::Room::Room leet::upgradeRoom(const leet::User::CredentialsResponse& resp, 
         return room;
     }
 
-    std::string theRoomID{""};
+    std::string theRoomID{};
     for (auto& output : requestResponse) {
         leet::errorCode = 0;
 
