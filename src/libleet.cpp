@@ -16,14 +16,15 @@
 
 #include <libleet.hpp>
 #include <net/Request.hpp>
-#ifndef LEET_NO_ENCRYPTION
-#include <crypto/olm.hpp>
 
 namespace leetFunction { // contains functions that are used in libleet API functions
     void getSessionsFromSync(const leet::User::CredentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it);
     void getRoomEventsFromSync(const leet::User::CredentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it);
     void getInvitesFromSync(const leet::User::CredentialsResponse& resp, leet::Sync::Sync& sync, nlohmann::json& it);
 }
+
+#ifndef LEET_NO_ENCRYPTION
+#include <crypto/olm.hpp>
 
 void leet::olmAccount::createAccount() {
     if (!accountMemoryAllocated) {
@@ -797,6 +798,10 @@ leet::User::CredentialsResponse leet::loginAccount(const leet::User::Credentials
     return resp;
 }
 
+/* NOTE: The invokeRequest() functions simply serve as further abstraction for the networking code.
+ * This was, admittedly, done because I didn't feel like rewriting all functions that use these existing functions.
+ * With that said, it's still better than having all of this boilerplate code in every single function that does networking, which is nearly all of them.
+ */
 std::string leet::invokeRequest_Get(const std::string& URL) {
     /*
     auto ret = cpr::Get(cpr::Url{ URL });
