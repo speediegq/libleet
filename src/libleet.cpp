@@ -2228,7 +2228,7 @@ void leet::sendMessage(const leet::User::CredentialsResponse& resp, const leet::
 
         list["m.mentions"]["user_ids"] = msg.mentionedUserIDs;
 
-        if (!msg.replyEvent.eventID.compare("")) {
+        if (msg.replyEvent.eventID.compare("")) {
             list["m.relates_to"]["m.in_reply_to"]["event_id"] = msg.replyEvent.eventID;
         }
     } else { // plain text/formatted text
@@ -2253,7 +2253,7 @@ void leet::sendMessage(const leet::User::CredentialsResponse& resp, const leet::
 
         list["m.mentions"]["user_ids"] = msg.mentionedUserIDs;
 
-        if (!msg.replyEvent.eventID.compare("")) {
+        if (msg.replyEvent.eventID.compare("")) {
             list["m.relates_to"]["m.in_reply_to"]["event_id"] = msg.replyEvent.eventID;
         }
     }
@@ -2306,7 +2306,7 @@ void leet::sendEncryptedMessage(const leet::User::CredentialsResponse& resp, lee
     Body["content"]["msgtype"] = "m.text";
     Body["m.mentions"]["user_ids"] = msg.mentionedUserIDs;
 
-    if (!msg.replyEvent.eventID.compare("")) {
+    if (msg.replyEvent.eventID.compare("")) {
         Body["m.relates_to"]["m.in_reply_to"]["event_id"] = msg.replyEvent.eventID;
     }
 
@@ -2507,6 +2507,7 @@ void leetFunction::getSessionsFromSync(const leet::User::CredentialsResponse& re
         return;
     }
 
+    // we get all encrypted sessions
     for (auto& itEvent : it["to_device"]["events"]) {
         leet::errorCode = 0;
         leet::Sync::MegolmSession megolmSession;
@@ -2546,7 +2547,7 @@ void leetFunction::getInvitesFromSync(const leet::User::CredentialsResponse& res
         return;
     }
 
-    for (auto& inviteIt : it["invite"]) {
+    for (auto& inviteIt : it["invite"]) { // each room we have invite events in
         if (inviteIt["invite_state"]["events"].is_null()) {
             continue;
         }
@@ -2673,6 +2674,11 @@ leet::Sync::Sync leet::returnSync(const leet::User::CredentialsResponse& resp, c
 
         leetFunction::getSessionsFromSync(resp, sync, it);
         leetFunction::getRoomEventsFromSync(resp, sync, it);
+
+        /* done:
+         * - to_device
+         * - invite
+         */
     }
 
     return sync;
@@ -2802,6 +2808,9 @@ int leet::returnMaxUploadLimit(const leet::User::CredentialsResponse& resp) {
     return 0;
 }
 
+/* Wrapper, just in case we decide that we need more error checking in the future.
+ * Thus, it is easiest to use this to check errors.
+ */
 bool leet::checkError() {
     if (leet::errorCode != 0) {
         return false;

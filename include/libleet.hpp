@@ -122,9 +122,12 @@ namespace leet {
                 std::string Homeserver{};
                 bool refreshToken{false}; // Should we use a refresh token?
                 std::string Token{}; // An actual token
-                int Identifier{}; // Identifier used to log in
-                int Type{}; // Type
+                int Identifier{0}; // Identifier used to log in
+                int Type{0}; // Type
 
+                /**
+                 * @brief  Function which clears all of the variables stored in the object to their default value.
+                 */
                 void clearCredentials() {
                     Username = "";
                     Password = "";
