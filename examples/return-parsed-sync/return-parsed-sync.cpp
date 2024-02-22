@@ -46,7 +46,7 @@ int main() {
 	    file << "\n";
     }
 
-    for (auto it : sync.roomEvents.Invites) {
+    for (auto it : sync.roomEvent.inviteEvents) {
 	    file << "Room ID:      " << it.roomID << "\n";
 	    file << "User ID:      " << it.userID << "\n";
 	    file << "Event ID:     " << it.eventID << "\n";

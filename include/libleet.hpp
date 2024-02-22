@@ -310,7 +310,7 @@ namespace leet {
         /**
          * @brief Class that represents a user event.
          */
-        class UserEvent {
+        class UserEvents {
             private:
             public:
                 std::string userID{};
@@ -323,7 +323,7 @@ namespace leet {
         /**
          * @brief Class that represents a name event.
          */
-        class NameEvent {
+        class NameEvents {
             private:
             public:
                 std::string roomID{};
@@ -334,7 +334,7 @@ namespace leet {
         /**
          * @brief Class that represents a room event.
          */
-        class RoomEvent {
+        class RoomEvents {
             private:
             public:
                 /**
@@ -378,7 +378,7 @@ namespace leet {
                     public:
                 };
 
-                std::vector<InviteEvent> Invites{};
+                std::vector<InviteEvent> inviteEvents{};
         };
         /**
          * @brief Class that represents a Megolm session sent in the room */
@@ -398,9 +398,9 @@ namespace leet {
         class Sync {
             private:
             public:
-                UserEvent userEvents{};
-                NameEvent nameEvents{};
-                RoomEvent roomEvents{};
+                UserEvents userEvents{};
+                NameEvents nameEvents{};
+                RoomEvents roomEvents{};
                 std::vector<MegolmSession> megolmSessions{};
                 std::string nextBatch{};
                 std::string theRequest{};

@@ -2552,7 +2552,7 @@ void leetFunction::getInvitesFromSync(const leet::User::CredentialsResponse& res
             continue;
         }
 
-        leet::Sync::RoomEvent::InviteEvent theInviteEvent{};
+        leet::Sync::RoomEvents::InviteEvent theInviteEvent{};
 
         theInviteEvent.Encrypted = false; // sane default
 
@@ -2618,7 +2618,7 @@ void leetFunction::getInvitesFromSync(const leet::User::CredentialsResponse& res
             }
         }
 
-        sync.roomEvents.Invites.push_back(theInviteEvent);
+        sync.roomEvents.inviteEvents.push_back(theInviteEvent);
     }
 }
 
