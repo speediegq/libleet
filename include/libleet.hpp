@@ -525,6 +525,13 @@ namespace leet {
      */
     bool loadTransID(const std::string& File);
     /**
+     * @brief  Sets the transaction ID to id
+     * @param  id The transaction ID to use.
+     * @return Boolean, true if it was successfully assigned, otherwise false is returned.
+     */
+    bool constexpr setTransID(int id);
+
+    /**
      * @brief  Saves data to a file.
      * @param  File String path to the file.
      * @param  Data The data that should be saved to the file.

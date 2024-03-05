@@ -696,10 +696,10 @@ leet::User::CredentialsResponse leet::registerAccount(const leet::User::Credenti
 
     std::string theUsername = cred.Username;
 
-    if (cred.Username[0] == '@') {
+    if (cred.Username.at(0) == '@') {
         theUsername = leet::returnUserName(cred.Username);
 
-        if (theUsername[0] == '@' || !theUsername.compare("")) {
+        if (theUsername.at(0) == '@' || !theUsername.compare("")) {
             return resp;
             leet::errorCode = 1;
         }
@@ -1072,7 +1072,7 @@ std::string leet::invokeRequest_Post_File(const std::string& URL, const std::str
 }
 
 std::string leet::findUserID(const std::string& Alias, const std::string& Homeserver) {
-    if (Alias[0] != '@')
+    if (Alias.at(0) != '@')
         return "@" + Alias + ":" + Homeserver;
     return Alias;
 }
@@ -1089,7 +1089,7 @@ leet::User::Profile leet::getUserData(const leet::User::CredentialsResponse& res
     leet::errorCode = 0;
     leet::User::Profile profile;
 
-    if (userID[0] != '@') {
+    if (userID.at(0) != '@') {
         return profile;
     }
 
@@ -1200,10 +1200,10 @@ bool leet::checkIfUsernameIsAvailable(const std::string& Username) {
 
     std::string theUsername = Username;
 
-    if (Username[0] == '@') {
+    if (Username.at(0) == '@') {
         theUsername = leet::returnUserName(Username);
 
-        if (theUsername[0] == '@' || !theUsername.compare("")) {
+        if (theUsername.at(0) == '@' || !theUsername.compare("")) {
             return false;
             leet::errorCode = 1;
         }
@@ -1301,7 +1301,7 @@ std::string leet::findRoomID(const std::string& Alias) {
     std::string ret = Alias;
     leet::errorCode = 0;
 
-    if (ret[0] == '!') { // It's a proper room ID already
+    if (ret.at(0) == '!') { // It's a proper room ID already
         return ret;
     }
 
@@ -1337,7 +1337,7 @@ bool leet::removeRoomAlias(const leet::User::CredentialsResponse& resp, const st
     std::string ret = Alias;
     leet::errorCode = 0;
 
-    if (ret[0] != '!') {
+    if (ret.at(0) != '!') {
         leet::errorCode = 1;
         return false;
     }
@@ -1527,7 +1527,7 @@ std::vector<leet::Room::Room> leet::returnRoomIDs(const leet::User::CredentialsR
 
 const std::vector<leet::Room::Room> leet::returnRoomsInSpace(const leet::User::CredentialsResponse& resp, const std::string& spaceID, const int Limit) {
     std::vector<leet::Room::Room> rooms;
-    if (spaceID[0] != '!') {
+    if (spaceID.at(0) != '!') {
         return rooms;
     }
 
@@ -1931,6 +1931,10 @@ bool leet::loadTransID(const std::string& File) {
     return (leet::transID = leet::loadFromFile<int>(File));
 }
 
+bool constexpr leet::setTransID(int id) {
+    return (leet::transID = id);
+}
+
 leet::Attachment::Attachment leet::uploadFile(const leet::User::CredentialsResponse& resp, const std::string& File) {
     leet::Attachment::Attachment theAttachment;
     const std::string Output = leet::invokeRequest_Post_File(leet::getAPI("/_matrix/media/v3/upload"), File, resp.accessToken);
@@ -2165,7 +2169,7 @@ void leet::reportEvent(const leet::User::CredentialsResponse& resp, const leet::
 void leet::sendMessage(const leet::User::CredentialsResponse& resp, const leet::Room::Room& room, const leet::Event::Message& msg) {
     const std::string eventType { "m.room.message" };
     const std::string APIUrl { "/_matrix/client/v3/rooms/" + room.roomID + "/send/" + eventType + "/" + std::to_string(transID) };
-    std::string messageType = "m.text";
+    std::string messageType { "m.text" };
 
     switch (msg.msgType) {
         case leet::LEET_MESSAGETYPE_IMAGE:
@@ -2201,7 +2205,7 @@ void leet::sendMessage(const leet::User::CredentialsResponse& resp, const leet::
 
     // attachment
     if (!messageType.compare("m.image") || !messageType.compare("m.audio") || !messageType.compare("m.video") || !messageType.compare("m.file")) {
-        if (msg.attachmentURL[0] != 'm' || msg.attachmentURL[1] != 'x' || msg.attachmentURL[2] != 'c') {
+        if (msg.attachmentURL.at(0) != 'm' || msg.attachmentURL.at(1) != 'x' || msg.attachmentURL.at(2) != 'c') {
             leet::errorCode = 1;
             return;
         }
@@ -2723,7 +2727,7 @@ std::string leet::returnServerDiscovery(const std::string& Server) {
     std::string ret = Server;
     leet::errorCode = 0;
 
-    if (ret[0] != 'h' || ret[1] != 't' || ret[2] != 't' || ret[3] != 'p') {
+    if (ret.at(0) != 'h' || ret.at(1) != 't' || ret.at(2) != 't' || ret.at(3) != 'p') {
         ret = "https://" + ret;
     }
 
@@ -2748,7 +2752,7 @@ std::string leet::returnServerDiscovery(const std::string& Server) {
 
 std::string leet::returnHomeServerFromString(const std::string& userID) {
     std::string uid{userID};
-    if (uid[0] != '@') {
+    if (uid.at(0) != '@') {
         leet::errorCode = 1;
         return "";
     }
